@@ -1,0 +1,60 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+
+  font-family: "Helvetica Neue",Helvetica,sans-serif;
+  font-size: 13px;
+
+  background: url('blocked.svg') center center no-repeat;
+  background-size: 50vh;
+}
+
+header h1 {
+  text-align: center;
+}
+header table {
+  table-layout: fixed;
+}
+header td:last-of-type {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body>div:nth-child(2) {
+}
+header,
+footer {
+  padding:  10px;
+}
+form {
+  display: inline-block;
+}
+input[type=text],
+input[type=password] {
+  outline: none;
+  border: solid 1px #ccc;
+  height: 22px;
+  text-indent: 5px;
+  min-width: 120px;
+}
+input:invalid {
+  border-color: red;
+}
+
+[hbox] {
+  display: flex;
+  flex-direction: row;
+}
+[vbox] {
+  display: flex;
+  flex-direction: column;
+}
+[flex="1"] {
+  flex: 1;
+}

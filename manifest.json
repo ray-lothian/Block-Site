@@ -1,0 +1,37 @@
+{
+  "name": "Block Site",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["common.js"]
+  },
+  "description": "Block websites of your choice or redirect to another destination!",
+  "permissions": [
+    "tabs",
+    "storage",
+    "<all_urls>",
+    "webRequest",
+    "contextMenus",
+    "notifications",
+    "webRequestBlocking"
+  ],
+  "icons": {
+    "16": "data/icons/16.png",
+    "32": "data/icons/32.png",
+    "48": "data/icons/48.png",
+    "64": "data/icons/64.png",
+    "128": "data/icons/128.png"
+  },
+  "homepage_url": "http://add0n.com/block-site.html",
+
+  "browser_action":{
+    "default_icon": {
+      "16": "/data/icons/16.png",
+      "32": "/data/icons/32.png"
+    }
+  },
+  "options_ui": {
+    "chrome_style": true,
+    "page": "data/options/index.html"
+  }
+}

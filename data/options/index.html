@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Block Site :: Options page</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <table width="100%">
+      <colgroup>
+        <col width="200px">
+        <col>
+      </colgroup>
+      <tr>
+        <td>Master Password:</td>
+        <td>
+          <div hbox>
+            <input type="password" id="password" flex=1 placeholder="Enter master password and unlock">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="title">Display title of blocked hostnames</label></td>
+        <td><input type="checkbox" id="title"></td>
+      </tr>
+      <tr>
+        <td>Allow hostname access when unblocked for (in seconds)</td>
+        <td>
+          <div hbox>
+            <input type="number" min="1" id="timeout" required flex="1">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Block access when wrong password is entered multiple times (in minutes)</td>
+        <td>
+          <div hbox>
+            <input type="number" min="1" id="wrong" required flex="1">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Block a new hostname:</td>
+        <td>
+          <form hbox align=center id="add">
+            <input type="text" name="hostname" flex="1" placeholder="e.g.: www.google.com">
+            <input type="submit" value="Add">
+          </form>
+          </td>
+      </tr>
+
+    </table>
+    <div id="list" data-visible=false>
+      <table width="100%">
+        <colgroup>
+          <col>
+          <col>
+          <col width="100px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Matching Pattern</th>
+            <th>Redirect to</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <template>
+          <tr>
+            <td></td>
+            <td>
+              <div hbox>
+                <input type="text" flex="1" placeholder="http://example.com">
+              </div>
+            </td>
+            <td><input type="button" value="Remove" data-cmd="remove"></td>
+          </tr>
+        </template>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      <input type="button" value="Unlock" data-cmd="unlock">
+      <input type="button" value="Save" data-cmd="save" disabled="true">
+      <span id="info"></span>
+    </p>
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+body {
+  font-family: "Helvetica Neue",Helvetica,sans-serif;
+  font-size: 13px;
+  min-width: 500px;
+}
+input[type=password],
+input[type=number],
+input[type=text] {
+}
+input[type=button],
+input[type=submit] {
+  min-width: 80px;
+  background-color: #fff;
+}
+input[type=password],
+input[type=number],
+input[type=text],
+input[type=button],
+input[type=submit] {
+  height: 22px;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+}
+input[type=number],
+input[type=password],
+input[type=text] {
+  box-sizing: border-box;
+  outline: none;
+  text-indent: 5px;
+  line- height: 22px;
+}
+input:invalid {
+  border-color: red;
+}
+input:disabled {
+  opacity: 0.5;
+}
+
+table {
+  border-collapse: collapse;
+}
+td {
+  padding: 3px 0 3px 3px;
+}
+#list,
+#list table {
+  margin-top: 10px;
+}
+#list th {
+  height: 28px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-bottom: solid 1px rgba(0, 0, 0, 0.3);
+}
+#list td:last-child {
+  text-align: right;
+}
+#list[data-visible=false] {
+  display: none;
+}
+
+[hbox] {
+  display: flex;
+}
+[flex="1"] {
+  flex: 1;
+}
+[align=center] {
+  align-items: center;
+}
+[pack=center] {
+  justify-content: center;
+}
