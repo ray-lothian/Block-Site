@@ -1,17 +1,16 @@
 {
   "name": "Block Site",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "manifest_version": 2,
   "background": {
     "scripts": ["common.js"]
   },
-  "description": "Block websites of your choice or redirect to another destination!",
+  "description": "A customizable password protected website blocker and redirector",
   "permissions": [
     "tabs",
     "storage",
     "<all_urls>",
     "webRequest",
-    "contextMenus",
     "notifications",
     "webRequestBlocking"
   ],
@@ -20,18 +19,27 @@
     "32": "data/icons/32.png",
     "48": "data/icons/48.png",
     "64": "data/icons/64.png",
-    "128": "data/icons/128.png"
+    "128": "data/icons/128.png",
+    "256": "data/icons/256.png"
   },
   "homepage_url": "http://add0n.com/block-site.html",
-
   "browser_action":{
     "default_icon": {
       "16": "/data/icons/16.png",
       "32": "/data/icons/32.png"
     }
   },
+  "web_accessible_resources": [
+    "data/blocked/index.html"
+  ],
   "options_ui": {
     "chrome_style": true,
     "page": "data/options/index.html"
+  },
+  "applications": {
+    "gecko": {
+      "id": "{54e2eb33-18eb-46ad-a4e4-1329c29f6e17}",
+      "strict_min_version": "52.0"
+    }
   }
 }

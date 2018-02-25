@@ -30,8 +30,9 @@ var onBeforeRequest = d => {
       'redirectUrl': prefs.map[hostname] + (search || '')
     };
   }
+  console.log('here');
   return {
-    'redirectUrl': chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + d.url
+    'redirectUrl': chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url)
   };
 };
 
@@ -103,17 +104,21 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       response(false);
     }
   }
+  else if (request.method === 'open-options') {
+    chrome.runtime.openOptionsPage();
+  }
 });
 
 chrome.browserAction.onClicked.addListener(tab => {
   const {hostname} = new URL(tab.url);
   chrome.tabs.executeScript(tab.id, {
-    code: `window.confirm('Add "${hostname}" to the block list?')`
+    'runAt': 'document_start',
+    code: `window.confirm('Add "${hostname}" to the blocked list?')`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);
     }
-    if (r && r.length) {
+    if (r && r.length && r[0] === true) {
       const blocked = [...prefs.blocked, hostname].filter((s, i, l) => l.indexOf(s) === i);
       chrome.storage.local.set({
         blocked
@@ -121,3 +126,38 @@ chrome.browserAction.onClicked.addListener(tab => {
     }
   });
 });
+
+// FAQs & Feedback
+chrome.storage.local.get({
+  'version': null,
+  'faqs': false,
+  'last-update': 0,
+}, prefs => {
+  const version = chrome.runtime.getManifest().version;
+
+  if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
+    const now = Date.now();
+    const doUpdate = (now - prefs['last-update']) / 1000 / 60 / 60 / 24 > 30;
+    chrome.storage.local.set({
+      version,
+      'last-update': doUpdate ? Date.now() : prefs['last-update']
+    }, () => {
+      // do not display the FAQs page if last-update occurred less than 30 days ago.
+      if (doUpdate) {
+        const p = Boolean(prefs.version);
+        chrome.tabs.create({
+          url: chrome.runtime.getManifest().homepage_url + '?version=' + version +
+            '&type=' + (p ? ('upgrade&p=' + prefs.version) : 'install'),
+          active: p === false
+        });
+      }
+    });
+  }
+});
+
+{
+  const {name, version} = chrome.runtime.getManifest();
+  chrome.runtime.setUninstallURL(
+    chrome.runtime.getManifest().homepage_url + '?rd=feedback&name=' + name + '&version=' + version
+  );
+}

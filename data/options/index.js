@@ -82,3 +82,7 @@ document.addEventListener('click', ({target}) => {
     });
   }
 });
+
+document.getElementById('support').addEventListener('click', () => chrome.tabs.create({
+  url: chrome.runtime.getManifest().homepage_url + '?rd=donate'
+}));

@@ -13,18 +13,11 @@ var title = () => fetch(args.url).then(r => r.text()).then(content => {
   }
 });
 
-if (args.url) {
-  chrome.storage.local.get({
-    title: true
-  }, prefs => {
-    if (prefs.title) {
-      title();
-    }
-  });
-  document.getElementById('url').textContent = args.url;
-}
-
 document.getElementById('date').textContent = (new Date()).toLocaleString();
+if (args.url) {
+  const url = document.getElementById('url');
+  url.textContent = url.href = args.url;
+}
 
 document.addEventListener('submit', e => {
   e.preventDefault();
@@ -33,4 +26,27 @@ document.addEventListener('submit', e => {
     url: args.url,
     password: e.target.querySelector('[type=password]').value
   });
+});
+
+document.body.dataset.dark = localStorage.getItem('dark') || 'true';
+document.getElementById('switch').addEventListener('click', () => {
+  const val = document.body.dataset.dark === 'false';
+  localStorage.setItem('dark', val);
+  document.body.dataset.dark = val;
+});
+document.getElementById('options').addEventListener('click', e => {
+  e.stopPropagation();
+  chrome.runtime.sendMessage({
+    'method': 'open-options'
+  });
+});
+
+// storage
+chrome.storage.local.get({
+  title: true,
+  dark: true
+}, prefs => {
+  if (prefs.title && args.url) {
+    title();
+  }
 });

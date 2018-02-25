@@ -10,7 +10,7 @@ body {
   font-family: "Helvetica Neue",Helvetica,sans-serif;
   font-size: 13px;
 
-  background: url('blocked.svg') center center no-repeat;
+  background: #f0f0f0 url('blocked.svg') center center no-repeat;
   background-size: 50vh;
 }
 
@@ -34,17 +34,53 @@ footer {
 }
 form {
   display: inline-block;
+  margin-left: 5px;
 }
 input[type=text],
 input[type=password] {
   outline: none;
   border: solid 1px #ccc;
   height: 22px;
+  line-height: 22px;
   text-indent: 5px;
-  min-width: 120px;
+  min-width: 150px;
+  background-color: #f0f0f0;
 }
-input:invalid {
-  border-color: red;
+input:focus {
+  background-color: #fff;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+#switch {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url('button_on.svg') no-repeat center center;
+  background-size: 32px;
+  width: 64px;
+  height: 48px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+body[data-dark=true] {
+  background-color: #212121;
+  background-image: url('blocked_dark.svg');
+  color: #818080;
+}
+body[data-dark=true] #switch {
+  background-image: url('button_off.svg')
+}
+body[data-dark=true] input[type=text],
+body[data-dark=true] input[type=password] {
+  background-color: #3c3c3c;
+  color: #818080;
+}
+body[data-dark=true] input:focus {
+  background-color: #575757;
 }
 
 [hbox] {
@@ -57,4 +93,7 @@ input:invalid {
 }
 [flex="1"] {
   flex: 1;
+}
+[align=center] {
+  align-items: center;
 }

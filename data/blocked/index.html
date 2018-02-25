@@ -20,7 +20,7 @@
           </tr>
           <tr>
             <td>URL</td>
-            <td id="url">...</td>
+            <td><a id="url" href="">...</a></td>
           </tr>
           <tr>
             <td>Blocked since</td>
@@ -30,12 +30,14 @@
       </table>
     </header>
     <div flex="1"></div>
-    <footer>
-      To open this host please enter the master password:
-      <form>
+    <footer hbox align=center>
+      To unblock this URL please enter the master password:
+      <form flex="1" hbox>
         <input type="password" autofocus="true" required="true">
       </form>
+      <a href="#" id="options">Open options page</a>
     </footer>
+    <input type="button" id="switch">
     <script src="index.js"></script>
   </body>
 </html>
