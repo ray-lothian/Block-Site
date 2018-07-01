@@ -5,7 +5,14 @@ var prefs = {
   blocked: [],
   password: '',
   wrong: 1, // minutes,
-  map: {}
+  map: {},
+  schedule: {
+    days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    time: {
+      start: '',
+      end: ''
+    }
+  }
 };
 
 var once = [];
@@ -24,22 +31,50 @@ var onBeforeRequest = d => {
       return;
     }
   }
+  // schedule
+  const {days, time} = prefs.schedule;
+  if (days.length && time.start && time.end) {
+    const d = new Date();
+    if (days.indexOf(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()] !== -1)) {
+      const now = d.getHours() * 60 + d.getMinutes();
+      const [ss, se] = time.start.split(':');
+      const start = Number(ss) * 60 + Number(se);
+      const [es, ee] = time.end.split(':');
+
+      let end = Number(es) * 60 + Number(ee);
+
+      if (start < end) {
+        if (now < start || now > end) {
+          return;
+        }
+      }
+      else {
+        if (now > end && now < start) {
+          return;
+        }
+      }
+    }
+  }
+  // redirect
   if (prefs.map[hostname]) {
     const search = (new URL(d.url)).search;
     return {
       'redirectUrl': prefs.map[hostname] + (search || '')
     };
   }
-  console.log('here');
   return {
     'redirectUrl': chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url)
   };
 };
 
-var observe = () => prefs.blocked.length && chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, {
-  'urls': prefs.blocked.map(h => `*://${h}/*`),
-  'types': ['main_frame']
-}, ['blocking']);
+var observe = () => {
+  if (prefs.blocked.length) {
+    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, {
+      'urls': prefs.blocked.map(h => `*://${h}/*`),
+      'types': ['main_frame']
+    }, ['blocking']);
+  }
+};
 
 chrome.storage.local.get(prefs, p => {
   Object.assign(prefs, p);
@@ -113,7 +148,7 @@ chrome.browserAction.onClicked.addListener(tab => {
   const {hostname} = new URL(tab.url);
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
-    code: `window.confirm('Add "${hostname}" to the blocked list?')`
+    'code': `window.confirm('Add "${hostname}" to the blocked list?')`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);
@@ -130,8 +165,8 @@ chrome.browserAction.onClicked.addListener(tab => {
 // FAQs & Feedback
 chrome.storage.local.get({
   'version': null,
-  'faqs': false,
-  'last-update': 0,
+  'faqs': true,
+  'last-update': 0
 }, prefs => {
   const version = chrome.runtime.getManifest().version;
 

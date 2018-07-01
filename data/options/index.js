@@ -1,12 +1,21 @@
 'use strict';
 
+var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 var prefs = {
   timeout: 60,
   blocked: [],
   password: '',
   wrong: 1, // minutes
   title: true,
-  map: {}
+  map: {},
+  schedule: {
+    time: {
+      start: '',
+      end: ''
+    },
+    days
+  }
 };
 
 var list = document.getElementById('list');
@@ -31,15 +40,19 @@ document.getElementById('add').addEventListener('submit', e => {
   }
 });
 
-chrome.storage.local.get(prefs, ps => {
+var init = () => chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
   prefs.blocked.forEach(add);
   document.getElementById('title').checked = prefs.title;
   document.getElementById('timeout').value = prefs.timeout;
   document.getElementById('wrong').value = prefs.wrong;
+  document.querySelector('#schedule [name=start]').value = prefs.schedule.time.start;
+  document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
+  document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
   document.querySelector('[data-cmd=unlock]').disabled = prefs.password === '';
   document.querySelector('[data-cmd=save]').disabled = prefs.password !== '';
 });
+init();
 
 document.addEventListener('click', ({target}) => {
   const cmd = target.dataset.cmd;
@@ -64,6 +77,16 @@ document.addEventListener('click', ({target}) => {
       title: document.getElementById('title').checked,
       timeout: Math.max(Number(document.getElementById('timeout').value), 1),
       wrong: Math.max(Number(document.getElementById('wrong').value), 1),
+      schedule: {
+        time: {
+          start: document.querySelector('#schedule [name=start]').value,
+          end: document.querySelector('#schedule [name=end]').value
+        },
+        days: document.querySelector('#schedule [name=days]').value.split(/\s*,\s*/)
+        .map(s => {
+          return days.filter(d => s.toLowerCase().startsWith(d.toLowerCase())).shift();
+        }).filter((s, i, l) => s && l.indexOf(s) === i)
+      },
       blocked: [...document.querySelectorAll('#list tbody tr')]
         .map(tr => tr.dataset.hostname)
         .filter((s, i, l) => s && l.indexOf(s) === i),
@@ -74,11 +97,12 @@ document.addEventListener('click', ({target}) => {
           p[hostname] = mapped;
         }
         return p;
-      }, {}),
+      }, {})
     }, () => {
       const info = document.getElementById('info');
       info.textContent = 'Options saved';
       window.setTimeout(() => info.textContent = '', 750);
+      init();
     });
   }
 });

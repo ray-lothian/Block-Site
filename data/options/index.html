@@ -40,6 +40,27 @@
         </td>
       </tr>
       <tr>
+        <td>Only block sites between:</td>
+        <td>
+          <form id=schedule>
+            <table width="100%">
+              <tr>
+                <td>Time:</td>
+                <td>
+                  <div hbox align=center>From&nbsp;<input type="time" name="start" flex="1">&nbsp;to&nbsp;<input type="time" name="end" flex="1"></div>
+                </td>
+              </tr>
+              <tr>
+                <td>Days:</td>
+                <td>
+                  <div hbox align=center>Exception list:&nbsp;<input type="text" name="days" flex="1"></div>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </td>
+      </tr>
+      <tr>
         <td>Block a new hostname:</td>
         <td>
           <form hbox align=center id="add">
@@ -48,7 +69,6 @@
           </form>
           </td>
       </tr>
-
     </table>
     <div id="list" data-visible=false>
       <table width="100%">
@@ -59,7 +79,7 @@
         </colgroup>
         <thead>
           <tr>
-            <th>Matching Pattern</th>
+            <th>Matching <a href="http://add0n.com/block-site.html#faq3">Pattern</a></th>
             <th>Redirect to</th>
             <th>Remove</th>
           </tr>
