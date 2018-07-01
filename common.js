@@ -35,23 +35,25 @@ var onBeforeRequest = d => {
   const {days, time} = prefs.schedule;
   if (days.length && time.start && time.end) {
     const d = new Date();
-    if (days.indexOf(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()] !== -1)) {
-      const now = d.getHours() * 60 + d.getMinutes();
-      const [ss, se] = time.start.split(':');
-      const start = Number(ss) * 60 + Number(se);
-      const [es, ee] = time.end.split(':');
+    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+    if (days.indexOf(day) === -1) {
+      return;
+    }
+    const now = d.getHours() * 60 + d.getMinutes();
+    const [ss, se] = time.start.split(':');
+    const start = Number(ss) * 60 + Number(se);
+    const [es, ee] = time.end.split(':');
 
-      let end = Number(es) * 60 + Number(ee);
+    let end = Number(es) * 60 + Number(ee);
 
-      if (start < end) {
-        if (now < start || now > end) {
-          return;
-        }
+    if (start < end) {
+      if (now < start || now > end) {
+        return;
       }
-      else {
-        if (now > end && now < start) {
-          return;
-        }
+    }
+    else {
+      if (now > end && now < start) {
+        return;
       }
     }
   }

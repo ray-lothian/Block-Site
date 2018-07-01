@@ -40,9 +40,11 @@ document.getElementById('add').addEventListener('submit', e => {
   }
 });
 
-var init = () => chrome.storage.local.get(prefs, ps => {
+var init = (table = true) => chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
-  prefs.blocked.forEach(add);
+  if (table) {
+    prefs.blocked.forEach(add);
+  }
   document.getElementById('title').checked = prefs.title;
   document.getElementById('timeout').value = prefs.timeout;
   document.getElementById('wrong').value = prefs.wrong;
@@ -84,7 +86,7 @@ document.addEventListener('click', ({target}) => {
         },
         days: document.querySelector('#schedule [name=days]').value.split(/\s*,\s*/)
         .map(s => {
-          return days.filter(d => s.toLowerCase().startsWith(d.toLowerCase())).shift();
+          return days.filter(d => s.trim().toLowerCase().startsWith(d.toLowerCase())).shift();
         }).filter((s, i, l) => s && l.indexOf(s) === i)
       },
       blocked: [...document.querySelectorAll('#list tbody tr')]
@@ -102,7 +104,7 @@ document.addEventListener('click', ({target}) => {
       const info = document.getElementById('info');
       info.textContent = 'Options saved';
       window.setTimeout(() => info.textContent = '', 750);
-      init();
+      init(false);
     });
   }
 });
