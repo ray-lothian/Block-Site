@@ -8,6 +8,7 @@ var prefs = {
   password: '',
   wrong: 1, // minutes
   title: true,
+  reverse: false,
   map: {},
   schedule: {
     time: {
@@ -46,6 +47,7 @@ var init = (table = true) => chrome.storage.local.get(prefs, ps => {
     prefs.blocked.forEach(add);
   }
   document.getElementById('title').checked = prefs.title;
+  document.getElementById('reverse').checked = prefs.reverse;
   document.getElementById('timeout').value = prefs.timeout;
   document.getElementById('wrong').value = prefs.wrong;
   document.querySelector('#schedule [name=start]').value = prefs.schedule.time.start;
@@ -77,6 +79,7 @@ document.addEventListener('click', ({target}) => {
     chrome.storage.local.set({
       password,
       title: document.getElementById('title').checked,
+      reverse: document.getElementById('reverse').checked,
       timeout: Math.max(Number(document.getElementById('timeout').value), 1),
       wrong: Math.max(Number(document.getElementById('wrong').value), 1),
       schedule: {

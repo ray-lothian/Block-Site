@@ -5,6 +5,7 @@ var prefs = {
   blocked: [],
   password: '',
   wrong: 1, // minutes,
+  reverse: false,
   map: {},
   schedule: {
     days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -68,11 +69,33 @@ var onBeforeRequest = d => {
     'redirectUrl': chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url)
   };
 };
+var reversePattern = [];
+var onBeforeRequestReverse = d => {
+  if (reversePattern.some(p => p.test(d.url))) {
+    return;
+  }
+
+  return onBeforeRequest(d);
+};
 
 var observe = () => {
-  if (prefs.blocked.length) {
+  if (prefs.blocked.length && prefs.reverse === false) {
     chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, {
       'urls': prefs.blocked.map(h => `*://${h}/*`),
+      'types': ['main_frame']
+    }, ['blocking']);
+  }
+  // reverse mode
+  else if (prefs.blocked.length) {
+    reversePattern = [];
+    prefs.blocked.map(h => `*://${h}/*`).forEach(rule => {
+      reversePattern.push(
+        new RegExp('^' + rule.split('*').join('.*') + '$')
+      );
+    });
+
+    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestReverse, {
+      'urls': ['*://*/*'],
       'types': ['main_frame']
     }, ['blocking']);
   }
@@ -84,8 +107,9 @@ chrome.storage.local.get(prefs, p => {
 });
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
-  if (ps.blocked) {
-    chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequest);
+  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequest);
+  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestReverse);
+  if (ps.blocked || ps.reverse) {
     observe();
   }
 });

@@ -6,13 +6,6 @@ var args = location.search.substr(1).split('&').reduce((p, c) => {
   return p;
 }, {});
 
-var title = () => fetch(args.url).then(r => r.text()).then(content => {
-  const dom = new DOMParser().parseFromString(content, 'text/html');
-  if (dom.title) {
-    document.getElementById('title').textContent = dom.title;
-  }
-});
-
 document.getElementById('date').textContent = (new Date()).toLocaleString();
 if (args.url) {
   const url = document.getElementById('url');
@@ -41,12 +34,17 @@ document.getElementById('options').addEventListener('click', e => {
   });
 });
 
+var title = () => fetch(args.url).then(r => r.text()).then(content => {
+  const dom = new DOMParser().parseFromString(content, 'text/html');
+  if (dom.title) {
+    document.getElementById('title').textContent = dom.title;
+  }
+});
 // storage
-chrome.storage.local.get({
-  title: true,
-  dark: true
+document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
+  title: true
 }, prefs => {
   if (prefs.title && args.url) {
     title();
   }
-});
+}));
