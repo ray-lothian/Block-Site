@@ -16,6 +16,7 @@ body {
 
 header h1 {
   text-align: center;
+  font-weight: 500;
 }
 header table {
   table-layout: fixed;
@@ -29,6 +30,7 @@ header td:last-of-type {
 body>div:nth-child(2) {
 }
 header,
+p,
 footer {
   padding:  10px;
 }
@@ -51,7 +53,7 @@ input:focus {
 }
 a {
   text-decoration: none;
-  color: inherit;
+  color: #8c9ca9;
 }
 #switch {
   position: absolute;

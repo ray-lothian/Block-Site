@@ -3,7 +3,10 @@
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 var prefs = {
-  timeout: 60,
+  timeout: 60, // seconds
+  close: 0, // seconds
+  message: '',
+  redirect: '',
   blocked: [],
   password: '',
   wrong: 1, // minutes
@@ -49,7 +52,10 @@ var init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.getElementById('title').checked = prefs.title;
   document.getElementById('reverse').checked = prefs.reverse;
   document.getElementById('timeout').value = prefs.timeout;
+  document.getElementById('close').value = prefs.close;
   document.getElementById('wrong').value = prefs.wrong;
+  document.getElementById('message').value = prefs.message;
+  document.getElementById('redirect').value = prefs.redirect;
   document.querySelector('#schedule [name=start]').value = prefs.schedule.time.start;
   document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
   document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
@@ -80,7 +86,10 @@ document.addEventListener('click', ({target}) => {
       password,
       title: document.getElementById('title').checked,
       reverse: document.getElementById('reverse').checked,
+      redirect: document.getElementById('redirect').value,
+      message: document.getElementById('message').value,
       timeout: Math.max(Number(document.getElementById('timeout').value), 1),
+      close: Math.max(Number(document.getElementById('close').value), 0),
       wrong: Math.max(Number(document.getElementById('wrong').value), 1),
       schedule: {
         time: {

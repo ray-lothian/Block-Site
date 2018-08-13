@@ -4,6 +4,7 @@ var prefs = {
   timeout: 60, // seconds
   blocked: [],
   password: '',
+  redirect: '',
   wrong: 1, // minutes,
   reverse: false,
   map: {},
@@ -65,8 +66,11 @@ var onBeforeRequest = d => {
       'redirectUrl': prefs.map[hostname] + (search || '')
     };
   }
+  // custom URL
+  const redirectUrl = prefs.redirect ||
+    chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url);
   return {
-    'redirectUrl': chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url)
+    redirectUrl
   };
 };
 var reversePattern = [];
@@ -109,9 +113,7 @@ chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
   chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequest);
   chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestReverse);
-  if (ps.blocked || ps.reverse) {
-    observe();
-  }
+  observe();
 });
 //
 var notify = message => chrome.notifications.create(null, {
@@ -198,12 +200,12 @@ chrome.storage.local.get({
 
   if (prefs.version ? (prefs.faqs && prefs.version !== version) : true) {
     const now = Date.now();
-    const doUpdate = (now - prefs['last-update']) / 1000 / 60 / 60 / 24 > 30;
+    const doUpdate = (now - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
     chrome.storage.local.set({
       version,
       'last-update': doUpdate ? Date.now() : prefs['last-update']
     }, () => {
-      // do not display the FAQs page if last-update occurred less than 30 days ago.
+      // do not display the FAQs page if last-update occurred less than 45 days ago.
       if (doUpdate) {
         const p = Boolean(prefs.version);
         chrome.tabs.create({

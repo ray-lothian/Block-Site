@@ -42,9 +42,22 @@ var title = () => fetch(args.url).then(r => r.text()).then(content => {
 });
 // storage
 document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
-  title: true
+  title: true,
+  close: 0,
+  message: ''
 }, prefs => {
+  document.getElementById('message').textContent = prefs.message;
   if (prefs.title && args.url) {
     title();
+  }
+  if (prefs.close) {
+    const title = document.title;
+    window.setInterval(() => {
+      document.title = title + ` (${prefs.close})`;
+      prefs.close -= 1;
+      if (prefs.close === -1) {
+        window.close();
+      }
+    }, 1000);
   }
 }));

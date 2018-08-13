@@ -12,7 +12,7 @@
         <col>
       </colgroup>
       <tr>
-        <td>Master Password:</td>
+        <td>Master password:</td>
         <td>
           <div hbox>
             <input type="password" id="password" flex=1 placeholder="Enter master password and unlock">
@@ -20,11 +20,27 @@
         </td>
       </tr>
       <tr>
-        <td><label for="title">Display title of blocked hostnames (uncheck this if you want no data to be sent to the remote server)</label></td>
+        <td>Redirect to:<sup>1</sup></td>
+        <td>
+          <div hbox>
+            <input type="text" id="redirect" flex=1 placeholder="http://...">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>User message:<sup>2</sup></td>
+        <td>
+          <div hbox="">
+            <textarea id="message" rows="3" flex="1"></textarea>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="title">Resolve title of blocked tabs<sup>3</sup></label></td>
         <td><input type="checkbox" id="title"></td>
       </tr>
       <tr>
-        <td>Allow hostname access when unblocked for (in seconds)</td>
+        <td>Allow access to the unblocked hostname for (in seconds)</td>
         <td>
           <div hbox>
             <input type="number" min="1" id="timeout" required flex="1">
@@ -32,10 +48,18 @@
         </td>
       </tr>
       <tr>
-        <td>Block access when wrong password is entered multiple times (in minutes)</td>
+        <td>Block password check when wrong password is entered multiple times (in minutes)</td>
         <td>
           <div hbox>
             <input type="number" min="1" id="wrong" required flex="1">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Close blocked tab after (in seconds)<sup>4</sup></td>
+        <td>
+          <div hbox>
+            <input type="number" min="0" id="close" required flex="1">
           </div>
         </td>
       </tr>
@@ -61,7 +85,7 @@
         </td>
       </tr>
       <tr>
-        <td><label for="reverse">Reverse mode (if enabled, only matching patterns are allowed)</label></td>
+        <td><label for="reverse">Reverse mode<sup>5</sup></label></td>
         <td><input type="checkbox" id="reverse"></td>
       </tr>
       <tr>
@@ -110,6 +134,18 @@
       <input type="button" value="Save" data-cmd="save" disabled="true">
       <span id="info"></span>
     </p>
+    <hr/>
+    <div style="font-size: 90%; color: #555;">
+      1. URL of a local (file://) or remote (http:// or https://) page to be displayed when a tab access is blocked. If no URL is specified (recommended), the built-in page is displayed.
+      <br>
+      2. This is a custom message that is shown on blocked tabs. Could be the instruction to open the blocked page or administration contact
+      <br>
+      3. Uncheck this option if you don't want any data to be sent to the remote server. This option is useful if you are using this extension to prevent any network access to some hostnames.
+      <br/>
+      4. Use zero number to prevent the automatic closing of the blocked pages 
+      <br/>
+      5. If enabled, only URLs with a matching pattern can be browsed; all other hostnames are getting blocked.
+    </div>
     <script src="index.js"></script>
     <script async src="matched.js"></script>
   </body>
