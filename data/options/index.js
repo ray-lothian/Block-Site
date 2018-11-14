@@ -24,11 +24,18 @@ var prefs = {
 
 var list = document.getElementById('list');
 var tbody = document.querySelector('#list tbody');
+var wildcard = h => {
+  if (h.indexOf('://') === -1) {
+    return `*://${h}/*`;
+  }
+  return h;
+};
+
 function add(hostname) {
   const template = document.querySelector('#list template');
   const node = document.importNode(template.content, true);
   const tr = node.querySelector('tr');
-  tr.dataset.pattern = node.querySelector('td:nth-child(1)').textContent = '*://' + hostname + '/*';
+  tr.dataset.pattern = node.querySelector('td:nth-child(1)').textContent = wildcard(hostname);
   tr.dataset.hostname = hostname;
   node.querySelector('td:nth-child(2) input').value = prefs.map[hostname] || '';
   node.querySelector('td:nth-child(2) input').disabled = hostname.indexOf('*') !== -1;

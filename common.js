@@ -2,6 +2,7 @@
 
 var prefs = {
   timeout: 60, // seconds
+  keywords: [],
   blocked: [],
   password: '',
   redirect: '',
@@ -19,8 +20,24 @@ var prefs = {
 
 var once = [];
 var ids = {};
+
+var toHostname = url => {
+  const s = url.indexOf('//') + 2;
+  if (s > 1) {
+    var o = url.indexOf('/', s);
+    if (o > 0) {
+      return url.substring(s, o);
+    }
+    else {
+      o = url.indexOf('?', s);
+      return o > 0 ? url.substring(s, o) : url.substring(s);
+    }
+  }
+  return url;
+};
+
 var onBeforeRequest = d => {
-  const hostname = (new URL(d.url)).hostname;
+  const hostname = toHostname(d.url);
   if (once.length) {
     const index = once.indexOf(hostname);
     if (index !== -1) {
@@ -38,6 +55,7 @@ var onBeforeRequest = d => {
   if (days.length && time.start && time.end) {
     const d = new Date();
     const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+    console.log(day);
     if (days.indexOf(day) === -1) {
       return;
     }
@@ -47,6 +65,8 @@ var onBeforeRequest = d => {
     const [es, ee] = time.end.split(':');
 
     let end = Number(es) * 60 + Number(ee);
+
+console.log(start, now, end);
 
     if (start < end) {
       if (now < start || now > end) {
@@ -73,34 +93,47 @@ var onBeforeRequest = d => {
     redirectUrl
   };
 };
+
+var directPattern = [];
+var onBeforeRequestDirect = d => {
+  for (const rule of directPattern) {
+    if (rule.test(d.url)) {
+      return onBeforeRequest(d);
+    }
+  }
+};
 var reversePattern = [];
 var onBeforeRequestReverse = d => {
-  if (reversePattern.some(p => p.test(d.url))) {
-    return;
+  for (const rule of reversePattern) {
+    if (rule.test(d.url)) {
+      return;
+    }
   }
-
   return onBeforeRequest(d);
 };
 
 var observe = () => {
+  const wildcard = h => {
+    if (h.indexOf('://') === -1) {
+      return `*://${h}/*`;
+    }
+    return h;
+  };
   if (prefs.blocked.length && prefs.reverse === false) {
-    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, {
-      'urls': prefs.blocked.map(h => `*://${h}/*`),
-      'types': ['main_frame']
+    directPattern = prefs.blocked.map(wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
+
+    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestDirect, {
+      'urls': ['*://*/*'],
+      'types': ['main_frame', 'sub_frame']
     }, ['blocking']);
   }
   // reverse mode
   else if (prefs.blocked.length) {
-    reversePattern = [];
-    prefs.blocked.map(h => `*://${h}/*`).forEach(rule => {
-      reversePattern.push(
-        new RegExp('^' + rule.split('*').join('.*') + '$')
-      );
-    });
+    reversePattern = prefs.blocked.map(wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
 
     chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestReverse, {
       'urls': ['*://*/*'],
-      'types': ['main_frame']
+      'types': ['main_frame', 'sub_frame']
     }, ['blocking']);
   }
 };
@@ -111,7 +144,7 @@ chrome.storage.local.get(prefs, p => {
 });
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
-  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequest);
+  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestDirect);
   chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestReverse);
   observe();
 });
@@ -147,7 +180,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     }
     else if (request.password === prefs.password) {
       const {url} = request;
-      once.push((new URL(url)).hostname);
+      once.push(toHostname(url));
       chrome.tabs.update(sender.tab.id, {url});
     }
     else {
@@ -173,7 +206,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 });
 
 chrome.browserAction.onClicked.addListener(tab => {
-  const {hostname} = new URL(tab.url);
+  const hostname = toHostname(tab.url);
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
     'code': `window.confirm('Add "${hostname}" to the blocked list?')`
