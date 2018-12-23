@@ -19,7 +19,8 @@ var prefs = {
       end: ''
     },
     days
-  }
+  },
+  initialBlock: true
 };
 
 var list = document.getElementById('list');
@@ -57,6 +58,7 @@ var init = (table = true) => chrome.storage.local.get(prefs, ps => {
     prefs.blocked.forEach(add);
   }
   document.getElementById('title').checked = prefs.title;
+  document.getElementById('initialBlock').checked = prefs.initialBlock;
   document.getElementById('reverse').checked = prefs.reverse;
   document.getElementById('timeout').value = prefs.timeout;
   document.getElementById('close').value = prefs.close;
@@ -92,6 +94,7 @@ document.addEventListener('click', ({target}) => {
     chrome.storage.local.set({
       password,
       title: document.getElementById('title').checked,
+      initialBlock: document.getElementById('initialBlock').checked,
       reverse: document.getElementById('reverse').checked,
       redirect: document.getElementById('redirect').value,
       message: document.getElementById('message').value,
@@ -104,9 +107,9 @@ document.addEventListener('click', ({target}) => {
           end: document.querySelector('#schedule [name=end]').value
         },
         days: document.querySelector('#schedule [name=days]').value.split(/\s*,\s*/)
-        .map(s => {
-          return days.filter(d => s.trim().toLowerCase().startsWith(d.toLowerCase())).shift();
-        }).filter((s, i, l) => s && l.indexOf(s) === i)
+          .map(s => {
+            return days.filter(d => s.trim().toLowerCase().startsWith(d.toLowerCase())).shift();
+          }).filter((s, i, l) => s && l.indexOf(s) === i)
       },
       blocked: [...document.querySelectorAll('#list tbody tr')]
         .map(tr => tr.dataset.hostname)

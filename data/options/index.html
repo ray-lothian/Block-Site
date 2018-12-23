@@ -40,6 +40,10 @@
         <td><input type="checkbox" id="title"></td>
       </tr>
       <tr>
+        <td><label for="initialBlock">Run rules on startup<sup>7</sup></label></td>
+        <td><input type="checkbox" id="initialBlock"></td>
+      </tr>
+      <tr>
         <td>Allow access to the unblocked hostname for (in seconds)</td>
         <td>
           <div hbox>
@@ -146,6 +150,8 @@
       5. If enabled, only URLs with a matching pattern can be browsed; all other hostnames are getting blocked.
       <br />
       6. To block a keyword add the following rules: <code>*://*keyword*/*</code> (blocks domains with the keyword) and <code>*://*/*keyword*</code> (blocks all domains with the keyword query)
+      <br />
+      7. This will cause to block all pages that match your blocking rules on the browser startup
     </div>
     <script src="index.js"></script>
     <script async src="matched.js"></script>

@@ -15,7 +15,8 @@ var prefs = {
       start: '',
       end: ''
     }
-  }
+  },
+  initialBlock: true
 };
 
 var once = [];
@@ -144,6 +145,13 @@ var observe = () => {
       'types': ['main_frame', 'sub_frame']
     }, ['blocking']);
     chrome.tabs.onUpdated.addListener(onUpdatedDirect);
+    // check already opened
+    if (prefs.initialBlock) {
+      chrome.tabs.query({
+        url: '*://*/*'
+      }, tabs => tabs.forEach(tab => onUpdatedDirect(tab.id, tab)));
+
+    }
   }
   // reverse mode
   else if (prefs.blocked.length) {
@@ -154,6 +162,12 @@ var observe = () => {
       'types': ['main_frame', 'sub_frame']
     }, ['blocking']);
     chrome.tabs.onUpdated.addListener(onUpdatedReverse);
+    // check already opened
+    if (prefs.initialBlock) {
+      chrome.tabs.query({
+        url: '*://*/*'
+      }, tabs => tabs.forEach(tab => onUpdatedReverse(tab.id, tab)));
+    }
   }
 };
 
