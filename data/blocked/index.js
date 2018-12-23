@@ -56,7 +56,9 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
       document.title = title + ` (${prefs.close})`;
       prefs.close -= 1;
       if (prefs.close === -1) {
-        window.close();
+        chrome.runtime.sendMessage({
+          method: 'close-tab'
+        });
       }
     }, 1000);
   }
