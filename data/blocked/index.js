@@ -1,22 +1,18 @@
 'use strict';
 
-var args = location.search.substr(1).split('&').reduce((p, c) => {
-  const [key, value] = c.split('=');
-  p[key] = decodeURIComponent(value);
-  return p;
-}, {});
+var args = new URLSearchParams(location.search);
 
 document.getElementById('date').textContent = (new Date()).toLocaleString();
-if (args.url) {
+if (args.get('url')) {
   const url = document.getElementById('url');
-  url.textContent = url.href = args.url;
+  url.textContent = url.href = args.get('url');
 }
 
 document.addEventListener('submit', e => {
   e.preventDefault();
   chrome.runtime.sendMessage({
     method: 'open-once',
-    url: args.url,
+    url: args.get('url'),
     password: e.target.querySelector('[type=password]').value
   });
 });
@@ -34,7 +30,7 @@ document.getElementById('options').addEventListener('click', e => {
   });
 });
 
-var title = () => fetch(args.url).then(r => r.text()).then(content => {
+var title = () => fetch(args.get('url')).then(r => r.text()).then(content => {
   const dom = new DOMParser().parseFromString(content, 'text/html');
   if (dom.title) {
     document.getElementById('title').textContent = dom.title;
@@ -47,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
   message: ''
 }, prefs => {
   document.getElementById('message').textContent = prefs.message;
-  if (prefs.title && args.url) {
+  if (prefs.title && args.get('url')) {
     title();
   }
   if (prefs.close) {

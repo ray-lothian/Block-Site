@@ -55,7 +55,6 @@ var onBeforeRequest = d => {
   if (days.length && time.start && time.end) {
     const d = new Date();
     const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
-    console.log(day);
     if (days.indexOf(day) === -1) {
       return;
     }
@@ -100,6 +99,16 @@ var onBeforeRequestDirect = d => {
     }
   }
 };
+var onUpdatedDirect = (tabId, changeInfo) => {
+  if (changeInfo.url && changeInfo.url.startsWith('http')) {
+    const rtn = onBeforeRequestDirect(changeInfo);
+    if (rtn && rtn.redirectUrl) {
+      chrome.tabs.update(tabId, {
+        url: rtn.redirectUrl
+      });
+    }
+  }
+};
 var reversePattern = [];
 var onBeforeRequestReverse = d => {
   for (const rule of reversePattern) {
@@ -108,6 +117,16 @@ var onBeforeRequestReverse = d => {
     }
   }
   return onBeforeRequest(d);
+};
+var onUpdatedReverse = (tabId, changeInfo) => {
+  if (changeInfo.url && changeInfo.url.startsWith('http')) {
+    const rtn = onBeforeRequestReverse(changeInfo);
+    if (rtn && rtn.redirectUrl) {
+      chrome.tabs.update(tabId, {
+        url: rtn.redirectUrl
+      });
+    }
+  }
 };
 
 var observe = () => {
@@ -124,6 +143,7 @@ var observe = () => {
       'urls': ['*://*/*'],
       'types': ['main_frame', 'sub_frame']
     }, ['blocking']);
+    chrome.tabs.onUpdated.addListener(onUpdatedDirect);
   }
   // reverse mode
   else if (prefs.blocked.length) {
@@ -133,6 +153,7 @@ var observe = () => {
       'urls': ['*://*/*'],
       'types': ['main_frame', 'sub_frame']
     }, ['blocking']);
+    chrome.tabs.onUpdated.addListener(onUpdatedReverse);
   }
 };
 
@@ -143,7 +164,9 @@ chrome.storage.local.get(prefs, p => {
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
   chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestDirect);
+  chrome.tabs.onUpdated.removeListener(onUpdatedDirect);
   chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestReverse);
+  chrome.tabs.onUpdated.removeListener(onUpdatedReverse);
   observe();
 });
 //
