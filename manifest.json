@@ -33,6 +33,9 @@
       "38": "/data/icons/38.png"
     }
   },
+  "web_accessible_resources": [
+    "data/blocked/index.html"
+  ],
   "options_ui": {
     "chrome_style": true,
     "page": "data/options/index.html"

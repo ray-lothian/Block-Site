@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
   if (prefs.title && args.get('url')) {
     title();
   }
-  if (prefs.close) {
+  // https://github.com/ray-lothian/Block-Site/issues/6
+  if (prefs.close && window.top === window) {
     const title = document.title;
     window.setInterval(() => {
       document.title = title + ` (${prefs.close})`;
