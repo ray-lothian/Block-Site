@@ -1,5 +1,6 @@
 'use strict';
 
+var info = document.getElementById('info');
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 var prefs = {
@@ -38,10 +39,13 @@ function add(hostname) {
   const tr = node.querySelector('tr');
   tr.dataset.pattern = node.querySelector('td:nth-child(1)').textContent = wildcard(hostname);
   tr.dataset.hostname = hostname;
-  node.querySelector('td:nth-child(2) input').value = prefs.map[hostname] || '';
-  node.querySelector('td:nth-child(2) input').disabled = hostname.indexOf('*') !== -1;
+  const rd = node.querySelector('td:nth-child(2) input');
+  rd.value = prefs.map[hostname] || '';
+  rd.disabled = hostname.indexOf('*') !== -1;
   tbody.appendChild(node);
   list.dataset.visible = true;
+
+  return rd;
 }
 
 document.getElementById('add').addEventListener('submit', e => {
@@ -73,7 +77,8 @@ var init = (table = true) => chrome.storage.local.get(prefs, ps => {
 });
 init();
 
-document.addEventListener('click', ({target}) => {
+document.addEventListener('click', e => {
+  const {target} = e;
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
     const tr = target.closest('tr');
@@ -123,11 +128,54 @@ document.addEventListener('click', ({target}) => {
         return p;
       }, {})
     }, () => {
-      const info = document.getElementById('info');
       info.textContent = 'Options saved';
       window.setTimeout(() => info.textContent = '', 750);
       init(false);
     });
+  }
+  else if (cmd === 'import') {
+    const input = document.createElement('input');
+    input.style.display = 'none';
+    input.type = 'file';
+    input.accept = '.txt';
+    input.acceptCharset = 'utf-8';
+
+    document.body.appendChild(input);
+    input.initialValue = input.value;
+    input.onchange = () => {
+      if (input.value !== input.initialValue) {
+        const file = input.files[0];
+        if (file.size > 100e6) {
+          return console.warn('100MB backup? I don\'t believe you.');
+        }
+        const reader = new FileReader();
+        reader.onloadend = event => {
+          input.remove();
+          event.target.result.split('\n').map(l => l.trim()).filter(l => l && l[0] !== '#').forEach(l => {
+            const [a, b] = l.split(/\s+/);
+            const rd = add(a);
+            if (b) {
+              rd.value = b;
+            }
+          });
+        };
+        reader.readAsText(file, 'utf-8');
+      }
+    };
+    input.click();
+  }
+  else if (cmd === 'reset') {
+    if (e.detail === 1) {
+      info.textContent = 'Double-click to reset!';
+      window.setTimeout(() => info.textContent = '', 750);
+    }
+    else {
+      localStorage.clear();
+      chrome.storage.local.clear(() => {
+        chrome.runtime.reload();
+        window.close();
+      });
+    }
   }
 });
 

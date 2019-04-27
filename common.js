@@ -260,7 +260,7 @@ chrome.browserAction.onClicked.addListener(tab => {
     }
   });
 });
-
+// FAQs
 {
   const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
   const {name, version} = getManifest();

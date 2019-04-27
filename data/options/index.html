@@ -97,6 +97,7 @@
         <td>
           <form hbox align=center id="add">
             <input type="text" name="hostname" flex="1" placeholder="e.g.: www.google.com">
+            &nbsp;
             <input type="submit" value="Add">
           </form>
         </td>
@@ -137,6 +138,9 @@
       <input type="button" value="Save" data-cmd="save" disabled="true">
       <span id="info"></span>
     </p>
+    <p>
+      <input type="button" value="Import (TXT File)" data-cmd="import"><sup>8</sup>
+    </p>
     <hr/>
     <div style="font-size: 90%; color: #555;">
       1. URL of a local (file://) or remote (http:// or https://) page to be displayed when a tab access is blocked. If no URL is specified (recommended), the built-in page is displayed.
@@ -152,6 +156,21 @@
       6. To block a keyword add the following rules: <code>*://*keyword*/*</code> (blocks domains with the keyword) and <code>*://*/*keyword*</code> (blocks all domains with the keyword query)
       <br />
       7. This will cause to block all pages that match your blocking rules on the browser startup
+      <br />
+      8. Sample import file format. This file need to be a *.TXT file. After importing, you will still need to press the save button for the changes to take place. So if for any reason the imported list is not what you are looking for, simply close and reopen the options page.
+      <pre style="  background: #f5f5f5; margin: 10px; padding: 0;"><code><table>
+  <tr>
+    <td colspan="2"># Line-separated list of hostnames to be blocked. Lines start with "#" are ignored</td>
+  </tr>
+  <tr>
+    <td># hostname to be blocked</td>
+    <td>redirects to (optional)</td>
+  </tr>
+  <tr>
+    <td>www.google.com</td>
+    <td>https://www.bing.com</td>
+  </tr>
+</table></code></pre>
     </div>
     <script src="index.js"></script>
     <script async src="matched.js"></script>

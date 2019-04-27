@@ -71,7 +71,7 @@ a {
 body[data-dark=true] {
   background-color: #212121;
   background-image: url('blocked_dark.svg');
-  color: #818080;
+  color: #d0d0d0;
 }
 body[data-dark=true] #switch {
   background-image: url('button_off.svg')
@@ -79,7 +79,7 @@ body[data-dark=true] #switch {
 body[data-dark=true] input[type=text],
 body[data-dark=true] input[type=password] {
   background-color: #3c3c3c;
-  color: #818080;
+  color: #d0d0d0;
 }
 body[data-dark=true] input:focus {
   background-color: #575757;
