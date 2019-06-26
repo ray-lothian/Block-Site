@@ -1,6 +1,6 @@
 'use strict';
 
-var prefs = {
+const prefs = {
   timeout: 60, // seconds
   keywords: [],
   blocked: [],
@@ -19,13 +19,13 @@ var prefs = {
   initialBlock: true
 };
 
-var once = [];
-var ids = {};
+const once = [];
+const ids = {};
 
-var toHostname = url => {
+const toHostname = url => {
   const s = url.indexOf('//') + 2;
   if (s > 1) {
-    var o = url.indexOf('/', s);
+    let o = url.indexOf('/', s);
     if (o > 0) {
       return url.substring(s, o);
     }
@@ -37,7 +37,7 @@ var toHostname = url => {
   return url;
 };
 
-var onBeforeRequest = d => {
+const onBeforeRequest = d => {
   const hostname = toHostname(d.url);
   if (once.length) {
     const index = once.indexOf(hostname);
@@ -92,15 +92,15 @@ var onBeforeRequest = d => {
   };
 };
 
-var directPattern = [];
-var onBeforeRequestDirect = d => {
+let directPattern = [];
+const onBeforeRequestDirect = d => {
   for (const rule of directPattern) {
     if (rule.test(d.url)) {
       return onBeforeRequest(d);
     }
   }
 };
-var onUpdatedDirect = (tabId, changeInfo) => {
+const onUpdatedDirect = (tabId, changeInfo) => {
   if (changeInfo.url && changeInfo.url.startsWith('http')) {
     const rtn = onBeforeRequestDirect(changeInfo);
     if (rtn && rtn.redirectUrl) {
@@ -110,8 +110,8 @@ var onUpdatedDirect = (tabId, changeInfo) => {
     }
   }
 };
-var reversePattern = [];
-var onBeforeRequestReverse = d => {
+let reversePattern = [];
+const onBeforeRequestReverse = d => {
   for (const rule of reversePattern) {
     if (rule.test(d.url)) {
       return;
@@ -119,7 +119,7 @@ var onBeforeRequestReverse = d => {
   }
   return onBeforeRequest(d);
 };
-var onUpdatedReverse = (tabId, changeInfo) => {
+const onUpdatedReverse = (tabId, changeInfo) => {
   if (changeInfo.url && changeInfo.url.startsWith('http')) {
     const rtn = onBeforeRequestReverse(changeInfo);
     if (rtn && rtn.redirectUrl) {
@@ -130,15 +130,9 @@ var onUpdatedReverse = (tabId, changeInfo) => {
   }
 };
 
-var observe = () => {
-  const wildcard = h => {
-    if (h.indexOf('://') === -1) {
-      return `*://${h}/*`;
-    }
-    return h;
-  };
+const observe = () => {
   if (prefs.blocked.length && prefs.reverse === false) {
-    directPattern = prefs.blocked.map(wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
+    observe.build.direct();
 
     chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestDirect, {
       'urls': ['*://*/*'],
@@ -150,12 +144,11 @@ var observe = () => {
       chrome.tabs.query({
         url: '*://*/*'
       }, tabs => tabs.forEach(tab => onUpdatedDirect(tab.id, tab)));
-
     }
   }
   // reverse mode
-  else if (prefs.blocked.length) {
-    reversePattern = prefs.blocked.map(wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
+  else if (prefs.reverse) {
+    observe.build.reverse();
 
     chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestReverse, {
       'urls': ['*://*/*'],
@@ -168,6 +161,20 @@ var observe = () => {
         url: '*://*/*'
       }, tabs => tabs.forEach(tab => onUpdatedReverse(tab.id, tab)));
     }
+  }
+};
+observe.wildcard = h => {
+  if (h.indexOf('://') === -1) {
+    return `*://${h}/*`;
+  }
+  return h;
+};
+observe.build = {
+  direct() {
+    directPattern = prefs.blocked.map(observe.wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
+  },
+  reverse() {
+    reversePattern = prefs.blocked.map(observe.wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
   }
 };
 
@@ -184,34 +191,34 @@ chrome.storage.onChanged.addListener(ps => {
   observe();
 });
 //
-var notify = message => chrome.notifications.create(null, {
+const notify = message => chrome.notifications.create(null, {
   type: 'basic',
   iconUrl: '/data/icons/48.png',
   title: 'Block Site',
-  message
+  message: chrome.i18n.getMessage(message) || message
 });
 
-var retries = {
+const retries = {
   id: null,
   count: 0
 };
 
-chrome.runtime.onMessage.addListener((request, sender, response) => {
+const onMessage = (request, sender, response) => {
   const wrong = () => {
     retries.count += 1;
     window.clearTimeout(retries.id);
     retries.id = window.setTimeout(() => {
       retries.count = 0;
     }, prefs.wrong * 60 * 1000);
-    notify('Wrong password! Please retry!');
+    notify('bg_msg_2');
   };
 
   if (request.method === 'open-once') {
     if (prefs.password === '') {
-      notify('Master password is not set! Go to the options page a set a master password');
+      notify('bg_msg_3');
     }
     else if (retries.count >= 5) {
-      notify(`Too many wrong passwords. Please wait for ${prefs.wrong} minute(s) and retry.`);
+      notify(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
     }
     else if (request.password === prefs.password) {
       const {url} = request;
@@ -224,7 +231,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   }
   else if (request.method === 'check-password') {
     if (retries.count >= 5) {
-      notify(`Too many wrong passwords. Please wait for ${prefs.wrong} minute(s) and retry.`);
+      notify(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
       response(false);
     }
     else if (request.password === prefs.password) {
@@ -241,22 +248,56 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   else if (request.method === 'close-tab') {
     chrome.tabs.remove(sender.tab.id);
   }
-});
+  else if (request.method === 'append-to-list') {
+    const blocked = [...prefs.blocked, ...request.hostnames].filter((s, i, l) => l.indexOf(s) === i);
+    chrome.storage.local.set({
+      blocked
+    }, response);
+    return true;
+  }
+  else if (request.method === 'remove-from-list') {
+    const ids = [];
+    (request.mode === 'reverse' ? reversePattern : directPattern).forEach((rule, index) => {
+      if (rule.test(request.href)) {
+        ids.push(index);
+      }
+    });
+    const blocked = prefs.blocked.filter((a, i) => ids.indexOf(i) === -1);
+    chrome.storage.local.set({
+      blocked
+    }, response);
+    return true;
+  }
+};
+chrome.runtime.onMessage.addListener(onMessage);
 
 chrome.browserAction.onClicked.addListener(tab => {
+  if (tab.url.startsWith('http') === false) {
+    return notify('bg_msg_1');
+  }
   const hostname = toHostname(tab.url);
+  const msg = prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`;
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
-    'code': `window.confirm('Add "${hostname}" to the blocked list?')`
+    'code': `window.confirm('${msg}')`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);
     }
     if (r && r.length && r[0] === true) {
-      const blocked = [...prefs.blocked, hostname].filter((s, i, l) => l.indexOf(s) === i);
-      chrome.storage.local.set({
-        blocked
-      }, () => chrome.tabs.reload(tab.id));
+      if (prefs.reverse) {
+        onMessage({
+          method: 'remove-from-list',
+          href: tab.url,
+          mode: 'reverse'
+        }, null, () => chrome.tabs.reload(tab.id));
+      }
+      else {
+        onMessage({
+          method: 'append-to-list',
+          hostnames: [hostname]
+        }, null, () => chrome.tabs.reload(tab.id));
+      }
     }
   });
 });

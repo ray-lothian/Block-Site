@@ -111,12 +111,33 @@
     "message": "Title"
   },
   "blocked_since": {
-    "message": "Blocked since"
+    "message": "Blocked Since"
   },
   "blocked_master_password": {
     "message": "Enter the master password to unblock:"
   },
   "blocked_options": {
-    "message": "Open options page"
+    "message": "Options Page"
+  },
+  "blocked_remove_blocking": {
+    "message": "Remove Blocking"
+  },
+  "blocked_add_to_whitelist": {
+    "message": "Add to Whitelist"
+  },
+  "blocked_no_action": {
+    "message": "Master password is not correct. Fill the box and retry"
+  },
+  "bg_msg_1": {
+    "message": "This tab doesn't have a valid URL"
+  },
+  "bg_msg_2": {
+    "message": "Wrong password! Please retry!"
+  },
+  "bg_msg_3": {
+    "message": "Go to the options page and set a master password"
+  },
+  "bg_msg_4": {
+    "message": "Too many wrong passwords. Please wait for ## minute(s) and retry."
   }
 }

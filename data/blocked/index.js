@@ -1,8 +1,8 @@
+/* globals tldjs */
 'use strict';
 
 // localization
 [...document.querySelectorAll('[data-i18n]')].forEach(e => {
-  console.log(e);
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
 });
 
@@ -10,8 +10,14 @@ const args = new URLSearchParams(location.search);
 
 document.getElementById('date').textContent = (new Date()).toLocaleString();
 if (args.get('url')) {
-  const url = document.getElementById('url');
-  url.textContent = url.href = args.get('url');
+  const o = new URL(args.get('url'));
+  o.domain = tldjs.getDomain(o.host);
+
+  document.getElementById('url').href = o.href;
+  document.getElementById('sub-domain').textContent = o.hostname.replace(o.domain, '');
+  document.getElementById('domain').textContent = o.domain;
+  document.getElementById('pathname').textContent = o.pathname;
+  document.getElementById('search').textContent = o.search;
 }
 
 document.addEventListener('submit', e => {
@@ -46,7 +52,9 @@ const title = () => fetch(args.get('url')).then(r => r.text()).then(content => {
 document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
   title: true,
   close: 0,
-  message: ''
+  message: '',
+  password: '',
+  reverse: false
 }, prefs => {
   document.getElementById('message').textContent = prefs.message;
   if (prefs.title && args.get('url')) {
@@ -65,4 +73,33 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
       }
     }, 1000);
   }
+  //
+  document.getElementById('exception').textContent = chrome.i18n.getMessage(
+    prefs.reverse ? 'blocked_add_to_whitelist' : 'blocked_remove_blocking'
+  );
+  document.getElementById('exception').addEventListener('click', e => {
+    e.stopPropagation();
+    const password = document.querySelector('[type=password]');
+    if (prefs.password && prefs.password !== password.value) {
+      alert(chrome.i18n.getMessage('blocked_no_action'));
+      return password.focus();
+    }
+    if (prefs.reverse === false) {
+      const url = document.getElementById('url');
+      chrome.runtime.sendMessage({
+        method: 'remove-from-list',
+        href: url.href
+      }, () => url.click());
+    }
+    else {
+      const hostnames = [document.getElementById('domain').textContent];
+      if (document.getElementById('sub-domain').textContent) {
+        hostnames.push('*.' + document.getElementById('domain').textContent);
+      }
+      chrome.runtime.sendMessage({
+        method: 'append-to-list',
+        hostnames
+      }, () => document.getElementById('url').click());
+    }
+  });
 }));

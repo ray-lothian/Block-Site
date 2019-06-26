@@ -53,7 +53,19 @@ input:focus {
 }
 a {
   text-decoration: none;
-  color: #8c9ca9;
+  color: #006cc3;
+}
+body[data-dark=true] a {
+  color: #90bbde;
+}
+
+#domain {
+  font-size: 150%;
+}
+#sub-domain,
+#pathname,
+#search {
+  opacity: 0.5;
 }
 #switch {
   position: absolute;
