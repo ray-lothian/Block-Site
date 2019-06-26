@@ -3,11 +3,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="index.css">
-    <title>Restricted Access</title>
+    <title data-i18n="blocked_restricted"></title>
   </head>
   <body>
     <header vbox>
-      <h1 flex="1">Restricted Access</h1>
+      <h1 flex="1" data-i18n="blocked_restricted"></h1>
       <table width="100%">
         <colgroup>
           <col width="100px">
@@ -15,7 +15,7 @@
         </colgroup>
         <tbody>
           <tr>
-            <td>Title</td>
+            <td data-i18n="blocked_title"></td>
             <td id="title">...</td>
           </tr>
           <tr>
@@ -23,7 +23,7 @@
             <td><a id="url" href="">...</a></td>
           </tr>
           <tr>
-            <td>Blocked since</td>
+            <td data-i18n="blocked_since"></td>
             <td id="date">...</td>
           </tr>
         </tbody>
@@ -32,11 +32,11 @@
     <p id="message"></p>
     <div flex="1"></div>
     <footer hbox align=center>
-      Enter the master password to unblock:
+      <span data-i18n="blocked_master_password"></span>
       <form flex="1" hbox>
         <input type="password" autofocus="true" required="true">
       </form>
-      <a href="#" id="options">Open options page</a>
+      <a href="#" id="options" data-i18n="blocked_options"></a>
     </footer>
     <input type="button" id="switch">
     <script src="index.js"></script>

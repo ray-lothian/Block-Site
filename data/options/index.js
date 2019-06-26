@@ -1,9 +1,15 @@
 'use strict';
 
-var info = document.getElementById('info');
-var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// localization
+[...document.querySelectorAll('[data-i18n]')].forEach(e => {
+  console.log(e);
+  e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
+});
 
-var prefs = {
+const info = document.getElementById('info');
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const prefs = {
   timeout: 60, // seconds
   close: 0, // seconds
   message: '',
@@ -24,9 +30,9 @@ var prefs = {
   initialBlock: true
 };
 
-var list = document.getElementById('list');
-var tbody = document.querySelector('#list tbody');
-var wildcard = h => {
+const list = document.getElementById('list');
+const tbody = document.querySelector('#list tbody');
+const wildcard = h => {
   if (h.indexOf('://') === -1) {
     return `*://${h}/*`;
   }
@@ -42,6 +48,7 @@ function add(hostname) {
   const rd = node.querySelector('td:nth-child(2) input');
   rd.value = prefs.map[hostname] || '';
   rd.disabled = hostname.indexOf('*') !== -1;
+  node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
   tbody.appendChild(node);
   list.dataset.visible = true;
 
@@ -56,7 +63,7 @@ document.getElementById('add').addEventListener('submit', e => {
   }
 });
 
-var init = (table = true) => chrome.storage.local.get(prefs, ps => {
+const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
   if (table) {
     prefs.blocked.forEach(add);
@@ -73,7 +80,9 @@ var init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
   document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
   document.querySelector('[data-cmd=unlock]').disabled = prefs.password === '';
-  document.querySelector('[data-cmd=save]').disabled = prefs.password !== '';
+  document.querySelector('[data-cmd="save"]').disabled = prefs.password !== '';
+  document.querySelector('[data-cmd="export"]').disabled = prefs.password !== '';
+  document.querySelector('[data-cmd="import-json"]').disabled = prefs.password !== '';
 });
 init();
 
@@ -90,8 +99,10 @@ document.addEventListener('click', e => {
       method: 'check-password',
       password
     }, resp => {
-      document.querySelector('[data-cmd=unlock]').disabled = resp;
-      document.querySelector('[data-cmd=save]').disabled = !resp;
+      document.querySelector('[data-cmd="unlock"]').disabled = resp;
+      document.querySelector('[data-cmd="save"]').disabled = !resp;
+      document.querySelector('[data-cmd="export"]').disabled = !resp;
+      document.querySelector('[data-cmd="import-json"]').disabled = !resp;
     });
   }
   else if (cmd === 'save') {
@@ -133,7 +144,7 @@ document.addEventListener('click', e => {
       init(false);
     });
   }
-  else if (cmd === 'import') {
+  else if (cmd === 'import-txt') {
     const input = document.createElement('input');
     input.style.display = 'none';
     input.type = 'file';
@@ -158,6 +169,50 @@ document.addEventListener('click', e => {
               rd.value = b;
             }
           });
+        };
+        reader.readAsText(file, 'utf-8');
+      }
+    };
+    input.click();
+  }
+  else if (cmd === 'export') {
+    chrome.storage.local.get(null, prefs => {
+      const blob = new Blob([
+        JSON.stringify(prefs, null, '\t')
+      ], {type: 'application/json'});
+      const href = URL.createObjectURL(blob);
+      Object.assign(document.createElement('a'), {
+        href,
+        type: 'application/json',
+        download: 'block-site-preferences.json'
+      }).dispatchEvent(new MouseEvent('click'));
+      setTimeout(() => URL.revokeObjectURL(href));
+    });
+  }
+  else if (cmd == 'import-json') {
+    const input = document.createElement('input');
+    input.style.display = 'none';
+    input.type = 'file';
+    input.accept = '.json';
+    input.acceptCharset = 'utf-8';
+
+    document.body.appendChild(input);
+    input.initialValue = input.value;
+    input.onchange = () => {
+      if (input.value !== input.initialValue) {
+        const file = input.files[0];
+        if (file.size > 100e6) {
+          console.warn('100MB backup? I don\'t believe you.');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = event => {
+          input.remove();
+          const json = JSON.parse(event.target.result);
+          chrome.storage.local.clear(() => chrome.storage.local.set(json, () => {
+            chrome.runtime.reload();
+            window.close();
+          }));
         };
         reader.readAsText(file, 'utf-8');
       }

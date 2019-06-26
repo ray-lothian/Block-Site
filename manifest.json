@@ -5,7 +5,8 @@
   "background": {
     "scripts": ["common.js"]
   },
-  "description": "A customizable password protected website blocker and redirector",
+  "description": "__MSG_app_description__",
+  "default_locale": "en",
   "permissions": [
     "tabs",
     "storage",

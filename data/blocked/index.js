@@ -1,6 +1,12 @@
 'use strict';
 
-var args = new URLSearchParams(location.search);
+// localization
+[...document.querySelectorAll('[data-i18n]')].forEach(e => {
+  console.log(e);
+  e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
+});
+
+const args = new URLSearchParams(location.search);
 
 document.getElementById('date').textContent = (new Date()).toLocaleString();
 if (args.get('url')) {
@@ -30,7 +36,7 @@ document.getElementById('options').addEventListener('click', e => {
   });
 });
 
-var title = () => fetch(args.get('url')).then(r => r.text()).then(content => {
+const title = () => fetch(args.get('url')).then(r => r.text()).then(content => {
   const dom = new DOMParser().parseFromString(content, 'text/html');
   if (dom.title) {
     document.getElementById('title').textContent = dom.title;
