@@ -90,7 +90,7 @@
     "message": "If enabled, only URLs with a matching pattern can be browsed; all other hostnames are getting blocked"
   },
   "options_sup_6": {
-    "message": "To block a keyword add the following rules: *://*keyword*/* (blocks domains with the keyword) and *://*/*keyword* (blocks all domains with the keyword query)"
+    "message": "To block a keyword add the following rules: '*://*keyword*/*' (blocks domains with the keyword) and '*://*/*keyword*' (blocks all domains with the keyword query). If you are familiar with regular expressions, you can prepare your own rules by prepending 'R:' keyword to the rule. For instance to block www.google.com on both HTTP and HTTPS protocols, use a rule like 'R:ht{2}ps*:\/\/.*\\.go{2}gle\\.com'"
   },
   "options_sup_7": {
     "message": "This will cause to block all pages that match your blocking rules on the browser startup"

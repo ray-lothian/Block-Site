@@ -164,17 +164,23 @@ const observe = () => {
   }
 };
 observe.wildcard = h => {
-  if (h.indexOf('://') === -1) {
+  if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
     return `*://${h}/*`;
   }
   return h;
 };
+observe.regexp = rule => {
+  if (rule.startsWith('R:')) {
+    return new RegExp(rule.substr(2));
+  }
+  return new RegExp('^' + rule.split('*').join('.*') + '$');
+};
 observe.build = {
   direct() {
-    directPattern = prefs.blocked.map(observe.wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
+    directPattern = prefs.blocked.map(observe.wildcard).map(observe.regexp);
   },
   reverse() {
-    reversePattern = prefs.blocked.map(observe.wildcard).map(rule => new RegExp('^' + rule.split('*').join('.*') + '$'));
+    reversePattern = prefs.blocked.map(observe.wildcard).map(observe.regexp);
   }
 };
 
@@ -279,7 +285,7 @@ chrome.browserAction.onClicked.addListener(tab => {
   const msg = prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`;
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
-    'code': `window.confirm('${msg}')`
+    'code': `window.stop(); window.confirm('${msg}')`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);

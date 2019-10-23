@@ -1,4 +1,4 @@
-/* globals tldjs */
+/* globals tld */
 'use strict';
 
 // localization
@@ -11,7 +11,7 @@ const args = new URLSearchParams(location.search);
 document.getElementById('date').textContent = (new Date()).toLocaleString();
 if (args.get('url')) {
   const o = new URL(args.get('url'));
-  o.domain = tldjs.getDomain(o.host);
+  o.domain = tld.getDomain(o.host);
 
   document.getElementById('url').href = o.href;
   document.getElementById('sub-domain').textContent = o.hostname.replace(o.domain, '');

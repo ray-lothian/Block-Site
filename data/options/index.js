@@ -2,7 +2,6 @@
 
 // localization
 [...document.querySelectorAll('[data-i18n]')].forEach(e => {
-  console.log(e);
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
 });
 
@@ -33,7 +32,7 @@ const prefs = {
 const list = document.getElementById('list');
 const tbody = document.querySelector('#list tbody');
 const wildcard = h => {
-  if (h.indexOf('://') === -1) {
+  if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
     return `*://${h}/*`;
   }
   return h;
