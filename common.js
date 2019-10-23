@@ -22,6 +22,8 @@ const prefs = {
 const once = [];
 const ids = {};
 
+let paused = false;
+
 const toHostname = url => {
   const s = url.indexOf('//') + 2;
   if (s > 1) {
@@ -50,6 +52,10 @@ const onBeforeRequest = d => {
       }
       return;
     }
+  }
+  // pause blocking
+  if (paused) {
+    return;
   }
   // schedule
   const {days, time} = prefs.schedule;
@@ -307,6 +313,100 @@ chrome.browserAction.onClicked.addListener(tab => {
     }
   });
 });
+// context menus
+{
+  const update = () => {
+    const root = chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_5'),
+      contexts: ['browser_action']
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_7'),
+      id: 'pause-10',
+      contexts: ['browser_action'],
+      parentId: root
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_8'),
+      id: 'pause-30',
+      contexts: ['browser_action'],
+      parentId: root
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_9'),
+      id: 'pause-60',
+      contexts: ['browser_action'],
+      parentId: root
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_10'),
+      id: 'pause-360',
+      contexts: ['browser_action'],
+      parentId: root
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_11'),
+      id: 'pause-1440',
+      contexts: ['browser_action'],
+      parentId: root
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_6'),
+      id: 'resume',
+      contexts: ['browser_action']
+    });
+  };
+  chrome.runtime.onInstalled.addListener(update);
+  chrome.runtime.onStartup.addListener(update);
+}
+chrome.contextMenus.onClicked.addListener(info => {
+  if (info.menuItemId === 'resume') {
+    paused = false;
+    chrome.alarms.clear('paused');
+  }
+  else {
+    const next = () => {
+      paused = true;
+      const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
+      chrome.alarms.create('paused', {
+        when
+      });
+    };
+    if (prefs.password) {
+      if (/Firefox/.test(navigator.userAgent)) {
+        chrome.tabs.executeScript({
+          code: `window.prompt("${chrome.i18n.getMessage('bg_msg_12')}")`
+        }, arr => {
+          const lastError = chrome.runtime.lastError;
+          if (lastError) {
+            return notify(lastError.message);
+          }
+          if (arr[0] === prefs.password) {
+            next();
+          }
+          else {
+            notify('bg_msg_2');
+          }
+        });
+      }
+      else if (window.prompt(chrome.i18n.getMessage('bg_msg_12')) === prefs.password) {
+        next();
+      }
+      else {
+        notify('bg_msg_2');
+      }
+    }
+    else {
+      next();
+    }
+  }
+});
+chrome.alarms.onAlarm.addListener(alarm => {
+  if (alarm.name === 'paused') {
+    paused = false;
+  }
+});
+
 // FAQs
 {
   const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;

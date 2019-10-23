@@ -139,5 +139,29 @@
   },
   "bg_msg_4": {
     "message": "Too many wrong passwords. Please wait for ## minute(s) and retry."
+  },
+  "bg_msg_5": {
+    "message": "Pause Blocking"
+  },
+  "bg_msg_6": {
+    "message": "Resume Blocking"
+  },
+  "bg_msg_7": {
+    "message": "10 minutes"
+  },
+  "bg_msg_8": {
+    "message": "30 minutes"
+  },
+  "bg_msg_9": {
+    "message": "1 hour"
+  },
+  "bg_msg_10": {
+    "message": "6 hours"
+  },
+  "bg_msg_11": {
+    "message": "1 day"
+  },
+  "bg_msg_12": {
+    "message": "Please enter the master password to pause blocking"
   }
 }

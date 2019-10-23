@@ -13,7 +13,9 @@
     "<all_urls>",
     "webRequest",
     "notifications",
-    "webRequestBlocking"
+    "webRequestBlocking",
+    "alarms",
+    "contextMenus"
   ],
   "icons": {
     "16": "data/icons/16.png",
@@ -40,11 +42,5 @@
   "options_ui": {
     "chrome_style": true,
     "page": "data/options/index.html"
-  },
-  "applications": {
-    "gecko": {
-      "id": "{54e2eb33-18eb-46ad-a4e4-1329c29f6e17}",
-      "strict_min_version": "57.0"
-    }
   }
 }
