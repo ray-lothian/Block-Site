@@ -85,6 +85,12 @@ const onBeforeRequest = d => {
   }
   // redirect
   if (prefs.map[hostname]) {
+    if (prefs.map[hostname] === 'close') {
+      chrome.tabs.remove(d.tabId);
+      return {
+        'redirectUrl': ''
+      };
+    }
     const search = (new URL(d.url)).search;
     return {
       'redirectUrl': prefs.map[hostname] + (search || '')
