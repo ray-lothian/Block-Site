@@ -72,6 +72,10 @@
         <td>
           <form id=schedule>
             <table width="100%">
+              <colgroup>
+                <col width="90">
+                <col>
+              </colgroup>
               <tr>
                 <td data-i18n="options_times"></td>
                 <td>
@@ -82,6 +86,15 @@
                 <td data-i18n="options_days"></td>
                 <td>
                   <div hbox align=center><input type="text" name="days" flex="1" placeholder="days: Sun, Mon, Tue, Wed, Thu, Fri, Sat"></div>
+                </td>
+              </tr>
+              <tr>
+                <td><span data-i18n="options_hostname"></span><sup>11</sup></td>
+                <td>
+                  <div hbox align=center>
+                    <input type="text" list="rules" name="hostname" flex="1" placeholder="Regular Expression to Limit">
+                    <datalist id="rules"></datalist>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -171,6 +184,7 @@
       </li>
       <li data-i18n="options_sup_9"></li>
       <li data-i18n="options_sup_10"></li>
+      <li data-i18n="options_sup_11"></li>
     </ol>
     <script src="index.js"></script>
     <script async src="matched.js"></script>

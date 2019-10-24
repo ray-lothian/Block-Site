@@ -26,6 +26,7 @@ const prefs = {
     },
     days
   },
+  schedules: {},
   initialBlock: true
 };
 
@@ -78,12 +79,28 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.querySelector('#schedule [name=start]').value = prefs.schedule.time.start;
   document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
   document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
+  document.querySelector('#schedule [name=hostname]').value = '';
   document.querySelector('[data-cmd=unlock]').disabled = prefs.password === '';
   document.querySelector('[data-cmd="save"]').disabled = prefs.password !== '';
   document.querySelector('[data-cmd="export"]').disabled = prefs.password !== '';
   document.querySelector('[data-cmd="import-json"]').disabled = prefs.password !== '';
+  document.getElementById('rules').textContent = '';
+  for (const rule of Object.keys(prefs.schedules)) {
+    const option = document.createElement('option');
+    option.value = rule;
+    document.getElementById('rules').appendChild(option);
+  }
 });
 init();
+
+document.querySelector('#schedule [name="hostname"]').addEventListener('input', e => {
+  const schedule = prefs.schedules[e.target.value];
+  if (schedule) {
+    document.querySelector('#schedule [name=start]').value = schedule.time.start;
+    document.querySelector('#schedule [name=end]').value = schedule.time.end;
+    document.querySelector('#schedule [name=days]').value = schedule.days.join(', ');
+  }
+});
 
 document.addEventListener('click', e => {
   const {target} = e;
@@ -102,9 +119,33 @@ document.addEventListener('click', e => {
       document.querySelector('[data-cmd="save"]').disabled = !resp;
       document.querySelector('[data-cmd="export"]').disabled = !resp;
       document.querySelector('[data-cmd="import-json"]').disabled = !resp;
+      if (!resp) {
+        document.getElementById('password').focus();
+      }
     });
   }
   else if (cmd === 'save') {
+    let schedule = {
+      time: {
+        start: document.querySelector('#schedule [name=start]').value,
+        end: document.querySelector('#schedule [name=end]').value
+      },
+      days: document.querySelector('#schedule [name=days]').value.split(/\s*,\s*/)
+        .map(s => {
+          return days.filter(d => s.trim().toLowerCase().startsWith(d.toLowerCase())).shift();
+        }).filter((s, i, l) => s && l.indexOf(s) === i)
+    };
+    const rule = document.querySelector('#schedule [name="hostname"]');
+    if (rule.value) {
+      if (schedule.days.length && schedule.time.start && schedule.time.end) {
+        prefs.schedules[rule.value] = schedule;
+      }
+      else {
+        delete prefs.schedules[rule.value];
+      }
+      schedule = prefs.schedule;
+    }
+
     const password = document.getElementById('password').value;
     chrome.storage.local.set({
       password,
@@ -116,16 +157,8 @@ document.addEventListener('click', e => {
       timeout: Math.max(Number(document.getElementById('timeout').value), 1),
       close: Math.max(Number(document.getElementById('close').value), 0),
       wrong: Math.max(Number(document.getElementById('wrong').value), 1),
-      schedule: {
-        time: {
-          start: document.querySelector('#schedule [name=start]').value,
-          end: document.querySelector('#schedule [name=end]').value
-        },
-        days: document.querySelector('#schedule [name=days]').value.split(/\s*,\s*/)
-          .map(s => {
-            return days.filter(d => s.trim().toLowerCase().startsWith(d.toLowerCase())).shift();
-          }).filter((s, i, l) => s && l.indexOf(s) === i)
-      },
+      schedule,
+      schedules: prefs.schedules,
       blocked: [...document.querySelectorAll('#list tbody tr')]
         .map(tr => tr.dataset.hostname)
         .filter((s, i, l) => s && l.indexOf(s) === i),

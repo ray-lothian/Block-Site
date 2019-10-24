@@ -16,6 +16,7 @@ const prefs = {
       end: ''
     }
   },
+  schedules: {},
   initialBlock: true
 };
 
@@ -39,6 +40,50 @@ const toHostname = url => {
   return url;
 };
 
+const schedule = {
+  test(d) {
+    let {days, time} = prefs.schedule;
+    // per rule schedule
+    for (const rule of schedule.rules) {
+      if (rule.test(d.url)) {
+        const index = schedule.rules.indexOf(rule);
+        const o = Object.values(prefs.schedules)[index];
+        days = o.days;
+        time = o.time;
+        break;
+      }
+    }
+    if (days.length && time.start && time.end) {
+      const d = new Date();
+      const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+      if (days.indexOf(day) === -1) {
+        return;
+      }
+      const now = d.getHours() * 60 + d.getMinutes();
+      const [ss, se] = time.start.split(':');
+      const start = Number(ss) * 60 + Number(se);
+      const [es, ee] = time.end.split(':');
+
+      const end = Number(es) * 60 + Number(ee);
+
+      if (start < end) {
+        if (now < start || now > end) {
+          return true;
+        }
+      }
+      else {
+        if (now > end && now < start) {
+          return true;
+        }
+      }
+    }
+  },
+  build() {
+    schedule.rules = Object.keys(prefs.schedules).map(r => new RegExp(r));
+  }
+};
+schedule.rules = [];
+
 const onBeforeRequest = d => {
   const hostname = toHostname(d.url);
   if (once.length) {
@@ -58,37 +103,15 @@ const onBeforeRequest = d => {
     return;
   }
   // schedule
-  const {days, time} = prefs.schedule;
-  if (days.length && time.start && time.end) {
-    const d = new Date();
-    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
-    if (days.indexOf(day) === -1) {
-      return;
-    }
-    const now = d.getHours() * 60 + d.getMinutes();
-    const [ss, se] = time.start.split(':');
-    const start = Number(ss) * 60 + Number(se);
-    const [es, ee] = time.end.split(':');
-
-    const end = Number(es) * 60 + Number(ee);
-
-    if (start < end) {
-      if (now < start || now > end) {
-        return;
-      }
-    }
-    else {
-      if (now > end && now < start) {
-        return;
-      }
-    }
+  if (schedule.test(d)) {
+    return;
   }
   // redirect
   if (prefs.map[hostname]) {
     if (prefs.map[hostname] === 'close') {
       chrome.tabs.remove(d.tabId);
       return {
-        'redirectUrl': ''
+        'redirectUrl': 'JavaScript:window.close()'
       };
     }
     const search = (new URL(d.url)).search;
@@ -198,6 +221,7 @@ observe.build = {
 
 chrome.storage.local.get(prefs, p => {
   Object.assign(prefs, p);
+  schedule.build();
   observe();
 });
 chrome.storage.onChanged.addListener(ps => {
@@ -207,6 +231,10 @@ chrome.storage.onChanged.addListener(ps => {
   chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestReverse);
   chrome.tabs.onUpdated.removeListener(onUpdatedReverse);
   observe();
+
+  if (ps.schedules) {
+    schedule.build();
+  }
 });
 //
 const notify = message => chrome.notifications.create(null, {

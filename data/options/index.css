@@ -1,9 +1,9 @@
 body {
   min-width: 500px;
 }
-input[type=password],
-input[type=number],
-input[type=text] {
+
+body > table > tbody > tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 input[type=button],
 input[type=submit] {

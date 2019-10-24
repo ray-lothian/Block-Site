@@ -38,6 +38,9 @@
   "options_days": {
     "message": "Days:"
   },
+  "options_hostname": {
+    "message": "Hostname:"
+  },
   "options_reverse": {
     "message": "Reverse mode"
   },
@@ -103,6 +106,9 @@
   },
   "options_sup_10": {
     "message": "When importing settings, all your existing settings will be overwritten."
+  },
+  "options_sup_11": {
+    "message": "You can limit the schedule to be applied only on a few hostnames by providing a matching rule. This rule is a regular expression that is checked per URL. The schedule only applies if the URL matches the rule. Note that to edit schedules with rules, enter the rule in this box so that the extension loads the rule for you. To delete a schedule with a rule, insert the rule here so that the extension loads the relevant schedule first, then delete the time section without removing the rule itself and press the save button. Alternatively, export all settings to a JSON file and modify the list with a text editor then import the list back."
   },
   "blocked_restricted": {
     "message": "Restricted Access"
