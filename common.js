@@ -57,7 +57,7 @@ const schedule = {
       const d = new Date();
       const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
       if (days.indexOf(day) === -1) {
-        return;
+        return false;
       }
       const now = d.getHours() * 60 + d.getMinutes();
       const [ss, se] = time.start.split(':');
@@ -68,15 +68,18 @@ const schedule = {
 
       if (start < end) {
         if (now < start || now > end) {
-          return true;
+          return false; // range mismatch, do not block
         }
       }
       else {
         if (now > end && now < start) {
-          return true;
+          return false; // range mismatch, do not block
         }
       }
+      return true; // act like schedule is disabled
     }
+    // schedule is disabled -> ignore
+    return true;
   },
   build() {
     schedule.rules = Object.keys(prefs.schedules).map(r => new RegExp(r));
@@ -103,7 +106,7 @@ const onBeforeRequest = d => {
     return;
   }
   // schedule
-  if (schedule.test(d)) {
+  if (schedule.test(d) === false) {
     return;
   }
   // redirect

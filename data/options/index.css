@@ -1,5 +1,7 @@
 body {
   min-width: 500px;
+  font-size: 13px;
+  font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
 }
 
 body > table > tbody > tr:nth-child(even) {
