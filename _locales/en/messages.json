@@ -3,16 +3,16 @@
     "message": "A customizable password protected website blocker and redirector"
   },
   "options_master_password": {
-    "message": "Master password:"
+    "message": "Master password"
   },
   "options_master_password_comment": {
     "message": "Enter a master password to protect editing"
   },
   "options_redirect": {
-    "message": "Redirect to:"
+    "message": "Redirect to"
   },
   "options_user_message": {
-    "message": "User message:"
+    "message": "User message"
   },
   "options_resolve": {
     "message": "Resolve title of blocked tabs"
@@ -30,22 +30,22 @@
     "message": "Close blocked tab after (in seconds)"
   },
   "options_block_between": {
-    "message": "Only block sites between:"
+    "message": "Only block sites between"
   },
   "options_times": {
-    "message": "Time:"
+    "message": "Time"
   },
   "options_days": {
-    "message": "Days:"
+    "message": "Days"
   },
   "options_hostname": {
-    "message": "Hostname:"
+    "message": "Hostname"
   },
   "options_reverse": {
     "message": "Reverse mode"
   },
   "options_new_hostname": {
-    "message": "Block a new hostname:"
+    "message": "Block a new hostname"
   },
   "options_add": {
     "message": "Add"
@@ -120,7 +120,7 @@
     "message": "Blocked Since"
   },
   "blocked_master_password": {
-    "message": "Enter the master password to unblock:"
+    "message": "Enter the master password to unblock"
   },
   "blocked_options": {
     "message": "Options Page"
