@@ -4,188 +4,165 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Block Site :: Options page</title>
     <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <table width="100%">
-      <colgroup>
-        <col width="200px">
-        <col>
-      </colgroup>
-      <tr>
-        <td data-i18n="options_master_password"></td>
-        <td>
-          <div hbox>
-            <input type="password" id="password" flex=1 data-i18n="options_master_password_comment" data-i18n-value="placeholder">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><span data-i18n="options_redirect"></span><sup>1</sup></td>
-        <td>
-          <div hbox>
-            <input type="text" id="redirect" flex=1 placeholder="http://...">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><span data-i18n="options_user_message"></span><sup>2</sup></td>
-        <td>
-          <div hbox="">
-            <textarea id="message" rows="3" flex="1"></textarea>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><label for="title"><span data-i18n="options_resolve"></span><sup>3</sup></label></td>
-        <td><input type="checkbox" id="title"></td>
-      </tr>
-      <tr>
-        <td><label for="initialBlock"><span data-i18n="options_startup"></span><sup>7</sup></label></td>
-        <td><input type="checkbox" id="initialBlock"></td>
-      </tr>
-      <tr>
-        <td data-i18n="options_allow_access"></td>
-        <td>
-          <div hbox>
-            <input type="number" min="1" id="timeout" required flex="1">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td data-i18n="options_block_period"></td>
-        <td>
-          <div hbox>
-            <input type="number" min="1" id="wrong" required flex="1">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><span data-i18n="options_close_blocked"></span><sup>4</sup></td>
-        <td>
-          <div hbox>
-            <input type="number" min="0" id="close" required flex="1">
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td data-i18n="options_block_between"></td>
-        <td>
-          <form id=schedule>
-            <table width="100%">
-              <colgroup>
-                <col width="90">
-                <col>
-              </colgroup>
-              <tr>
-                <td data-i18n="options_times"></td>
-                <td>
-                  <div hbox align=center>From&nbsp;<input type="time" name="start" flex="1">&nbsp;to&nbsp;<input type="time" name="end" flex="1"></div>
-                </td>
-              </tr>
-              <tr>
-                <td data-i18n="options_days"></td>
-                <td>
-                  <div hbox align=center><input type="text" name="days" flex="1" placeholder="days: Sun, Mon, Tue, Wed, Thu, Fri, Sat"></div>
-                </td>
-              </tr>
-              <tr>
-                <td><span data-i18n="options_hostname"></span><sup>11</sup></td>
-                <td>
-                  <div hbox align=center>
-                    <input type="text" list="rules" name="hostname" flex="1" placeholder="Regular Expression to Limit">
-                    <datalist id="rules"></datalist>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </form>
-        </td>
-      </tr>
-      <tr>
-        <td><label for="reverse"><span data-i18n="options_reverse"></span><sup>5</sup></label></td>
-        <td><input type="checkbox" id="reverse"></td>
-      </tr>
-      <tr>
-        <td><span data-i18n="options_new_hostname"></span><sup>6</sup></td>
-        <td>
-          <form hbox align=center id="add">
-            <input type="text" name="hostname" flex="1" placeholder="e.g.: www.google.com">
-            &nbsp;
-            <input type="submit" data-i18n-value="value" data-i18n="options_add">
-          </form>
-        </td>
-      </tr>
-    </table>
+    <!-- block -->
+    <div class="header">
+      <h1 data-i18n="options_block_header" style="margin-top: 0;"></h1>
+      <details>
+        <summary data-i18n="options_instruction"></summary>
+        <span data-i18n="options_sup_6"></span>
+      </details>
+    </div>
+    <span data-i18n="options_new_hostname" class="space"></span>
+    <form hbox id="add">
+      <input type="text" name="hostname" flex="1" placeholder="e.g.: www.google.com">
+      &nbsp;
+      <input type="submit" data-i18n-value="value" data-i18n="options_add">
+    </form>
+    <!-- list -->
     <div id="list" data-visible=false>
+      <h1 data-i18n="options_list_header"></h1>
+      <template>
+        <div>
+          <span data-id="href">HTTP://</span>
+          <input type="text" flex="1" placeholder="Optional redirect URL">
+          <input type="button" data-cmd="remove">
+        </div>
+      </template>
+      <div id="rules-container"></div>
+    </div>
+    <!-- schedule -->
+    <div class="header">
+      <h1 data-i18n="options_schedule_header"></h1>
+      <details>
+        <summary data-i18n="options_instruction"></summary>
+        <span data-i18n="options_sup_11"></span>
+      </details>
+    </div>
+    <form id=schedule>
       <table width="100%">
         <colgroup>
+          <col width="50">
           <col>
-          <col>
-          <col width="100px">
         </colgroup>
-        <thead>
-          <tr>
-            <th><a href="https://add0n.com/block-site.html#faq3" data-i18n="options_matching"></a></th>
-            <th data-i18n="options_redirect_2"></th>
-            <th data-i18n="options_remove"></th>
-          </tr>
-        </thead>
-        <template>
-          <tr>
-            <td></td>
-            <td>
-              <div hbox>
-                <input type="text" flex="1" placeholder="http://example.com">
-              </div>
-            </td>
-            <td><input type="button" data-cmd="remove"></td>
-          </tr>
-        </template>
-        <tbody></tbody>
+        <tr>
+          <td data-i18n="options_times"></td>
+          <td>
+            <div hbox align=center>from&nbsp;<input type="time" name="start" flex="1">&nbsp;to&nbsp;<input type="time" name="end" flex="1"></div>
+          </td>
+        </tr>
+        <tr>
+          <td data-i18n="options_days"></td>
+          <td>
+            <div hbox align=center><input type="text" name="days" flex="1" placeholder="days: Sun, Mon, Tue, Wed, Thu, Fri, Sat"></div>
+          </td>
+        </tr>
+        <tr>
+          <td><span data-i18n="options_hostname"></span></td>
+          <td>
+            <div hbox align=center>
+              <input type="text" list="rules" name="hostname" flex="1" data-i18n="options_sup_12" data-i18n-value="placeholder">
+              <datalist id="rules"></datalist>
+            </div>
+          </td>
+        </tr>
       </table>
+    </form>
+    <!-- blocking options -->
+    <div>
+      <h1 data-i18n="options_blocing_options_header"></h1>
+      <div hbox class="space" align="center">
+        <input type="checkbox" id="initialBlock">&nbsp;
+        <label for="initialBlock"><span data-i18n="options_startup"></span></label>
+      </div>
+      <div hbox class="space" align="center">
+        <input type="checkbox" id="reverse">&nbsp;
+        <label for="reverse"><span data-i18n="options_reverse"></span></label>
+      </div>
     </div>
-    <div id="explore" data-cols="4"></div>
-    <p>
-      <input type="button" data-i18n-value="value" data-i18n="options_support" id="support">
-      <input type="button" data-i18n-value="value" data-i18n="options_unlock" data-cmd="unlock">
-      <input type="button" data-i18n-value="value" data-i18n="options_save" data-cmd="save" disabled="true">
-      <span id="info"></span>
-    </p>
-    <p>
-      <input type="button" data-i18n-value="value" data-i18n="options_import_txt" data-cmd="import-txt"><sup>8</sup>
-    </p>
-    <p>
-      <input type="button" data-i18n-value="value" data-i18n="options_export_json" data-cmd="export"><sup>9</sup>
-      <input type="button" data-i18n-value="value" data-i18n="options_import_json" data-cmd="import-json"><sup>10</sup>
-    </p>
-    <ol style="font-size: 90%; color: #555; padding-left: 20px;">
-      <li data-i18n="options_sup_1"></li>
-      <li data-i18n="options_sup_2"></li>
-      <li data-i18n="options_sup_3"></li>
-      <li data-i18n="options_sup_4"></li>
-      <li data-i18n="options_sup_5"></li>
-      <li data-i18n="options_sup_6"></li>
-      <li data-i18n="options_sup_7"></li>
-      <li>
+    <div class="space">
+      <span data-i18n="options_allow_access" class="space"></span>
+      <input type="number" min="1" id="timeout" required>
+    </div>
+    <div>
+      <span data-i18n="options_block_period" class="space"></span>
+      <input type="number" min="1" id="wrong" required>
+    </div>
+    <!-- page -->
+    <h1 data-i18n="options_page_header"></h1>
+    <div vbox class="space">
+      <span data-i18n="options_redirect" class="space"></span>
+      <input type="text" id="redirect" flex=1 data-i18n="options_sup_1" data-i18n-value="placeholder">
+    </div>
+    <div vbox class="space">
+      <span data-i18n="options_user_message" class="space"></span>
+      <textarea id="message" rows="3" flex="1" data-i18n="options_sup_2" data-i18n-value="placeholder"></textarea>
+    </div>
+    <div hbox class="space" align="center">
+      <input type="checkbox" id="title">&nbsp;
+      <label flex="1" for="title"><span data-i18n="options_resolve"></span></label>
+    </div>
+    <div vbox>
+      <span data-i18n="options_close_blocked" class="space"></span>
+      <div>
+        <input type="number" min="0" id="close" required>
+        <span data-i18n="options_close_msg_blocked"></span>
+      </div>
+    </div>
+    <!-- tools -->
+    <div>
+      <h1 data-i18n="options_tools_header"></h1>
+      <div id="explore" data-cols="4"></div>
+      <div id="tools">
+        <input type="button" data-i18n-value="value" data-i18n="options_support" id="support">
+        <input type="button" data-i18n-value="value" data-i18n="options_save" data-cmd="save" disabled="true">
+        <div id="save-container" data-i18n="options_master_password_comment" data-i18n-value="title">
+          <input type="password" id="password" data-i18n="options_master_password" data-i18n-value="placeholder">&nbsp;
+          <input type="button" data-i18n-value="value" data-i18n="options_unlock" data-cmd="unlock">
+        </div>
+        <span id="info"></span>
+      </div>
+    </div>
+    <!-- rules -->
+    <div class="header">
+      <h1 data-i18n="options_rules_header"></h1>
+      <details>
+        <summary data-i18n="options_instruction"></summary>
         <span data-i18n="options_sup_8"></span>
-<pre style="  background: #f5f5f5; margin: 10px; padding: 0;"><code><table>
-<tr>
-  <td colspan="2"># Line-separated list of hostnames to be blocked. Lines start with "#" are ignored</td>
-</tr>
-<tr>
-  <td># hostname to be blocked</td>
-  <td>redirects to (optional)</td>
-</tr>
-<tr>
-  <td>www.google.com</td>
-  <td>https://www.bing.com</td>
-</tr>
-</table></code></pre>
-      </li>
-      <li data-i18n="options_sup_9"></li>
-      <li data-i18n="options_sup_10"></li>
-      <li data-i18n="options_sup_11"></li>
-    </ol>
+        <pre><code><table>
+        <tr>
+          <td colspan="2"># Line-separated list of hostnames to be blocked. Lines start with "#" are ignored</td>
+        </tr>
+        <tr>
+          <td># hostname to be blocked</td>
+          <td>redirects to (optional)</td>
+        </tr>
+        <tr>
+          <td>www.google.com</td>
+          <td>https://www.bing.com</td>
+        </tr>
+        </table></code></pre>
+      </details>
+    </div>
+    <input type="button" data-i18n-value="value" data-i18n="options_import_txt" data-cmd="import-txt">
+    <!-- import -->
+    <div class="header">
+      <h1 data-i18n="options_import_header"></h1>
+      <details>
+        <summary data-i18n="options_instruction"></summary>
+        <div>
+          <span data-i18n="options_sup_10"></span>
+          <span data-i18n="options_sup_9" class="space"></span>
+        </div>
+      </details>
+    </div>
+    <div id="import-container">
+      <input type="button" data-i18n-value="value" data-i18n="options_export_json" data-cmd="export">
+      <input type="button" data-i18n-value="value" data-i18n="options_import_json" data-cmd="import-json">
+    </div>
+
     <script src="index.js"></script>
     <script async src="matched.js"></script>
   </body>

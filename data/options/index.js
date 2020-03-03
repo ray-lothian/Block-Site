@@ -31,7 +31,6 @@ const prefs = {
 };
 
 const list = document.getElementById('list');
-const tbody = document.querySelector('#list tbody');
 const wildcard = h => {
   if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
     return `*://${h}/*`;
@@ -42,14 +41,14 @@ const wildcard = h => {
 function add(hostname) {
   const template = document.querySelector('#list template');
   const node = document.importNode(template.content, true);
-  const tr = node.querySelector('tr');
-  tr.dataset.pattern = node.querySelector('td:nth-child(1)').textContent = wildcard(hostname);
-  tr.dataset.hostname = hostname;
-  const rd = node.querySelector('td:nth-child(2) input');
+  const div = node.querySelector('div');
+  div.dataset.pattern = node.querySelector('[data-id=href]').textContent = wildcard(hostname);
+  div.dataset.hostname = hostname;
+  const rd = node.querySelector('input');
   rd.value = prefs.map[hostname] || '';
   rd.disabled = hostname.indexOf('*') !== -1;
   node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
-  tbody.appendChild(node);
+  document.getElementById('rules-container').appendChild(node);
   list.dataset.visible = true;
 
   return rd;
@@ -106,8 +105,7 @@ document.addEventListener('click', e => {
   const {target} = e;
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
-    const tr = target.closest('tr');
-    tr.parentNode.removeChild(tr);
+    target.closest('div').remove();
   }
   else if (cmd === 'unlock') {
     const password = document.getElementById('password').value;
@@ -159,10 +157,10 @@ document.addEventListener('click', e => {
       wrong: Math.max(Number(document.getElementById('wrong').value), 1),
       schedule,
       schedules: prefs.schedules,
-      blocked: [...document.querySelectorAll('#list tbody tr')]
+      blocked: [...document.querySelectorAll('#rules-container > div')]
         .map(tr => tr.dataset.hostname)
         .filter((s, i, l) => s && l.indexOf(s) === i),
-      map: [...document.querySelectorAll('#list tbody tr')].reduce((p, c) => {
+      map: [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
         const {hostname} = c.dataset;
         const mapped = c.querySelector('input[type=text]').value;
         if (mapped) {
