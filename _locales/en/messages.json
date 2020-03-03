@@ -1,6 +1,6 @@
 {
   "app_description": {
-    "message": "A customizable password protected website blocker and redirector"
+    "message": "A customizable, password-protected website blocker and redirector."
   },
   "options_master_password": {
     "message": "Master password:"
