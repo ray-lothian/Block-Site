@@ -1,0 +1,8 @@
+sup {
+	background-image: url(./info-icon.svg);
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	opacity: 0.4;
+}
