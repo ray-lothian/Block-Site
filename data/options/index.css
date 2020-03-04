@@ -140,9 +140,6 @@ td {
     grid-template-columns: 1fr 1fr;
   }
 }
-#explore[data-loaded=true] {
-  margin-bottom: 10px !important;
-}
 .space {
   margin-bottom: 5px;
   display: block;

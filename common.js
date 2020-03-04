@@ -139,7 +139,7 @@ const onBeforeRequestDirect = d => {
   }
 };
 const onUpdatedDirect = (tabId, changeInfo) => {
-  if (changeInfo.url && changeInfo.url.startsWith('http')) {
+  if (changeInfo.url && ['http', 'file', 'ftp'].some(s => changeInfo.url.startsWith(s))) {
     const rtn = onBeforeRequestDirect(changeInfo);
     if (rtn && rtn.redirectUrl) {
       chrome.tabs.update(tabId, {
