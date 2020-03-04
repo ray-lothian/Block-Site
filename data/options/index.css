@@ -81,7 +81,6 @@ td {
   grid-template-columns: 1fr 1fr min-content;
   grid-column-gap: 5px;
   margin-bottom: 5px;
-  padding: 5px;
 }
 @media screen and (max-width: 550px) {
   #rules-container > div {

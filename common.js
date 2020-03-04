@@ -82,7 +82,7 @@ const schedule = {
     return true;
   },
   build() {
-    schedule.rules = Object.keys(prefs.schedules).map(r => new RegExp(r));
+    schedule.rules = Object.keys(prefs.schedules).map(r => new RegExp(r, 'i'));
   }
 };
 schedule.rules = [];
@@ -209,9 +209,9 @@ observe.wildcard = h => {
 };
 observe.regexp = rule => {
   if (rule.startsWith('R:')) {
-    return new RegExp(rule.substr(2));
+    return new RegExp(rule.substr(2), 'i');
   }
-  return new RegExp('^' + rule.split('*').join('.*') + '$');
+  return new RegExp('^' + rule.split('*').join('.*') + '$', 'i');
 };
 observe.build = {
   direct() {
