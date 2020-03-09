@@ -278,3 +278,14 @@ document.getElementById('support').addEventListener('click', () => chrome.tabs.c
 document.addEventListener('change', () => {
   window.addEventListener('beforeunload', warning);
 });
+
+/* auto type rule */
+document.getElementById('rules-container').addEventListener('click', e => {
+  if (e.target.dataset.id === 'href') {
+    const value = e.target.parentElement.dataset.hostname;
+    if (value) {
+      document.querySelector('#add input[name="hostname"]').value = value;
+      document.dispatchEvent(new Event('change'));
+    }
+  }
+});
