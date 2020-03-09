@@ -8,6 +8,11 @@
 const info = document.getElementById('info');
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+const warning = e => {
+  e.returnValue = 'Changes you made are not saved';
+  return true;
+};
+
 const prefs = {
   timeout: 60, // seconds
   close: 0, // seconds
@@ -171,6 +176,7 @@ document.addEventListener('click', e => {
     }, () => {
       info.textContent = 'Options saved';
       window.setTimeout(() => info.textContent = '', 750);
+      window.removeEventListener('beforeunload', warning);
       init(false);
     });
   }
@@ -267,3 +273,8 @@ document.addEventListener('click', e => {
 document.getElementById('support').addEventListener('click', () => chrome.tabs.create({
   url: chrome.runtime.getManifest().homepage_url + '?rd=donate'
 }));
+
+/* change reminder */
+document.addEventListener('change', () => {
+  window.addEventListener('beforeunload', warning);
+});

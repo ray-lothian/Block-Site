@@ -29,11 +29,10 @@ document.addEventListener('submit', e => {
   });
 });
 
-document.body.dataset.dark = localStorage.getItem('dark') || 'true';
 document.getElementById('switch').addEventListener('click', () => {
-  const val = document.body.dataset.dark === 'false';
+  const val = document.documentElement.classList.contains('dark') === false;
   localStorage.setItem('dark', val);
-  document.body.dataset.dark = val;
+  document.documentElement.classList[val ? 'add' : 'remove']('dark');
 });
 document.getElementById('options').addEventListener('click', e => {
   e.stopPropagation();

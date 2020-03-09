@@ -6,17 +6,21 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0;
-
-  font-family: "Helvetica Neue",Helvetica,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 13px;
-
+  color: #4e4e4e;
   background: #f0f0f0 url('blocked.svg') center center no-repeat;
   background-size: 50vh;
+}
+@media screen and (max-width: 550px) {
+  body {
+    background-size: 50vw;
+  }
 }
 
 header h1 {
   text-align: center;
-  font-weight: 500;
+  font-weight: normal;
 }
 header table {
   table-layout: fixed;
@@ -26,14 +30,32 @@ header td:last-of-type {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-body>div:nth-child(2) {
-}
 header,
 p,
 footer {
-  padding:  10px;
+  padding: 10px;
 }
+#options::before {
+  content: '|';
+  padding: 0 5px;
+  color: #fff;
+}
+footer span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media screen and (max-width: 500px) {
+  footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 20px;
+  }
+  #options::before {
+    display: none;
+  }
+}
+
 form {
   display: inline-block;
   margin-left: 5px;
@@ -55,7 +77,7 @@ a {
   text-decoration: none;
   color: #006cc3;
 }
-body[data-dark=true] a {
+html.dark a {
   color: #90bbde;
 }
 
@@ -80,20 +102,20 @@ body[data-dark=true] a {
   outline: none;
 }
 
-body[data-dark=true] {
-  background-color: #212121;
+html.dark body {
+  background-color: #222837;
   background-image: url('blocked_dark.svg');
-  color: #d0d0d0;
+  color: #c7c7c7;
 }
-body[data-dark=true] #switch {
-  background-image: url('button_off.svg')
+html.dark #switch {
+  background-image: url('button_off.svg');
 }
-body[data-dark=true] input[type=text],
-body[data-dark=true] input[type=password] {
+html.dark input[type=text],
+html.dark input[type=password] {
   background-color: #3c3c3c;
   color: #d0d0d0;
 }
-body[data-dark=true] input:focus {
+html.dark input:focus {
   background-color: #575757;
 }
 
