@@ -1,5 +1,6 @@
 'use strict';
 
+
 const prefs = {
   timeout: 60, // seconds
   keywords: [],
@@ -25,16 +26,41 @@ const ids = {};
 
 let paused = false;
 
-const toHostname = url => {
-  const s = url.indexOf('//') + 2;
-  if (s > 1) {
-    let o = url.indexOf('/', s);
-    if (o > 0) {
-      return url.substring(s, o);
+
+function wildcard(h) {
+  if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
+    return `*://${h}/*`;
+  } else if (h.startsWith('R:') === false) {
+    if (h[h.length - 1] === '/') {
+      return `${h}*`;
+    } else {
+      return `${h}/*`;
     }
-    else {
-      o = url.indexOf('?', s);
-      return o > 0 ? url.substring(s, o) : url.substring(s);
+  }
+  return h;
+};
+
+const removeParametersFromUrl = url => {
+  let index = 0;
+  let newURL = url;
+  index = url.indexOf('?');
+  if (index == -1) {
+    index = url.indexOf('#');
+  }
+  if (index != -1) {
+    newURL = url.substring(0, index);
+  }
+  return newURL
+}
+
+const toHostname = url => {
+  let urlNew = removeParametersFromUrl(url)
+  let indexStart = 0
+  if (urlNew.startsWith('http')) {
+    indexStart = url.indexOf('//') + 2;
+    let indexEnd = urlNew.indexOf('/', indexStart);
+    if (indexEnd > 0) {
+      return url.substring(indexStart, indexEnd);
     }
   }
   return url;
@@ -42,7 +68,10 @@ const toHostname = url => {
 
 const schedule = {
   test(d) {
-    let {days, time} = prefs.schedule;
+    let {
+      days,
+      time
+    } = prefs.schedule;
     // per rule schedule
     for (const rule of schedule.rules) {
       if (rule.test(d.url)) {
@@ -70,8 +99,7 @@ const schedule = {
         if (now < start || now > end) {
           return false; // range mismatch, do not block
         }
-      }
-      else {
+      } else {
         if (now > end && now < start) {
           return false; // range mismatch, do not block
         }
@@ -139,7 +167,7 @@ const onBeforeRequestDirect = d => {
   }
 };
 const onUpdatedDirect = (tabId, changeInfo) => {
-  if (changeInfo.url && ['http', 'file', 'ftp'].some(s => changeInfo.url.startsWith(s))) {
+  if (changeInfo.url) {
     const rtn = onBeforeRequestDirect(changeInfo);
     if (rtn && rtn.redirectUrl) {
       chrome.tabs.update(tabId, {
@@ -158,7 +186,7 @@ const onBeforeRequestReverse = d => {
   return onBeforeRequest(d);
 };
 const onUpdatedReverse = (tabId, changeInfo) => {
-  if (changeInfo.url && changeInfo.url.startsWith('http')) {
+  if (changeInfo.url) {
     const rtn = onBeforeRequestReverse(changeInfo);
     if (rtn && rtn.redirectUrl) {
       chrome.tabs.update(tabId, {
@@ -204,9 +232,16 @@ const observe = () => {
 observe.wildcard = h => {
   if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
     return `*://${h}/*`;
+  } else if (h.startsWith('R:') === false) {
+    if (h[h.length - 1] === '/') {
+      return `${h}*`;
+    } else {
+      return `${h}/*`;
+    }
   }
   return h;
 };
+
 observe.regexp = rule => {
   if (rule.startsWith('R:')) {
     return new RegExp(rule.substr(2), 'i');
@@ -215,10 +250,10 @@ observe.regexp = rule => {
 };
 observe.build = {
   direct() {
-    directPattern = prefs.blocked.map(observe.wildcard).map(observe.regexp);
+    directPattern = prefs.blocked.map(observe.regexp);
   },
   reverse() {
-    reversePattern = prefs.blocked.map(observe.wildcard).map(observe.regexp);
+    reversePattern = prefs.blocked.map(observe.regexp);
   }
 };
 
@@ -265,46 +300,41 @@ const onMessage = (request, sender, response) => {
   if (request.method === 'open-once') {
     if (prefs.password === '') {
       notify('bg_msg_3');
-    }
-    else if (retries.count >= 5) {
+    } else if (retries.count >= 5) {
       notify(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
-    }
-    else if (request.password === prefs.password) {
-      const {url} = request;
+    } else if (request.password === prefs.password) {
+      const {
+        url
+      } = request;
       once.push(toHostname(url));
-      chrome.tabs.update(sender.tab.id, {url});
-    }
-    else {
+      chrome.tabs.update(sender.tab.id, {
+        url
+      });
+    } else {
       wrong();
     }
-  }
-  else if (request.method === 'check-password') {
+  } else if (request.method === 'check-password') {
     if (retries.count >= 5) {
       notify(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
       response(false);
-    }
-    else if (request.password === prefs.password) {
+    } else if (request.password === prefs.password) {
       response(true);
-    }
-    else {
+    } else {
       wrong();
       response(false);
     }
-  }
-  else if (request.method === 'open-options') {
+  } else if (request.method === 'open-options') {
     chrome.runtime.openOptionsPage();
-  }
-  else if (request.method === 'close-tab') {
+  } else if (request.method === 'close-tab') {
     chrome.tabs.remove(sender.tab.id);
-  }
-  else if (request.method === 'append-to-list') {
+  } else if (request.method === 'append-to-list') {
     const blocked = [...prefs.blocked, ...request.hostnames].filter((s, i, l) => l.indexOf(s) === i);
     chrome.storage.local.set({
       blocked
     }, response);
+
     return true;
-  }
-  else if (request.method === 'remove-from-list') {
+  } else if (request.method === 'remove-from-list') {
     const ids = [];
     (request.mode === 'reverse' ? reversePattern : directPattern).forEach((rule, index) => {
       if (rule.test(request.href)) {
@@ -321,10 +351,10 @@ const onMessage = (request, sender, response) => {
 chrome.runtime.onMessage.addListener(onMessage);
 
 chrome.browserAction.onClicked.addListener(tab => {
-  if (tab.url.startsWith('http') === false) {
-    return notify('bg_msg_1');
-  }
-  const hostname = toHostname(tab.url);
+  /*   if (tab.url.startsWith('http') === false) {
+      return notify('bg_msg_1');
+    } */
+  const hostname = observe.wildcard(toHostname(tab.url));
   const msg = prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`;
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
@@ -340,8 +370,7 @@ chrome.browserAction.onClicked.addListener(tab => {
           href: tab.url,
           mode: 'reverse'
         }, null, () => chrome.tabs.reload(tab.id));
-      }
-      else {
+      } else {
         onMessage({
           method: 'append-to-list',
           hostnames: [hostname]
@@ -400,8 +429,7 @@ chrome.contextMenus.onClicked.addListener(info => {
   if (info.menuItemId === 'resume') {
     paused = false;
     chrome.alarms.clear('paused');
-  }
-  else {
+  } else {
     const next = () => {
       paused = true;
       const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
@@ -420,20 +448,16 @@ chrome.contextMenus.onClicked.addListener(info => {
           }
           if (arr[0] === prefs.password) {
             next();
-          }
-          else {
+          } else {
             notify('bg_msg_2');
           }
         });
-      }
-      else if (window.prompt(chrome.i18n.getMessage('bg_msg_12')) === prefs.password) {
+      } else if (window.prompt(chrome.i18n.getMessage('bg_msg_12')) === prefs.password) {
         next();
-      }
-      else {
+      } else {
         notify('bg_msg_2');
       }
-    }
-    else {
+    } else {
       next();
     }
   }
@@ -446,11 +470,21 @@ chrome.alarms.onAlarm.addListener(alarm => {
 
 /* FAQs & Feedback */
 {
-  const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
-  const {name, version} = getManifest();
+  const {
+    onInstalled,
+    setUninstallURL,
+    getManifest
+  } = chrome.runtime;
+  const {
+    name,
+    version
+  } = getManifest();
   const page = getManifest().homepage_url;
   if (navigator.webdriver !== true) {
-    onInstalled.addListener(({reason, previousVersion}) => {
+    onInstalled.addListener(({
+      reason,
+      previousVersion
+    }) => {
       chrome.storage.local.get({
         'faqs': true,
         'last-update': 0
@@ -464,7 +498,9 @@ chrome.alarms.onAlarm.addListener(alarm => {
                 '&type=' + reason,
               active: reason === 'install'
             });
-            chrome.storage.local.set({'last-update': Date.now()});
+            chrome.storage.local.set({
+              'last-update': Date.now()
+            });
           }
         }
       });

@@ -37,11 +37,21 @@ const prefs = {
 
 const list = document.getElementById('list');
 const wildcard = h => {
+  if (h.indexOf('*') !== -1) {
+    return h;
+  }
   if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
     return `*://${h}/*`;
+  } else if (h.startsWith('R:') === false) {
+    if (h[h.length -1] === '/') {
+      return `${h}*`;
+    } else {
+      return `${h}/*`;
+    }
   }
   return h;
 };
+
 
 function add(hostname) {
   const template = document.querySelector('#list template');
