@@ -1,6 +1,6 @@
 {
   "app_description": {
-    "message": "A customizable, password-protected website blocker and redirector."
+    "message": "A customizable, password-protected URL blocker and redirector."
   },
   "options_master_password": {
     "message": "Master Password"
@@ -187,5 +187,11 @@
   },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
+  },
+  "bg_msg_13": {
+    "message": "Remove \"##\" from the whitelist?"
+  },
+  "bg_msg_14": {
+    "message": "Add \"##\" to the blocked list?"
   }
 }

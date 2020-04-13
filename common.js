@@ -415,7 +415,14 @@ chrome.browserAction.onClicked.addListener(tab => {
     return notify('bg_msg_1');
   }
   const hostname = wildcard(toHostname(tab.url));
-  const msg = JSON.stringify(prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`);
+  let msg = ""
+  if (prefs.reverse) {
+    msg = chrome.i18n.getMessage('bg_msg_13').replace('##', hostname)
+  } else {
+    msg = chrome.i18n.getMessage('bg_msg_14').replace('##', hostname)
+  }
+  msg = JSON.stringify(msg);
+
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
     'code': `window.stop(); window.confirm(${msg})`
