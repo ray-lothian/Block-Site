@@ -415,10 +415,10 @@ chrome.browserAction.onClicked.addListener(tab => {
     return notify('bg_msg_1');
   }
   const hostname = wildcard(toHostname(tab.url));
-  const msg = prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`;
+  const msg = JSON.stringify(prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`);
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
-    'code': `window.stop(); window.confirm('${msg}')`
+    'code': `window.stop(); window.confirm(${msg})`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);
