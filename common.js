@@ -26,19 +26,66 @@ const ids = {};
 
 let paused = false;
 
-
-function wildcard(h) {
-  if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
-    return `*://${h}/*`;
-  } else if (h.startsWith('R:') === false) {
-    if (h[h.length - 1] === '/') {
-      return `${h}*`;
-    } else {
-      return `${h}/*`;
-    }
+const get_id_extension = () => {
+  try {
+    let str = chrome.runtime.getManifest().background.scripts[0];
+    let start = str.indexOf('//') + 2;
+    let end = str.substr(start).indexOf('/');
+    return `${str.substr(start, end)}`;
+  } catch {
+    return '*'
   }
-  return h;
+}
+
+const ID_extension = get_id_extension()
+
+let WHITE_LIST = [
+  `moz-extension://${ID_extension}/data/blocked/*`
+]
+
+
+/* ********************* Utils ************************* */
+
+const createRegexp = rule => {
+  if (rule.startsWith('R:')) {
+    return new RegExp(rule.substr(2), 'i');
+  }
+  return new RegExp('^' + rule.split('*').join('.*') + '$', 'i');
 };
+
+
+const protos = [
+  "http:",
+  "https:",
+  "ws:",
+  "wss:",
+  "about:",
+  "moz-extension:",
+  "file:",
+  "ftp:",
+  "ftps:",
+  "data:"
+]
+
+const isStartProto = (url) => {
+  let ret = protos.findIndex(proto => {
+    return url.startsWith(proto)
+  })
+  return ret === -1 ? false : true
+}
+
+const wildcard = h => {
+  let newUrl = h
+  if (newUrl.indexOf("/*") !== newUrl.length - 2 && !newUrl.startsWith("about:")) {
+    newUrl = newUrl.concat('/*')
+  }
+  if (!isStartProto(h) && !h.startsWith('R:')) {
+    return `*://${newUrl}`;
+  }
+
+  return newUrl;
+};
+
 
 const removeParametersFromUrl = url => {
   let index = 0;
@@ -66,6 +113,32 @@ const toHostname = url => {
   return url;
 };
 
+const isWhite = (url) => {
+  //white
+  for (const rule of WHITE_LIST) {
+    if (rule.test(url)) {
+      return true
+    }
+  }
+  return false
+}
+
+const isBlocked = (url, rules) => {
+  if (!isWhite(url)) {
+    //black
+    for (const rule of rules) {
+      if (rule.test(url)) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+/* *********************************************************** */
+
+WHITE_LIST = WHITE_LIST.map(createRegexp)
+
 const schedule = {
   test(d) {
     let {
@@ -73,14 +146,11 @@ const schedule = {
       time
     } = prefs.schedule;
     // per rule schedule
-    for (const rule of schedule.rules) {
-      if (rule.test(d.url)) {
-        const index = schedule.rules.indexOf(rule);
-        const o = Object.values(prefs.schedules)[index];
-        days = o.days;
-        time = o.time;
-        break;
-      }
+    if (isBlocked(d.url, schedule.rules)) {
+      const index = schedule.rules.indexOf(rule);
+      const o = Object.values(prefs.schedules)[index];
+      days = o.days;
+      time = o.time;
     }
     if (days.length && time.start && time.end) {
       const d = new Date();
@@ -113,6 +183,7 @@ const schedule = {
     schedule.rules = Object.keys(prefs.schedules).map(r => new RegExp(r, 'i'));
   }
 };
+
 schedule.rules = [];
 
 const onBeforeRequest = d => {
@@ -160,10 +231,8 @@ const onBeforeRequest = d => {
 
 let directPattern = [];
 const onBeforeRequestDirect = d => {
-  for (const rule of directPattern) {
-    if (rule.test(d.url)) {
-      return onBeforeRequest(d);
-    }
+  if (isBlocked(d.url, directPattern)) {
+    return onBeforeRequest(d);
   }
 };
 const onUpdatedDirect = (tabId, changeInfo) => {
@@ -176,12 +245,11 @@ const onUpdatedDirect = (tabId, changeInfo) => {
     }
   }
 };
+
 let reversePattern = [];
 const onBeforeRequestReverse = d => {
-  for (const rule of reversePattern) {
-    if (rule.test(d.url)) {
-      return;
-    }
+  if (isBlocked(d.url, reversePattern)) {
+    return;
   }
   return onBeforeRequest(d);
 };
@@ -199,11 +267,23 @@ const onUpdatedReverse = (tabId, changeInfo) => {
 const observe = () => {
   if (prefs.blocked.length && prefs.reverse === false) {
     observe.build.direct();
-
-    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestDirect, {
-      'urls': ['*://*/*'],
+    let listen = {
+      'urls': [
+        "http://*",
+        "https://*",
+        "about://*",
+        "moz-extension://*",
+        "file://*",
+        "ftp://*",
+        "ftps://*",
+        "data://*"
+      ],
       'types': ['main_frame', 'sub_frame']
-    }, ['blocking']);
+    }
+
+    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestDirect,
+      listen,
+      ['blocking']);
     chrome.tabs.onUpdated.addListener(onUpdatedDirect);
     // check already opened
     if (prefs.initialBlock) {
@@ -216,10 +296,7 @@ const observe = () => {
   else if (prefs.reverse) {
     observe.build.reverse();
 
-    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestReverse, {
-      'urls': ['*://*/*'],
-      'types': ['main_frame', 'sub_frame']
-    }, ['blocking']);
+    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestReverse, listen, ['blocking']);
     chrome.tabs.onUpdated.addListener(onUpdatedReverse);
     // check already opened
     if (prefs.initialBlock) {
@@ -229,31 +306,14 @@ const observe = () => {
     }
   }
 };
-observe.wildcard = h => {
-  if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
-    return `*://${h}/*`;
-  } else if (h.startsWith('R:') === false) {
-    if (h[h.length - 1] === '/') {
-      return `${h}*`;
-    } else {
-      return `${h}/*`;
-    }
-  }
-  return h;
-};
 
-observe.regexp = rule => {
-  if (rule.startsWith('R:')) {
-    return new RegExp(rule.substr(2), 'i');
-  }
-  return new RegExp('^' + rule.split('*').join('.*') + '$', 'i');
-};
+
 observe.build = {
   direct() {
-    directPattern = prefs.blocked.map(observe.regexp);
+    directPattern = prefs.blocked.map(createRegexp);
   },
   reverse() {
-    reversePattern = prefs.blocked.map(observe.regexp);
+    reversePattern = prefs.blocked.map(createRegexp);
   }
 };
 
@@ -351,10 +411,10 @@ const onMessage = (request, sender, response) => {
 chrome.runtime.onMessage.addListener(onMessage);
 
 chrome.browserAction.onClicked.addListener(tab => {
-  /*   if (tab.url.startsWith('http') === false) {
-      return notify('bg_msg_1');
-    } */
-  const hostname = observe.wildcard(toHostname(tab.url));
+  if (isWhite(tab.url)) {
+    return notify('bg_msg_1');
+  }
+  const hostname = wildcard(toHostname(tab.url));
   const msg = prefs.reverse ? `Remove "${hostname}" from the whitelist?` : `Add "${hostname}" to the blocked list?`;
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',

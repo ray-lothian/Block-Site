@@ -36,20 +36,37 @@ const prefs = {
 };
 
 const list = document.getElementById('list');
+
+const protos = [
+  "http:",
+  "https:",
+  "ws:",
+  "wss:",
+  "about:",
+  "moz-extension:",
+  "file:",
+  "ftp:",
+  "ftps:",
+  "data:"
+]
+
+const isStartProto = (url) => {
+  let ret = protos.findIndex(proto => {
+    return url.startsWith(proto)
+  })
+  return ret === -1 ? false : true
+}
+
 const wildcard = h => {
-  if (h.indexOf('*') !== -1) {
-    return h;
+  let newUrl = h
+  if (newUrl.indexOf("/*") !== newUrl.length - 2 && !newUrl.startsWith("about:")) {
+    newUrl = newUrl.concat('/*')
   }
-  if (h.indexOf('://') === -1 && h.startsWith('R:') === false) {
-    return `*://${h}/*`;
-  } else if (h.startsWith('R:') === false) {
-    if (h[h.length -1] === '/') {
-      return `${h}*`;
-    } else {
-      return `${h}/*`;
-    }
+  if (!isStartProto(h) && !h.startsWith('R:')) {
+    return `*://${newUrl}`;
   }
-  return h;
+
+  return newUrl;
 };
 
 
@@ -57,11 +74,11 @@ function add(hostname) {
   const template = document.querySelector('#list template');
   const node = document.importNode(template.content, true);
   const div = node.querySelector('div');
-  div.dataset.pattern = node.querySelector('[data-id=href]').textContent = wildcard(hostname);
+  div.dataset.pattern = node.querySelector('[data-id=href]').textContent = hostname
   div.dataset.hostname = hostname;
   const rd = node.querySelector('input');
   rd.value = prefs.map[hostname] || '';
-  rd.disabled = hostname.indexOf('*') !== -1;
+  /* rd.disabled = hostname.indexOf('*') !== -1; */
   node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
   document.getElementById('rules-container').appendChild(node);
   list.dataset.visible = true;
@@ -71,9 +88,16 @@ function add(hostname) {
 
 document.getElementById('add').addEventListener('submit', e => {
   e.preventDefault();
-  const hostname = e.target.querySelector('input[type=text]').value;
+  let hostname = e.target.querySelector('input[type=text]').value;
   if (hostname) {
+    hostname = wildcard(hostname)
+    if (prefs.blocked.indexOf(hostname) !== -1) {
+      // TODO notify
+      return;
+    }
+    prefs.blocked.push(hostname)
     add(hostname);
+    e.target.querySelector('input[type=text]').value = ""
   }
 });
 
@@ -117,12 +141,13 @@ document.querySelector('#schedule [name="hostname"]').addEventListener('input', 
 });
 
 document.addEventListener('click', e => {
-  const {target} = e;
+  const {
+    target
+  } = e;
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
     target.closest('div').remove();
-  }
-  else if (cmd === 'unlock') {
+  } else if (cmd === 'unlock') {
     const password = document.getElementById('password').value;
     chrome.runtime.sendMessage({
       method: 'check-password',
@@ -136,8 +161,7 @@ document.addEventListener('click', e => {
         document.getElementById('password').focus();
       }
     });
-  }
-  else if (cmd === 'save') {
+  } else if (cmd === 'save') {
     let schedule = {
       time: {
         start: document.querySelector('#schedule [name=start]').value,
@@ -152,8 +176,7 @@ document.addEventListener('click', e => {
     if (rule.value) {
       if (schedule.days.length && schedule.time.start && schedule.time.end) {
         prefs.schedules[rule.value] = schedule;
-      }
-      else {
+      } else {
         delete prefs.schedules[rule.value];
       }
       schedule = prefs.schedule;
@@ -176,7 +199,9 @@ document.addEventListener('click', e => {
         .map(tr => tr.dataset.hostname)
         .filter((s, i, l) => s && l.indexOf(s) === i),
       map: [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
-        const {hostname} = c.dataset;
+        const {
+          hostname
+        } = c.dataset;
         const mapped = c.querySelector('input[type=text]').value;
         if (mapped) {
           p[hostname] = mapped;
@@ -189,8 +214,7 @@ document.addEventListener('click', e => {
       window.removeEventListener('beforeunload', warning);
       init(false);
     });
-  }
-  else if (cmd === 'import-txt') {
+  } else if (cmd === 'import-txt') {
     const input = document.createElement('input');
     input.style.display = 'none';
     input.type = 'file';
@@ -220,12 +244,13 @@ document.addEventListener('click', e => {
       }
     };
     input.click();
-  }
-  else if (cmd === 'export') {
+  } else if (cmd === 'export') {
     chrome.storage.local.get(null, prefs => {
       const blob = new Blob([
         JSON.stringify(prefs, null, '\t')
-      ], {type: 'application/json'});
+      ], {
+        type: 'application/json'
+      });
       const href = URL.createObjectURL(blob);
       Object.assign(document.createElement('a'), {
         href,
@@ -234,8 +259,7 @@ document.addEventListener('click', e => {
       }).dispatchEvent(new MouseEvent('click'));
       setTimeout(() => URL.revokeObjectURL(href));
     });
-  }
-  else if (cmd == 'import-json') {
+  } else if (cmd == 'import-json') {
     const input = document.createElement('input');
     input.style.display = 'none';
     input.type = 'file';
@@ -264,13 +288,11 @@ document.addEventListener('click', e => {
       }
     };
     input.click();
-  }
-  else if (cmd === 'reset') {
+  } else if (cmd === 'reset') {
     if (e.detail === 1) {
       info.textContent = 'Double-click to reset!';
       window.setTimeout(() => info.textContent = '', 750);
-    }
-    else {
+    } else {
       localStorage.clear();
       chrome.storage.local.clear(() => {
         chrome.runtime.reload();
