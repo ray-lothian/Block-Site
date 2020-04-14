@@ -35,6 +35,12 @@
   "options_times": {
     "message": "Time:"
   },
+  "options_times_from": {
+    "message": "from"
+  },
+  "options_times_to": {
+    "message": "to"
+  },
   "options_days": {
     "message": "Days:"
   },
