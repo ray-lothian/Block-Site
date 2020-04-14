@@ -189,9 +189,9 @@
     "message": "Veuillez entrer le mot de passe principal pour interrompre le blocage"
   },
   "bg_msg_13": {
-    "message": "Remove \"##\" from the whitelist?"
+    "message": "Ajouter \"##\" à la liste blanche?"
   },
   "bg_msg_14": {
-    "message": "Add \"##\" to the blocked list?"
+    "message": "Ajouter \"##\" à la liste noire?"
   }
 }

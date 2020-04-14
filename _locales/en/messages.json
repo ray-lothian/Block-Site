@@ -189,7 +189,7 @@
     "message": "Please enter the master password to pause blocking"
   },
   "bg_msg_13": {
-    "message": "Remove \"##\" from the whitelist?"
+    "message": "Add \"##\" to the whitelist?"
   },
   "bg_msg_14": {
     "message": "Add \"##\" to the blocked list?"

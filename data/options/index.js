@@ -18,12 +18,11 @@ const prefs = {
   close: 0, // seconds
   message: '',
   redirect: '',
-  blocked: [],
   password: '',
   wrong: 1, // minutes
   title: true,
   reverse: false,
-  map: {},
+  rules: [],
   schedule: {
     time: {
       start: '',
@@ -31,8 +30,8 @@ const prefs = {
     },
     days
   },
-  schedules: {},
-  initialBlock: true
+  initialBlock: true,
+
 };
 
 const list = document.getElementById('list');
@@ -69,34 +68,94 @@ const wildcard = h => {
   return newUrl;
 };
 
+const getRule = (searchRule) => {
+  return prefs.rules.find(rule => {
+    return rule.rule === searchRule
+  })
+}
 
-function add(hostname) {
+// Add rule in prefs + html
+function addNewRule(NewRule) {
+  if (getRule(NewRule) === undefined) {
+    prefs.rules.push({
+      rule: NewRule
+    })
+    return add(NewRule)
+  }
+  // TODO notify
+  return undefined
+}
+
+// Remove rule in prefs 
+function removeRule(removeRule) {
+  prefs.rules = prefs.rules.filter(rule => rule.rule !== removeRule)
+}
+
+
+// Add rule in html page
+function add(rule, redirect) {
   const template = document.querySelector('#list template');
   const node = document.importNode(template.content, true);
   const div = node.querySelector('div');
-  div.dataset.pattern = node.querySelector('[data-id=href]').textContent = hostname
-  div.dataset.hostname = hostname;
+  div.dataset.pattern = node.querySelector('[data-id=href]').textContent = rule
+  div.dataset.rule = rule;
   const rd = node.querySelector('input');
-  rd.value = prefs.map[hostname] || '';
-  /* rd.disabled = hostname.indexOf('*') !== -1; */
-  node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
+
+  // Remove button
+  const rm = node.querySelector('[data-cmd="remove"]')
+  rm.value = chrome.i18n.getMessage('options_remove');
+  rm.dataset.rule = rule
+
+  // redirect input
+  if (redirect) {
+    const redir = node.querySelector('input[type=text]')
+    redir.value = redirect
+  }
   document.getElementById('rules-container').appendChild(node);
   list.dataset.visible = true;
 
   return rd;
 }
 
+function addRedirectFromRule(rule, redirect) {
+  const changeRule = getRule(rule)
+  if (changeRule) {
+    changeRule.redirect = redirect
+  }
+  return changeRule
+}
+
+function addTimeScheduleFromRuleHtml(rule) {
+  const option = document.createElement('option');
+  option.value = rule;
+  console.log(option)
+  document.getElementById('rules').appendChild(option);
+}
+
+function addTimeScheduleFromRule(rule, schedule) {
+  const changeRule = getRule(rule)
+  if (changeRule) {
+    changeRule.schedule = schedule
+    addTimeScheduleFromRuleHtml(rule.rule)
+  }
+  return changeRule
+}
+
+function removeTimeScheduleFromRule(rule) {
+  const changeRule = getRule(rule)
+  if (changeRule) {
+    delete changeRule.schedule
+  }
+  return changeRule
+}
+
+// Add click
 document.getElementById('add').addEventListener('submit', e => {
   e.preventDefault();
-  let hostname = e.target.querySelector('input[type=text]').value;
-  if (hostname) {
-    hostname = wildcard(hostname)
-    if (prefs.blocked.indexOf(hostname) !== -1) {
-      // TODO notify
-      return;
-    }
-    prefs.blocked.push(hostname)
-    add(hostname);
+  let newRule = e.target.querySelector('input[type=text]').value;
+  if (newRule) {
+    newRule = wildcard(newRule)
+    addNewRule(newRule);
     e.target.querySelector('input[type=text]').value = ""
   }
 });
@@ -104,7 +163,7 @@ document.getElementById('add').addEventListener('submit', e => {
 const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
   if (table) {
-    prefs.blocked.forEach(add);
+    prefs.rules.forEach(rule => add(rule.rule, rule.redirect))
   }
   document.getElementById('title').checked = prefs.title;
   document.getElementById('initialBlock').checked = prefs.initialBlock;
@@ -123,20 +182,24 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.querySelector('[data-cmd="export"]').disabled = prefs.password !== '';
   document.querySelector('[data-cmd="import-json"]').disabled = prefs.password !== '';
   document.getElementById('rules').textContent = '';
-  for (const rule of Object.keys(prefs.schedules)) {
-    const option = document.createElement('option');
-    option.value = rule;
-    document.getElementById('rules').appendChild(option);
-  }
+
+  prefs.rules.forEach(r => {
+    if (r.schedule) {
+      addTimeScheduleFromRuleHtml(r.rule)
+    }
+  })
 });
 init();
 
 document.querySelector('#schedule [name="hostname"]').addEventListener('input', e => {
-  const schedule = prefs.schedules[e.target.value];
-  if (schedule) {
-    document.querySelector('#schedule [name=start]').value = schedule.time.start;
-    document.querySelector('#schedule [name=end]').value = schedule.time.end;
-    document.querySelector('#schedule [name=days]').value = schedule.days.join(', ');
+  const rule = getRule(e.target.value)
+  if (rule) {
+    const schedule = rule.schedule
+    if (schedule) {
+      document.querySelector('#schedule [name=start]').value = schedule.time.start;
+      document.querySelector('#schedule [name=end]').value = schedule.time.end;
+      document.querySelector('#schedule [name=days]').value = schedule.days.join(', ');
+    }
   }
 });
 
@@ -146,7 +209,9 @@ document.addEventListener('click', e => {
   } = e;
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
+    removeRule(target.dataset.rule)
     target.closest('div').remove();
+    //todo remove host
   } else if (cmd === 'unlock') {
     const password = document.getElementById('password').value;
     chrome.runtime.sendMessage({
@@ -175,12 +240,24 @@ document.addEventListener('click', e => {
     const rule = document.querySelector('#schedule [name="hostname"]');
     if (rule.value) {
       if (schedule.days.length && schedule.time.start && schedule.time.end) {
-        prefs.schedules[rule.value] = schedule;
+        addTimeScheduleFromRule(rule.value, schedule)
       } else {
-        delete prefs.schedules[rule.value];
+        removeTimeScheduleFromRule(rule.value)
       }
       schedule = prefs.schedule;
     }
+
+    //map redirect with rules
+    [...document.querySelectorAll('#rules-container > div')].forEach((divRule) => {
+      const {
+        rule
+      } = divRule.dataset;
+      const redirect = divRule.querySelector('input[type=text]').value;
+      if (redirect) {
+        addRedirectFromRule(rule, redirect)
+      }
+    })
+    console.log(prefs.rules)
 
     const password = document.getElementById('password').value;
     chrome.storage.local.set({
@@ -194,20 +271,7 @@ document.addEventListener('click', e => {
       close: Math.max(Number(document.getElementById('close').value), 0),
       wrong: Math.max(Number(document.getElementById('wrong').value), 1),
       schedule,
-      schedules: prefs.schedules,
-      blocked: [...document.querySelectorAll('#rules-container > div')]
-        .map(tr => tr.dataset.hostname)
-        .filter((s, i, l) => s && l.indexOf(s) === i),
-      map: [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
-        const {
-          hostname
-        } = c.dataset;
-        const mapped = c.querySelector('input[type=text]').value;
-        if (mapped) {
-          p[hostname] = mapped;
-        }
-        return p;
-      }, {})
+      rules: prefs.rules,
     }, () => {
       info.textContent = 'Options saved';
       window.setTimeout(() => info.textContent = '', 750);

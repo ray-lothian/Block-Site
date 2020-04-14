@@ -4,12 +4,10 @@
 const prefs = {
   timeout: 60, // seconds
   keywords: [],
-  blocked: [],
   password: '',
   redirect: '',
   wrong: 1, // minutes,
   reverse: false,
-  map: {},
   schedule: {
     days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     time: {
@@ -17,6 +15,7 @@ const prefs = {
       end: ''
     }
   },
+  rules: [],
   schedules: {},
   initialBlock: true
 };
@@ -50,9 +49,10 @@ const createRegexp = rule => {
   if (rule.startsWith('R:')) {
     return new RegExp(rule.substr(2), 'i');
   }
-  return new RegExp('^' + rule.split('*').join('.*') + '$', 'i');
+  let pattern = rule
+  pattern = pattern.split('*').join('.*')
+  return new RegExp('^' + pattern + '$', 'i');
 };
-
 
 const protos = [
   "http:",
@@ -115,6 +115,10 @@ const toHostname = url => {
 
 const isWhite = (url) => {
   //white
+  console.log('WHITE;:', {
+    url,
+    WHITE_LIST
+  })
   for (const rule of WHITE_LIST) {
     if (rule.test(url)) {
       return true
@@ -123,70 +127,120 @@ const isWhite = (url) => {
   return false
 }
 
-const isBlocked = (url, rules) => {
-  if (!isWhite(url)) {
-    //black
-    for (const rule of rules) {
-      if (rule.test(url)) {
-        return true
+const isMatch = (url) => {
+  //black
+  if (getFirstRuleMatch(url) !== undefined) {
+    return true
+  }
+  return false
+}
+
+const isMatchSchedule = (schedule) => {
+  if (!schedule) {
+    return true // match by default
+  }
+  let days = schedule.days;
+  let time = schedule.time;
+
+  if (days.length && time.start && time.end) {
+    const d = new Date();
+    const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+    if (days.indexOf(day) === -1) {
+      return false;
+    }
+    const now = d.getHours() * 60 + d.getMinutes();
+    const [ss, se] = time.start.split(':');
+    const start = Number(ss) * 60 + Number(se);
+    const [es, ee] = time.end.split(':');
+
+    const end = Number(es) * 60 + Number(ee);
+
+    console.log({
+      now,
+      start,
+      end
+    })
+    if (start < end) {
+      if (now < start || now > end) {
+        return false; // range mismatch, do not block
       }
+    } else {
+      if (now > end && now < start) {
+        return false; // range mismatch, do not block
+      }
+    }
+    return true; // act like schedule is disabled
+  }
+}
+
+const getFirstRuleMatch = (url) => {
+  console.log('TEST ======================= (' + url + ')')
+  for (const rule of prefs.rules) {
+    console.log({
+      rule,
+      t: rule.reg.test(url),
+      r: isMatchSchedule(rule.schedule)
+    })
+    if (rule.reg.test(url) && isMatchSchedule(rule.schedule)) {
+      return rule
     }
   }
   return false
+}
+
+const getRedirect = (d, redirect) => {
+  console.log("getRedirect", {
+    d,
+    redirect
+  })
+  if (redirect) {
+    if (redirect === 'close') {
+      try {
+        console.log('HHHHHHHHHH', d)
+        chrome.tabs.remove(d.id);
+        return;
+      } catch (error) {
+        return redirectUrl
+      }
+    }
+    return redirect
+  }
+
+  console.log("redirect")
+  // custom URL
+  const redirectUrl = prefs.redirect ||
+    chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url);
+  return redirectUrl
+}
+
+const getRule = (searchRule) => {
+  return prefs.rules.find(rule => {
+    return rule.rule === searchRule
+  })
+}
+
+// Add rule in prefs + html
+function addNewRule(NewRule) {
+  if (getRule(NewRule) === undefined) {
+    prefs.rules.push({
+      rule: NewRule
+    })
+  }
+  // TODO notify
+  return undefined
+}
+
+// Remove rule in prefs 
+function removeRule(removeRule) {
+  prefs.rules = prefs.rules.filter(rule => rule.rule !== removeRule)
 }
 
 /* *********************************************************** */
 
 WHITE_LIST = WHITE_LIST.map(createRegexp)
 
-const schedule = {
-  test(d) {
-    let {
-      days,
-      time
-    } = prefs.schedule;
-    // per rule schedule
-    if (isBlocked(d.url, schedule.rules)) {
-      const index = schedule.rules.indexOf(rule);
-      const o = Object.values(prefs.schedules)[index];
-      days = o.days;
-      time = o.time;
-    }
-    if (days.length && time.start && time.end) {
-      const d = new Date();
-      const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
-      if (days.indexOf(day) === -1) {
-        return false;
-      }
-      const now = d.getHours() * 60 + d.getMinutes();
-      const [ss, se] = time.start.split(':');
-      const start = Number(ss) * 60 + Number(se);
-      const [es, ee] = time.end.split(':');
-
-      const end = Number(es) * 60 + Number(ee);
-
-      if (start < end) {
-        if (now < start || now > end) {
-          return false; // range mismatch, do not block
-        }
-      } else {
-        if (now > end && now < start) {
-          return false; // range mismatch, do not block
-        }
-      }
-      return true; // act like schedule is disabled
-    }
-    // schedule is disabled -> ignore
-    return true;
-  },
-  build() {
-    schedule.rules = Object.keys(prefs.schedules).map(r => new RegExp(r, 'i'));
-  }
-};
-
-schedule.rules = [];
-
-const onBeforeRequest = d => {
+const onBeforeRequest2 = (d, rule) => {
+  console.log("onBeforeRequest2")
   const hostname = toHostname(d.url);
   if (once.length) {
     const index = once.indexOf(hostname);
@@ -200,139 +254,86 @@ const onBeforeRequest = d => {
       return;
     }
   }
+
   // pause blocking
   if (paused) {
     return;
   }
-  // schedule
-  if (schedule.test(d) === false) {
-    return;
-  }
-  // redirect
-  if (prefs.map[hostname]) {
-    if (prefs.map[hostname] === 'close') {
-      chrome.tabs.remove(d.tabId);
-      return {
-        'redirectUrl': 'JavaScript:window.close()'
-      };
-    }
-    const search = (new URL(d.url)).search;
-    return {
-      'redirectUrl': prefs.map[hostname] + (search || '')
-    };
-  }
-  // custom URL
-  const redirectUrl = prefs.redirect ||
-    chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url);
-  return {
-    redirectUrl
-  };
-};
 
-let directPattern = [];
-const onBeforeRequestDirect = d => {
-  if (isBlocked(d.url, directPattern)) {
-    return onBeforeRequest(d);
-  }
-};
-const onUpdatedDirect = (tabId, changeInfo) => {
-  if (changeInfo.url) {
-    const rtn = onBeforeRequestDirect(changeInfo);
-    if (rtn && rtn.redirectUrl) {
-      chrome.tabs.update(tabId, {
-        url: rtn.redirectUrl
-      });
+  return getRedirect(d, rule.redirect)
+}
+
+const onRequest = d => {
+  console.log('onRequest:' + d)
+  if (!isWhite(d.url)) {
+    const rule = getFirstRuleMatch(d.url)
+    console.log('Rule FIND: ', rule)
+    if ((rule && !prefs.reverse) || (!rule && prefs.reverse)) {
+      return onBeforeRequest2(d, rule)
     }
   }
-};
+  return
+}
 
-let reversePattern = [];
-const onBeforeRequestReverse = d => {
-  if (isBlocked(d.url, reversePattern)) {
-    return;
-  }
-  return onBeforeRequest(d);
-};
-const onUpdatedReverse = (tabId, changeInfo) => {
+const onUpdated = (tabId, changeInfo) => {
+  console.log('onUpdated', {
+    tabId,
+    changeInfo
+  })
   if (changeInfo.url) {
-    const rtn = onBeforeRequestReverse(changeInfo);
-    if (rtn && rtn.redirectUrl) {
+    const rtn = onRequest(changeInfo);
+    console.log('REDIR:', rtn)
+    if (rtn) {
       chrome.tabs.update(tabId, {
-        url: rtn.redirectUrl
+        url: rtn
       });
     }
   }
 };
 
 const observe = () => {
-  if (prefs.blocked.length && prefs.reverse === false) {
-    observe.build.direct();
-    let listen = {
-      'urls': [
-        "http://*",
-        "https://*",
-        "about://*",
-        "moz-extension://*",
-        "file://*",
-        "ftp://*",
-        "ftps://*",
-        "data://*"
-      ],
-      'types': ['main_frame', 'sub_frame']
-    }
-
-    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestDirect,
-      listen,
-      ['blocking']);
-    chrome.tabs.onUpdated.addListener(onUpdatedDirect);
-    // check already opened
-    if (prefs.initialBlock) {
-      chrome.tabs.query({
-        url: '*://*/*'
-      }, tabs => tabs.forEach(tab => onUpdatedDirect(tab.id, tab)));
-    }
+  let listen = {
+    'urls': [
+      "http://*",
+      "https://*",
+      "about://*",
+      "moz-extension://*",
+      "file://*",
+      "ftp://*",
+      "ftps://*",
+      "data://*"
+    ],
+    'types': ['main_frame', 'sub_frame']
   }
-  // reverse mode
-  else if (prefs.reverse) {
-    observe.build.reverse();
 
-    chrome.webRequest.onBeforeRequest.addListener(onBeforeRequestReverse, listen, ['blocking']);
-    chrome.tabs.onUpdated.addListener(onUpdatedReverse);
-    // check already opened
-    if (prefs.initialBlock) {
-      chrome.tabs.query({
-        url: '*://*/*'
-      }, tabs => tabs.forEach(tab => onUpdatedReverse(tab.id, tab)));
-    }
+  observe.build();
+
+  chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest2,
+    listen,
+    ['blocking']);
+  chrome.tabs.onUpdated.addListener(onUpdated);
+  // check already opened
+  if (prefs.initialBlock) {
+    chrome.tabs.query({
+      url: '*://*/*'
+    }, tabs => tabs.forEach(tab => onUpdated(tab.id, tab)));
   }
 };
 
 
-observe.build = {
-  direct() {
-    directPattern = prefs.blocked.map(createRegexp);
-  },
-  reverse() {
-    reversePattern = prefs.blocked.map(createRegexp);
-  }
-};
+observe.build = () => {
+  prefs.rules.forEach(rule => rule.reg = createRegexp(rule.rule))
+}
 
 chrome.storage.local.get(prefs, p => {
   Object.assign(prefs, p);
-  schedule.build();
   observe();
 });
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
-  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestDirect);
-  chrome.tabs.onUpdated.removeListener(onUpdatedDirect);
-  chrome.webRequest.onBeforeRequest.removeListener(onBeforeRequestReverse);
-  chrome.tabs.onUpdated.removeListener(onUpdatedReverse);
+  chrome.webRequest.onBeforeRequest.removeListener(onRequest)
+  chrome.tabs.onUpdated.removeListener(onUpdated);
   observe();
-
-  if (ps.schedules) {
-    schedule.build();
-  }
 });
 //
 const notify = message => chrome.notifications.create(null, {
@@ -388,22 +389,25 @@ const onMessage = (request, sender, response) => {
   } else if (request.method === 'close-tab') {
     chrome.tabs.remove(sender.tab.id);
   } else if (request.method === 'append-to-list') {
-    const blocked = [...prefs.blocked, ...request.hostnames].filter((s, i, l) => l.indexOf(s) === i);
+    addNewRule(request.rule)
+    console.log(prefs.rules)
     chrome.storage.local.set({
-      blocked
+      rules: prefs.rules
     }, response);
 
     return true;
   } else if (request.method === 'remove-from-list') {
-    const ids = [];
-    (request.mode === 'reverse' ? reversePattern : directPattern).forEach((rule, index) => {
-      if (rule.test(request.href)) {
-        ids.push(index);
-      }
-    });
-    const blocked = prefs.blocked.filter((a, i) => ids.indexOf(i) === -1);
+    //check
+    /*     const ids = [];
+        (pattern).forEach((rule, index) => {
+          if (rule.test(request.rule)) {
+            ids.push(index);
+          }
+        }); */
+
+    removeRule(request.rule)
     chrome.storage.local.set({
-      blocked
+      rules: prefs.rules
     }, response);
     return true;
   }
@@ -414,12 +418,13 @@ chrome.browserAction.onClicked.addListener(tab => {
   if (isWhite(tab.url)) {
     return notify('bg_msg_1');
   }
-  const hostname = wildcard(toHostname(tab.url));
+  const rule = wildcard(toHostname(tab.url));
   let msg = ""
+
   if (prefs.reverse) {
-    msg = chrome.i18n.getMessage('bg_msg_13').replace('##', hostname)
+    msg = chrome.i18n.getMessage('bg_msg_13').replace('##', rule)
   } else {
-    msg = chrome.i18n.getMessage('bg_msg_14').replace('##', hostname)
+    msg = chrome.i18n.getMessage('bg_msg_14').replace('##', rule)
   }
   msg = JSON.stringify(msg);
 
@@ -431,18 +436,10 @@ chrome.browserAction.onClicked.addListener(tab => {
       notify(chrome.runtime.lastError.message);
     }
     if (r && r.length && r[0] === true) {
-      if (prefs.reverse) {
-        onMessage({
-          method: 'remove-from-list',
-          href: tab.url,
-          mode: 'reverse'
-        }, null, () => chrome.tabs.reload(tab.id));
-      } else {
-        onMessage({
-          method: 'append-to-list',
-          hostnames: [hostname]
-        }, null, () => chrome.tabs.reload(tab.id));
-      }
+      onMessage({
+        method: 'append-to-list',
+        rule
+      }, null, () => chrome.tabs.reload(tab.id));
     }
   });
 });
