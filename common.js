@@ -114,11 +114,6 @@ const toHostname = url => {
 };
 
 const isWhite = (url) => {
-  //white
-  console.log('WHITE;:', {
-    url,
-    WHITE_LIST
-  })
   for (const rule of WHITE_LIST) {
     if (rule.test(url)) {
       return true
@@ -155,11 +150,6 @@ const isMatchSchedule = (schedule) => {
 
     const end = Number(es) * 60 + Number(ee);
 
-    console.log({
-      now,
-      start,
-      end
-    })
     if (start < end) {
       if (now < start || now > end) {
         return false; // range mismatch, do not block
@@ -174,13 +164,7 @@ const isMatchSchedule = (schedule) => {
 }
 
 const getFirstRuleMatch = (url) => {
-  console.log('TEST ======================= (' + url + ')')
   for (const rule of prefs.rules) {
-    console.log({
-      rule,
-      t: rule.reg.test(url),
-      r: isMatchSchedule(rule.schedule)
-    })
     if (rule.reg.test(url) && isMatchSchedule(rule.schedule)) {
       return rule
     }
@@ -189,14 +173,9 @@ const getFirstRuleMatch = (url) => {
 }
 
 const getRedirect = (d, redirect) => {
-  console.log("getRedirect", {
-    d,
-    redirect
-  })
   if (redirect) {
     if (redirect === 'close') {
       try {
-        console.log('HHHHHHHHHH', d)
         chrome.tabs.remove(d.id);
         return;
       } catch (error) {
@@ -206,7 +185,6 @@ const getRedirect = (d, redirect) => {
     return redirect
   }
 
-  console.log("redirect")
   // custom URL
   const redirectUrl = prefs.redirect ||
     chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + encodeURIComponent(d.url);
@@ -240,7 +218,6 @@ function removeRule(removeRule) {
 WHITE_LIST = WHITE_LIST.map(createRegexp)
 
 const onBeforeRequest2 = (d, rule) => {
-  console.log("onBeforeRequest2")
   const hostname = toHostname(d.url);
   if (once.length) {
     const index = once.indexOf(hostname);
@@ -264,10 +241,8 @@ const onBeforeRequest2 = (d, rule) => {
 }
 
 const onRequest = d => {
-  console.log('onRequest:' + d)
   if (!isWhite(d.url)) {
     const rule = getFirstRuleMatch(d.url)
-    console.log('Rule FIND: ', rule)
     if ((rule && !prefs.reverse) || (!rule && prefs.reverse)) {
       return onBeforeRequest2(d, rule)
     }
@@ -276,13 +251,8 @@ const onRequest = d => {
 }
 
 const onUpdated = (tabId, changeInfo) => {
-  console.log('onUpdated', {
-    tabId,
-    changeInfo
-  })
   if (changeInfo.url) {
     const rtn = onRequest(changeInfo);
-    console.log('REDIR:', rtn)
     if (rtn) {
       chrome.tabs.update(tabId, {
         url: rtn
@@ -390,7 +360,6 @@ const onMessage = (request, sender, response) => {
     chrome.tabs.remove(sender.tab.id);
   } else if (request.method === 'append-to-list') {
     addNewRule(request.rule)
-    console.log(prefs.rules)
     chrome.storage.local.set({
       rules: prefs.rules
     }, response);
