@@ -26,9 +26,10 @@
       <h1 data-i18n="options_list_header"></h1>
       <template>
         <div>
-          <span title="Click to insert the rule" data-id="href">HTTP://</span>
-          <input type="text" flex="1" placeholder="Optional redirect URL">
-          <input type="button" data-cmd="remove">
+          <span title="Click to insert the rule" style=" grid-column: 1; grid-row: 1;" data-id="href">HTTP://</span>
+          <span  data-id="schedule" style=" grid-column: 2; grid-row: 1;">time</span>
+          <input type="text" placeholder="Optional redirect URL" style=" grid-column: 3; grid-row: 1;">
+          <input type="button" data-cmd="remove"  flex="1" style=" grid-column: 4; grid-row: 1;">
         </div>
       </template>
       <div id="rules-container"></div>

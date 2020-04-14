@@ -80,7 +80,7 @@ function addNewRule(NewRule) {
     prefs.rules.push({
       rule: NewRule
     })
-    return add(NewRule)
+    return addHtmlRule(NewRule)
   }
   // TODO notify
   return undefined
@@ -91,15 +91,26 @@ function removeRule(removeRule) {
   prefs.rules = prefs.rules.filter(rule => rule.rule !== removeRule)
 }
 
+function scheduleToString(schedule) {
+  if (schedule) {
+    return `${schedule.time.start} - ${schedule.time.end} | ${schedule.days.join(',')}`
+  }
+  return ''
+}
 
 // Add rule in html page
-function add(rule, redirect) {
+function addHtmlRule(rule, redirect, schedule) {
+  let scheduleStr = scheduleToString(schedule)
   const template = document.querySelector('#list template');
+
   const node = document.importNode(template.content, true);
   const div = node.querySelector('div');
-  div.dataset.pattern = node.querySelector('[data-id=href]').textContent = rule
+  node.querySelector('[data-id=href]').textContent = rule
   div.dataset.rule = rule;
   const rd = node.querySelector('input');
+
+  //schedule span
+  node.querySelector('[data-id=schedule]').textContent = scheduleStr
 
   // Remove button
   const rm = node.querySelector('[data-cmd="remove"]')
@@ -128,16 +139,17 @@ function addRedirectFromRule(rule, redirect) {
 function addTimeScheduleFromRuleHtml(rule) {
   const option = document.createElement('option');
   option.value = rule;
-  console.log(option)
   document.getElementById('rules').appendChild(option);
 }
 
 function addTimeScheduleFromRule(rule, schedule) {
-  const changeRule = getRule(rule)
-  if (changeRule) {
-    changeRule.schedule = schedule
-    addTimeScheduleFromRuleHtml(rule.rule)
+  let changeRule = getRule(rule)
+  if (!changeRule) {
+    addNewRule(rule)
+    changeRule = getRule(rule)
   }
+  changeRule.schedule = schedule
+  addTimeScheduleFromRuleHtml(rule.rule)
   return changeRule
 }
 
@@ -163,8 +175,9 @@ document.getElementById('add').addEventListener('submit', e => {
 const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
   if (table) {
-    prefs.rules.forEach(rule => add(rule.rule, rule.redirect))
+    prefs.rules.forEach(rule => addHtmlRule(rule.rule, rule.redirect, rule.schedule))
   }
+  
   document.getElementById('title').checked = prefs.title;
   document.getElementById('initialBlock').checked = prefs.initialBlock;
   document.getElementById('reverse').checked = prefs.reverse;
@@ -182,7 +195,6 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.querySelector('[data-cmd="export"]').disabled = prefs.password !== '';
   document.querySelector('[data-cmd="import-json"]').disabled = prefs.password !== '';
   document.getElementById('rules').textContent = '';
-
   prefs.rules.forEach(r => {
     if (r.schedule) {
       addTimeScheduleFromRuleHtml(r.rule)
@@ -257,7 +269,6 @@ document.addEventListener('click', e => {
         addRedirectFromRule(rule, redirect)
       }
     })
-    console.log(prefs.rules)
 
     const password = document.getElementById('password').value;
     chrome.storage.local.set({
@@ -276,7 +287,8 @@ document.addEventListener('click', e => {
       info.textContent = 'Options saved';
       window.setTimeout(() => info.textContent = '', 750);
       window.removeEventListener('beforeunload', warning);
-      init(false);
+      window.location.reload();
+      //init(false);
     });
   } else if (cmd === 'import-txt') {
     const input = document.createElement('input');
@@ -298,7 +310,7 @@ document.addEventListener('click', e => {
           input.remove();
           event.target.result.split('\n').map(l => l.trim()).filter(l => l && l[0] !== '#').forEach(l => {
             const [a, b] = l.split(/\s+/);
-            const rd = add(a);
+            const rd = addHtmlRule(a);
             if (b) {
               rd.value = b;
             }
