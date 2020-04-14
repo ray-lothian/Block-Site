@@ -331,9 +331,10 @@ chrome.browserAction.onClicked.addListener(tab => {
   } else {
     msg = chrome.i18n.getMessage('bg_msg_14').replace('##', hostname)
   }
+  msg = JSON.stringify(msg);
   chrome.tabs.executeScript(tab.id, {
     'runAt': 'document_start',
-    'code': `window.stop(); window.confirm('${msg}')`
+    'code': `window.stop(); window.confirm(${msg})`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);
