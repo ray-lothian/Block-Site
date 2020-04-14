@@ -42,7 +42,7 @@
     "message": "Règle:"
   },
   "options_reverse": {
-    "message": "Fonctionner en mode inversé (seuls les modèles correspondants sont accessibles)"
+    "message": "Fonctionner en mode inversé/ liste blanche"
   },
   "options_new_hostname": {
     "message": "Bloquer une nouvelle url "
