@@ -208,11 +208,24 @@ observe.wildcard = h => {
   }
   return h;
 };
+
+observe.escapeRegexp = str => {
+  const specials = [
+    // order matters for these
+    '-', '[', ']'
+    // order doesn't matter for any of these
+    , '/', '{', '}', '(', ')', '*', '+', '?', '.', '\\', '^', '$', '|'
+  ]
+
+  const regex = RegExp('[' + specials.join('\\') + ']', 'g')
+  return str.replace(regex, '\\$&');
+}
+
 observe.regexp = rule => {
   if (rule.startsWith('R:')) {
     return new RegExp(rule.substr(2), 'i');
   }
-  return new RegExp('^' + rule.split('*').join('.*') + '$', 'i');
+  return new RegExp('^' + rule.split('*').map(observe.escapeRegexp).join('.*') + '$', 'i');
 };
 observe.build = {
   direct() {

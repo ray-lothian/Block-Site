@@ -44,6 +44,16 @@ const wildcard = h => {
   return h;
 };
 
+function isGoodRegex(regexStr) {
+  try {
+    new RegExp(regexStr, 'i')
+    return true
+  }
+  catch (error) {
+    return false
+  }
+}
+
 function add(hostname) {
   const template = document.querySelector('#list template');
   const node = document.importNode(template.content, true);
@@ -64,7 +74,11 @@ document.getElementById('add').addEventListener('submit', e => {
   e.preventDefault();
   const hostname = e.target.querySelector('input[type=text]').value;
   if (hostname) {
-    add(hostname);
+    if (hostname.startsWith('R:') && !isGoodRegex(hostname.substr(2))) {
+      // TODO notify warning
+      return;
+    }
+      add(hostname);
   }
 });
 
@@ -143,13 +157,16 @@ document.addEventListener('click', async e => {
     };
     const rule = document.querySelector('#schedule [name="hostname"]');
     if (rule.value) {
-      if (schedule.days.length && schedule.time.start && schedule.time.end) {
-        prefs.schedules[rule.value] = schedule;
+      if (isGoodRegex(rule.value)) {
+        if (schedule.days.length && schedule.time.start && schedule.time.end) {
+          prefs.schedules[rule.value] = schedule;
+        } else {
+          delete prefs.schedules[rule.value];
+        }
+        schedule = prefs.schedule;
       }
-      else {
-        delete prefs.schedules[rule.value];
-      }
-      schedule = prefs.schedule;
+      // else notify
+
     }
 
     const password = document.getElementById('password').value;
