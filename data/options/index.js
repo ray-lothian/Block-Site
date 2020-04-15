@@ -48,7 +48,8 @@ function isGoodRegex(regexStr) {
   try {
     new RegExp(regexStr, 'i')
     return true
-  } catch (error) {
+  }
+  catch (error) {
     return false
   }
 }
@@ -75,7 +76,7 @@ document.getElementById('add').addEventListener('submit', e => {
   if (hostname) {
     if (hostname.startsWith('R:') && !isGoodRegex(hostname.substr(2))) {
       // TODO notify warning
-      return ; 
+      return;
     }
       add(hostname);
   }

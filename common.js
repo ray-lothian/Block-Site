@@ -210,15 +210,15 @@ observe.wildcard = h => {
 };
 
 observe.escapeRegexp = str => {
-  var specials = [
+  const specials = [
     // order matters for these
-    "-", "[", "]"
+    '-', '[', ']'
     // order doesn't matter for any of these
-    , "/", "{", "}", "(", ")", "*", "+", "?", ".", "\\", "^", "$", "|"
+    , '/', '{', '}', '(', ')', '*', '+', '?', '.', '\\', '^', '$', '|'
   ]
 
   const regex = RegExp('[' + specials.join('\\') + ']', 'g')
-  return str.replace(regex, "\\$&");
+  return str.replace(regex, '\\$&');
 }
 
 observe.regexp = rule => {
