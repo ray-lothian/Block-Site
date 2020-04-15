@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
   close: 0,
   message: '',
   password: '',
+  sha256: '',
   reverse: false
 }, prefs => {
   document.getElementById('message').textContent = prefs.message;
@@ -76,29 +77,43 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
   document.getElementById('exception').textContent = chrome.i18n.getMessage(
     prefs.reverse ? 'blocked_add_to_whitelist' : 'blocked_remove_blocking'
   );
-  document.getElementById('exception').addEventListener('click', e => {
+  document.getElementById('exception').addEventListener('click', async e => {
     e.stopPropagation();
+    const next = () => {
+      if (prefs.reverse === false) {
+        const url = document.getElementById('url');
+        chrome.runtime.sendMessage({
+          method: 'remove-from-list',
+          href: url.href
+        }, () => url.click());
+      }
+      else {
+        const hostnames = [document.getElementById('domain').textContent];
+        if (document.getElementById('sub-domain').textContent) {
+          hostnames.push('*.' + document.getElementById('domain').textContent);
+        }
+        chrome.runtime.sendMessage({
+          method: 'append-to-list',
+          hostnames
+        }, () => document.getElementById('url').click());
+      }
+    };
     const password = document.querySelector('[type=password]');
-    if (prefs.password && prefs.password !== password.value) {
-      alert(chrome.i18n.getMessage('blocked_no_action'));
-      return password.focus();
-    }
-    if (prefs.reverse === false) {
-      const url = document.getElementById('url');
+    if (prefs.password || prefs.sha256) {
       chrome.runtime.sendMessage({
-        method: 'remove-from-list',
-        href: url.href
-      }, () => url.click());
+        method: 'check-password',
+        password: password.value
+      }, resp => {
+        if (resp) {
+          next();
+        }
+        else {
+          return password.focus();
+        }
+      });
     }
     else {
-      const hostnames = [document.getElementById('domain').textContent];
-      if (document.getElementById('sub-domain').textContent) {
-        hostnames.push('*.' + document.getElementById('domain').textContent);
-      }
-      chrome.runtime.sendMessage({
-        method: 'append-to-list',
-        hostnames
-      }, () => document.getElementById('url').click());
+      next();
     }
   });
 }));

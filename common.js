@@ -4,7 +4,8 @@ const prefs = {
   timeout: 60, // seconds
   keywords: [],
   blocked: [],
-  password: '',
+  sha256: '', // sha256 hash code of the user password
+  password: '', // deprecated
   redirect: '',
   wrong: 1, // minutes,
   reverse: false,
@@ -247,49 +248,78 @@ const notify = message => chrome.notifications.create(null, {
   message: chrome.i18n.getMessage(message) || message
 });
 
+
+
+const sha256 = async message => {
+  const msgBuffer = new TextEncoder('utf-8').encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+  return hashHex;
+};
+window.sha256 = sha256;
 const retries = {
   id: null,
   count: 0
 };
-
-const onMessage = (request, sender, response) => {
-  const wrong = () => {
+sha256.validate = ({password}, resolve, reject) => {
+  const s = () => {
+    window.clearTimeout(retries.id);
+    retries.count = 0;
+    resolve();
+  };
+  const f = () => {
     retries.count += 1;
     window.clearTimeout(retries.id);
     retries.id = window.setTimeout(() => {
       retries.count = 0;
     }, prefs.wrong * 60 * 1000);
-    notify('bg_msg_2');
+
+    reject();
   };
 
+  if (retries.count >= 5) {
+    reject(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
+  }
+  else if (password && password === prefs.password) {/* deprecated */
+    s();
+  }
+  else if (prefs.sha256) {
+    sha256(password).then(hash => {
+      if (hash === prefs.sha256) {
+        s();
+      }
+      else {
+        f();
+      }
+    });
+  }
+  else {
+    f();
+  }
+};
+
+const onMessage = (request, sender, response) => {
   if (request.method === 'open-once') {
-    if (prefs.password === '') {
-      notify('bg_msg_3');
-    }
-    else if (retries.count >= 5) {
-      notify(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
-    }
-    else if (request.password === prefs.password) {
+    const next = () => {
       const {url} = request;
       once.push(toHostname(url));
       chrome.tabs.update(sender.tab.id, {url});
+    };
+
+    if (prefs.password === '' && prefs.sha256 === '') {
+      notify('bg_msg_3');
     }
     else {
-      wrong();
+      sha256.validate(request, next, msg => notify(msg || 'bg_msg_2'));
     }
   }
   else if (request.method === 'check-password') {
-    if (retries.count >= 5) {
-      notify(chrome.i18n.getMessage('bg_msg_4').replace('##', prefs.wrong));
+    sha256.validate(request, () => response(true), msg => {
       response(false);
-    }
-    else if (request.password === prefs.password) {
-      response(true);
-    }
-    else {
-      wrong();
-      response(false);
-    }
+      notify(msg || 'bg_msg_2');
+    });
+    return true;
   }
   else if (request.method === 'open-options') {
     chrome.runtime.openOptionsPage();
@@ -406,16 +436,21 @@ chrome.contextMenus.onClicked.addListener(info => {
   if (info.menuItemId === 'resume') {
     paused = false;
     chrome.alarms.clear('paused');
+    notify('bg_msg_16');
   }
   else {
-    const next = () => {
+    const resolve = () => {
       paused = true;
       const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
       chrome.alarms.create('paused', {
         when
       });
+      notify('bg_msg_15');
     };
-    if (prefs.password) {
+
+    const next = password => sha256.validate({password}, resolve, msg => notify(msg || 'bg_msg_2'));
+
+    if (prefs.password || prefs.sha256) {
       if (/Firefox/.test(navigator.userAgent)) {
         chrome.tabs.executeScript({
           code: `window.prompt("${chrome.i18n.getMessage('bg_msg_12')}")`
@@ -424,23 +459,15 @@ chrome.contextMenus.onClicked.addListener(info => {
           if (lastError) {
             return notify(lastError.message);
           }
-          if (arr[0] === prefs.password) {
-            next();
-          }
-          else {
-            notify('bg_msg_2');
-          }
+          next(arr[0]);
         });
       }
-      else if (window.prompt(chrome.i18n.getMessage('bg_msg_12')) === prefs.password) {
-        next();
-      }
       else {
-        notify('bg_msg_2');
+        next(window.prompt(chrome.i18n.getMessage('bg_msg_12')));
       }
     }
     else {
-      next();
+      resolve();
     }
   }
 });

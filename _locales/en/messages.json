@@ -119,9 +119,6 @@
   "options_sup_8": {
     "message": "Prepare a text file containing all the blocking rules in plain text format. After importing, press the save button for the changes to take place. To disregard the imported rules, reload this page without saving."
   },
-  "options_sup_9": {
-    "message": "The exported JSON file contains your master password. Do not share this file."
-  },
   "options_sup_10": {
     "message": "When importing settings, all your existing settings will be overwritten."
   },
@@ -154,9 +151,6 @@
   },
   "blocked_add_to_whitelist": {
     "message": "Add to Whitelist"
-  },
-  "blocked_no_action": {
-    "message": "Master password is not correct. Fill the box and retry"
   },
   "bg_msg_1": {
     "message": "This tab doesn't have a valid URL"
@@ -199,5 +193,11 @@
   },
   "bg_msg_14": {
     "message": "Add \"##\" to the blocked list?"
+  },
+  "bg_msg_15": {
+    "message": "Blocking is paused. You can now access the restricted URLs."
+  },
+  "bg_msg_16": {
+    "message": "Blocking is resumed."
   }
 }
