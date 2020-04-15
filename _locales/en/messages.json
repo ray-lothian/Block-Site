@@ -182,10 +182,10 @@
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
   },
-  "bg_msg_13": {
+  "bg_msg_15": {
     "message": "Blocking is paused. You can now access the restricted URLs."
   },
-  "bg_msg_14": {
+  "bg_msg_16": {
     "message": "Blocking is resumed."
   }
 }

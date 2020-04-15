@@ -430,7 +430,7 @@ chrome.contextMenus.onClicked.addListener(info => {
   if (info.menuItemId === 'resume') {
     paused = false;
     chrome.alarms.clear('paused');
-    notify('bg_msg_14');
+    notify('bg_msg_16');
   }
   else {
     const resolve = () => {
@@ -439,7 +439,7 @@ chrome.contextMenus.onClicked.addListener(info => {
       chrome.alarms.create('paused', {
         when
       });
-      notify('bg_msg_13');
+      notify('bg_msg_15');
     };
 
     const next = password => sha256.validate({password}, resolve, msg => notify(msg || 'bg_msg_2'));
