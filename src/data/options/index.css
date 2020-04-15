@@ -139,6 +139,15 @@ td {
     grid-template-columns: 1fr 1fr;
   }
 }
+#toast {
+  margin-top: 10px;
+  display: block;
+}
+#toast[data-type=error] {
+  font-weight: bold;
+  color: #ff2323;
+}
+
 .space {
   margin-bottom: 5px;
   display: block;

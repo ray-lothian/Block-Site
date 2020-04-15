@@ -5,7 +5,14 @@
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
 });
 
-const info = document.getElementById('info');
+const toast = (msg, period = 750, type = 'info') => {
+  const e = document.getElementById('toast');
+  e.dataset.type = type;
+  clearTimeout(toast.id);
+  toast.id = setTimeout(() => e.textContent = '', period);
+  e.textContent = msg;
+};
+
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const warning = e => {
@@ -44,13 +51,13 @@ const wildcard = h => {
   return h;
 };
 
-function isGoodRegex(regexStr) {
+function validateRegex(regexStr) {
   try {
-    new RegExp(regexStr, 'i')
-    return true
+    new RegExp(regexStr, 'i');
+    return '';
   }
   catch (error) {
-    return false
+    return error;
   }
 }
 
@@ -74,11 +81,13 @@ document.getElementById('add').addEventListener('submit', e => {
   e.preventDefault();
   const hostname = e.target.querySelector('input[type=text]').value;
   if (hostname) {
-    if (hostname.startsWith('R:') && !isGoodRegex(hostname.substr(2))) {
-      // TODO notify warning
-      return;
+    if (hostname.startsWith('R:')) {
+      const e = validateRegex(hostname.substr(2));
+      if (e) {
+        return toast(e.message, 3000, 'error');
+      }
     }
-      add(hostname);
+    add(hostname);
   }
 });
 
@@ -157,16 +166,19 @@ document.addEventListener('click', async e => {
     };
     const rule = document.querySelector('#schedule [name="hostname"]');
     if (rule.value) {
-      if (isGoodRegex(rule.value)) {
+      const e = validateRegex(rule.value);
+      if (e) {
+        return toast('Schedule Blocking; ' + e.message, 3000, 'error');
+      }
+      else {
         if (schedule.days.length && schedule.time.start && schedule.time.end) {
           prefs.schedules[rule.value] = schedule;
-        } else {
+        }
+        else {
           delete prefs.schedules[rule.value];
         }
         schedule = prefs.schedule;
       }
-      // else notify
-
     }
 
     const password = document.getElementById('password').value;
@@ -200,8 +212,7 @@ document.addEventListener('click', async e => {
         return p;
       }, {})
     }, () => {
-      info.textContent = 'Options saved';
-      window.setTimeout(() => info.textContent = '', 750);
+      toast('Options saved');
       window.removeEventListener('beforeunload', warning);
       init(false);
     });
@@ -219,7 +230,7 @@ document.addEventListener('click', async e => {
       if (input.value !== input.initialValue) {
         const file = input.files[0];
         if (file.size > 100e6) {
-          return console.warn('100MB backup? I don\'t believe you.');
+          return toast('100MB backup? I don\'t believe you.', undefined, 'error');
         }
         const reader = new FileReader();
         reader.onloadend = event => {
@@ -264,8 +275,7 @@ document.addEventListener('click', async e => {
       if (input.value !== input.initialValue) {
         const file = input.files[0];
         if (file.size > 100e6) {
-          console.warn('100MB backup? I don\'t believe you.');
-          return;
+          return toast('100MB backup? I don\'t believe you.', undefined, 'error');
         }
         const reader = new FileReader();
         reader.onloadend = event => {
@@ -283,8 +293,7 @@ document.addEventListener('click', async e => {
   }
   else if (cmd === 'reset') {
     if (e.detail === 1) {
-      info.textContent = 'Double-click to reset!';
-      window.setTimeout(() => info.textContent = '', 750);
+      toast('Double-click to reset!');
     }
     else {
       localStorage.clear();
