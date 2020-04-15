@@ -113,9 +113,6 @@
   "options_sup_8": {
     "message": "Prepare a text file containing all the blocking rules in plain text format. After importing, press the save button for the changes to take place. To disregard the imported rules, reload this page without saving."
   },
-  "options_sup_9": {
-    "message": "The exported JSON file contains your master password. Do not share this file."
-  },
   "options_sup_10": {
     "message": "When importing settings, all your existing settings will be overwritten."
   },
