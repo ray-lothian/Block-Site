@@ -189,10 +189,10 @@
     "message": "Please enter the master password to pause blocking"
   },
   "bg_msg_13": {
-    "message": "Add \"##\" to the whitelist?"
+    "message": "Unblock access to \"##\". Are you sure?"
   },
   "bg_msg_14": {
-    "message": "Add \"##\" to the blocked list?"
+    "message": "Access to \"##\" will be restricted. Are you sure?"
   },
   "bg_msg_15": {
     "message": "Blocking is paused. You can now access the restricted URLs."

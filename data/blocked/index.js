@@ -117,3 +117,12 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
     }
   });
 }));
+// external commands
+chrome.runtime.onMessage.addListener(request => {
+  if (request.method === 'press-exception') {
+    const msg = chrome.i18n.getMessage('bg_msg_13').replace('##', document.getElementById('domain').textContent);
+    if (window.confirm(msg)) {
+      document.getElementById('exception').click();
+    }
+  }
+});

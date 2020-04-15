@@ -351,25 +351,42 @@ const onMessage = (request, sender, response) => {
 chrome.runtime.onMessage.addListener(onMessage);
 
 chrome.browserAction.onClicked.addListener(tab => {
+  // this is an internal tab, press the unblock button
+  if (tab.url.indexOf(chrome.runtime.id) !== -1) {
+    return chrome.tabs.sendMessage(tab.id, {
+      method: 'press-exception'
+    });
+  }
   if (tab.url.startsWith('http') === false) {
     return notify('bg_msg_1');
   }
   const hostname = toHostname(tab.url);
-  let msg = ''
-  if (prefs.reverse) {
-    msg = chrome.i18n.getMessage('bg_msg_13').replace('##', hostname)
-  } else {
-    msg = chrome.i18n.getMessage('bg_msg_14').replace('##', hostname)
-  }
-  msg = JSON.stringify(msg);
-  chrome.tabs.executeScript(tab.id, {
+  const msg = chrome.i18n.getMessage('bg_msg_14');
+
+  chrome.tabs.executeScript({
     'runAt': 'document_start',
-    'code': `window.stop(); window.confirm(${msg})`
+    'file': 'data/blocked/tld.js'
+  }, () => chrome.tabs.executeScript(tab.id, {
+    'runAt': 'document_start',
+    'code': `(() => {
+      window.stop();
+      const hostname = ${JSON.stringify(hostname)};
+      const domain =  tld.getDomain(hostname);
+      const msg = ${JSON.stringify(msg)}.replace('##', domain);
+      if (window.confirm(msg)) {
+        if (hostname === domain) {
+          return [domain];
+        }
+        else {
+          return [domain, '*.' + domain];
+        }
+      }
+    })()`
   }, r => {
     if (chrome.runtime.lastError) {
       notify(chrome.runtime.lastError.message);
     }
-    if (r && r.length && r[0] === true) {
+    if (r && r.length && r[0]) {
       if (prefs.reverse) {
         onMessage({
           method: 'remove-from-list',
@@ -380,11 +397,11 @@ chrome.browserAction.onClicked.addListener(tab => {
       else {
         onMessage({
           method: 'append-to-list',
-          hostnames: [hostname]
+          hostnames: r[0]
         }, null, () => chrome.tabs.reload(tab.id));
       }
     }
-  });
+  }));
 });
 // context menus
 {
