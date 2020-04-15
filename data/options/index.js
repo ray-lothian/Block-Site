@@ -19,7 +19,8 @@ const prefs = {
   message: '',
   redirect: '',
   blocked: [],
-  password: '',
+  sha256: '',
+  password: '', // deprecated
   wrong: 1, // minutes
   title: true,
   reverse: false,
@@ -84,10 +85,12 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
   document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
   document.querySelector('#schedule [name=hostname]').value = '';
-  document.querySelector('[data-cmd=unlock]').disabled = prefs.password === '';
-  document.querySelector('[data-cmd="save"]').disabled = prefs.password !== '';
-  document.querySelector('[data-cmd="export"]').disabled = prefs.password !== '';
-  document.querySelector('[data-cmd="import-json"]').disabled = prefs.password !== '';
+
+  const safe = prefs.password !== '' || prefs.sha256 !== '';
+  document.querySelector('[data-cmd=unlock]').disabled = safe === false;
+  document.querySelector('[data-cmd="save"]').disabled = safe;
+  document.querySelector('[data-cmd="export"]').disabled = safe;
+  document.querySelector('[data-cmd="import-json"]').disabled = safe;
   document.getElementById('rules').textContent = '';
   for (const rule of Object.keys(prefs.schedules)) {
     const option = document.createElement('option');
@@ -106,7 +109,7 @@ document.querySelector('#schedule [name="hostname"]').addEventListener('input', 
   }
 });
 
-document.addEventListener('click', e => {
+document.addEventListener('click', async e => {
   const {target} = e;
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
@@ -150,8 +153,14 @@ document.addEventListener('click', e => {
     }
 
     const password = document.getElementById('password').value;
+    const sha256 = password ? await new Promise(resolve => {
+      chrome.runtime.getBackgroundPage(bg => resolve(bg.sha256(password)));
+    }) : '';
+
+    // clear deprecated password preference
+    chrome.storage.local.remove('password');
     chrome.storage.local.set({
-      password,
+      sha256,
       title: document.getElementById('title').checked,
       initialBlock: document.getElementById('initialBlock').checked,
       reverse: document.getElementById('reverse').checked,

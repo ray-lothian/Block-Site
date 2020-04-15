@@ -149,9 +149,6 @@
   "blocked_add_to_whitelist": {
     "message": "Add to Whitelist"
   },
-  "blocked_no_action": {
-    "message": "Master password is not correct. Fill the box and retry"
-  },
   "bg_msg_1": {
     "message": "This tab doesn't have a valid URL"
   },
@@ -187,5 +184,11 @@
   },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
+  },
+  "bg_msg_13": {
+    "message": "Blocking is paused. You can now access the restricted URLs."
+  },
+  "bg_msg_14": {
+    "message": "Blocking is resumed."
   }
 }
