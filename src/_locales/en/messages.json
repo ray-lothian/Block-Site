@@ -27,7 +27,7 @@
     "message": "Block password check when wrong password is entered multiple times (in minutes)"
   },
   "options_close_blocked": {
-    "message": "Close after:"
+    "message": "Close after (seconds):"
   },
   "options_close_msg_blocked": {
     "message": "(use zero for no automatic closing)"
