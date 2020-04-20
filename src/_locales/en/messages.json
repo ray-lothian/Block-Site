@@ -131,6 +131,12 @@
   "options_instruction": {
     "message": "Instruction"
   },
+  "options_contextmenu_pause": {
+    "message": "Show pause context menu option on browser action's context"
+  },
+  "options_contextmenu_resume": {
+    "message": "Show resume context menu option on browser action's context"
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },

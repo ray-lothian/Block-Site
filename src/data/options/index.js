@@ -21,26 +21,28 @@ const warning = e => {
 };
 
 const prefs = {
-  timeout: 60, // seconds
-  close: 0, // seconds
-  message: '',
-  redirect: '',
-  blocked: [],
-  sha256: '',
-  password: '', // deprecated
-  wrong: 1, // minutes
-  title: true,
-  reverse: false,
-  map: {},
-  schedule: {
+  'timeout': 60, // seconds
+  'close': 0, // seconds
+  'message': '',
+  'redirect': '',
+  'blocked': [],
+  'sha256': '',
+  'password': '', // deprecated
+  'wrong': 1, // minutes
+  'title': true,
+  'reverse': false,
+  'map': {},
+  'schedule': {
     time: {
       start: '',
       end: ''
     },
     days
   },
-  schedules: {},
-  initialBlock: true
+  'schedules': {},
+  'initialBlock': true,
+  'contextmenu-resume': true,
+  'contextmenu-pause': true
 };
 
 const list = document.getElementById('list');
@@ -108,6 +110,8 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
   document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
   document.querySelector('#schedule [name=hostname]').value = '';
+  document.getElementById('contextmenu-resume').checked = prefs['contextmenu-resume'];
+  document.getElementById('contextmenu-pause').checked = prefs['contextmenu-pause'];
 
   const safe = prefs.password !== '' || prefs.sha256 !== '';
   document.querySelector('[data-cmd=unlock]').disabled = safe === false;
@@ -190,27 +194,29 @@ document.addEventListener('click', async e => {
     chrome.storage.local.remove('password');
     chrome.storage.local.set({
       sha256,
-      title: document.getElementById('title').checked,
-      initialBlock: document.getElementById('initialBlock').checked,
-      reverse: document.getElementById('reverse').checked,
-      redirect: document.getElementById('redirect').value,
-      message: document.getElementById('message').value,
-      timeout: Math.max(Number(document.getElementById('timeout').value), 1),
-      close: Math.max(Number(document.getElementById('close').value), 0),
-      wrong: Math.max(Number(document.getElementById('wrong').value), 1),
+      'title': document.getElementById('title').checked,
+      'initialBlock': document.getElementById('initialBlock').checked,
+      'reverse': document.getElementById('reverse').checked,
+      'redirect': document.getElementById('redirect').value,
+      'message': document.getElementById('message').value,
+      'timeout': Math.max(Number(document.getElementById('timeout').value), 1),
+      'close': Math.max(Number(document.getElementById('close').value), 0),
+      'wrong': Math.max(Number(document.getElementById('wrong').value), 1),
       schedule,
-      schedules: prefs.schedules,
-      blocked: [...document.querySelectorAll('#rules-container > div')]
+      'schedules': prefs.schedules,
+      'blocked': [...document.querySelectorAll('#rules-container > div')]
         .map(tr => tr.dataset.hostname)
         .filter((s, i, l) => s && l.indexOf(s) === i),
-      map: [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
+      'map': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
         const {hostname} = c.dataset;
         const mapped = c.querySelector('input[type=text]').value;
         if (mapped) {
           p[hostname] = mapped;
         }
         return p;
-      }, {})
+      }, {}),
+      'contextmenu-resume': document.getElementById('contextmenu-resume').checked,
+      'contextmenu-pause': document.getElementById('contextmenu-pause').checked
     }, () => {
       toast('Options saved');
       window.removeEventListener('beforeunload', warning);

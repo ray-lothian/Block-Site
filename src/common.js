@@ -1,24 +1,26 @@
 'use strict';
 
 const prefs = {
-  timeout: 60, // seconds
-  keywords: [],
-  blocked: [],
-  sha256: '', // sha256 hash code of the user password
-  password: '', // deprecated
-  redirect: '',
-  wrong: 1, // minutes,
-  reverse: false,
-  map: {},
-  schedule: {
+  'timeout': 60, // seconds
+  'keywords': [],
+  'blocked': [],
+  'sha256': '', // sha256 hash code of the user password
+  'password': '', // deprecated
+  'redirect': '',
+  'wrong': 1, // minutes,
+  'reverse': false,
+  'map': {},
+  'schedule': {
     days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     time: {
       start: '',
       end: ''
     }
   },
-  schedules: {},
-  initialBlock: true
+  'schedules': {},
+  'initialBlock': true,
+  'contextmenu-pause': true,
+  'contextmenu-resume': true
 };
 
 const once = [];
@@ -238,6 +240,7 @@ chrome.storage.local.get(prefs, p => {
   Object.assign(prefs, p);
   schedule.build();
   observe();
+  contextmenu.build();
 });
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
@@ -250,6 +253,16 @@ chrome.storage.onChanged.addListener(ps => {
   if (ps.schedules) {
     schedule.build();
   }
+  if (ps['contextmenu-pause']) {
+    chrome.contextMenus.update('pause', {
+      visible: prefs['contextmenu-pause']
+    });
+  }
+  if (ps['contextmenu-resume']) {
+    chrome.contextMenus.update('resume', {
+      visible: prefs['contextmenu-resume']
+    });
+  }
 });
 //
 const notify = message => chrome.notifications.create(null, {
@@ -258,8 +271,6 @@ const notify = message => chrome.notifications.create(null, {
   title: 'Block Site',
   message: chrome.i18n.getMessage(message) || message
 });
-
-
 
 const sha256 = async message => {
   const msgBuffer = new TextEncoder('utf-8').encode(message);
@@ -415,11 +426,13 @@ chrome.browserAction.onClicked.addListener(tab => {
   }));
 });
 // context menus
-{
-  const update = () => {
+const contextmenu = {
+  build() {
     const root = chrome.contextMenus.create({
       title: chrome.i18n.getMessage('bg_msg_5'),
-      contexts: ['browser_action']
+      id: 'pause',
+      contexts: ['browser_action'],
+      visible: prefs['contextmenu-pause']
     });
     chrome.contextMenus.create({
       title: chrome.i18n.getMessage('bg_msg_7'),
@@ -454,51 +467,51 @@ chrome.browserAction.onClicked.addListener(tab => {
     chrome.contextMenus.create({
       title: chrome.i18n.getMessage('bg_msg_6'),
       id: 'resume',
-      contexts: ['browser_action']
+      contexts: ['browser_action'],
+      visible: prefs['contextmenu-resume']
     });
-  };
-  chrome.runtime.onInstalled.addListener(update);
-  chrome.runtime.onStartup.addListener(update);
-}
-chrome.contextMenus.onClicked.addListener(info => {
-  if (info.menuItemId === 'resume') {
-    paused = false;
-    chrome.alarms.clear('paused');
-    notify('bg_msg_16');
-  }
-  else {
-    const resolve = () => {
-      paused = true;
-      const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
-      chrome.alarms.create('paused', {
-        when
-      });
-      notify('bg_msg_15');
-    };
-
-    const next = password => sha256.validate({password}, resolve, msg => notify(msg || 'bg_msg_2'));
-
-    if (prefs.password || prefs.sha256) {
-      if (/Firefox/.test(navigator.userAgent)) {
-        chrome.tabs.executeScript({
-          code: `window.prompt("${chrome.i18n.getMessage('bg_msg_12')}")`
-        }, arr => {
-          const lastError = chrome.runtime.lastError;
-          if (lastError) {
-            return notify(lastError.message);
-          }
-          next(arr[0]);
-        });
-      }
-      else {
-        next(window.prompt(chrome.i18n.getMessage('bg_msg_12')));
-      }
+  },
+  click(info) {
+    if (info.menuItemId === 'resume') {
+      paused = false;
+      chrome.alarms.clear('paused');
+      notify('bg_msg_16');
     }
     else {
-      resolve();
+      const resolve = () => {
+        paused = true;
+        const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
+        chrome.alarms.create('paused', {
+          when
+        });
+        notify('bg_msg_15');
+      };
+
+      const next = password => sha256.validate({password}, resolve, msg => notify(msg || 'bg_msg_2'));
+
+      if (prefs.password || prefs.sha256) {
+        if (/Firefox/.test(navigator.userAgent)) {
+          chrome.tabs.executeScript({
+            code: `window.prompt("${chrome.i18n.getMessage('bg_msg_12')}")`
+          }, arr => {
+            const lastError = chrome.runtime.lastError;
+            if (lastError) {
+              return notify(lastError.message);
+            }
+            next(arr[0]);
+          });
+        }
+        else {
+          next(window.prompt(chrome.i18n.getMessage('bg_msg_12')));
+        }
+      }
+      else {
+        resolve();
+      }
     }
   }
-});
+};
+chrome.contextMenus.onClicked.addListener(contextmenu.click);
 chrome.alarms.onAlarm.addListener(alarm => {
   if (alarm.name === 'paused') {
     paused = false;
@@ -507,28 +520,26 @@ chrome.alarms.onAlarm.addListener(alarm => {
 
 /* FAQs & Feedback */
 {
-  const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
-  const {name, version} = getManifest();
-  const page = getManifest().homepage_url;
+  const {management, runtime: {onInstalled, setUninstallURL, getManifest}, storage, tabs} = chrome;
   if (navigator.webdriver !== true) {
+    const page = getManifest().homepage_url;
+    const {name, version} = getManifest();
     onInstalled.addListener(({reason, previousVersion}) => {
-      chrome.storage.local.get({
+      management.getSelf(({installType}) => installType === 'normal' && storage.local.get({
         'faqs': true,
         'last-update': 0
       }, prefs => {
         if (reason === 'install' || (prefs.faqs && reason === 'update')) {
           const doUpdate = (Date.now() - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
           if (doUpdate && previousVersion !== version) {
-            chrome.tabs.create({
-              url: page + '?version=' + version +
-                (previousVersion ? '&p=' + previousVersion : '') +
-                '&type=' + reason,
+            tabs.create({
+              url: page + '?version=' + version + (previousVersion ? '&p=' + previousVersion : '') + '&type=' + reason,
               active: reason === 'install'
             });
-            chrome.storage.local.set({'last-update': Date.now()});
+            storage.local.set({'last-update': Date.now()});
           }
         }
-      });
+      }));
     });
     setUninstallURL(page + '?rd=feedback&name=' + encodeURIComponent(name) + '&version=' + version);
   }
