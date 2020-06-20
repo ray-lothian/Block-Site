@@ -205,5 +205,8 @@
   },
   "bg_msg_16": {
     "message": "Blocking is resumed."
+  },
+  "bg_msg_17": {
+    "message": "Please enter the master password to continue"
   }
 }

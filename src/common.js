@@ -23,6 +23,20 @@ const prefs = {
   'contextmenu-resume': true
 };
 
+const prompt = msg => {
+  return new Promise((resolve, reject) => chrome.windows.create({
+    url: 'data/prompt/index.html?message=' + encodeURIComponent(msg),
+    type: 'popup',
+    width: 600,
+    height: 180,
+    left: screen.availLeft + Math.round((screen.availWidth - 600) / 2),
+    top: screen.availTop + Math.round((screen.availHeight - 180) / 2)
+  }, w => {
+    prompt.cache[w.id] = {resolve, reject};
+  }));
+};
+prompt.cache = {};
+
 const once = [];
 const ids = {};
 
@@ -369,6 +383,18 @@ const onMessage = (request, sender, response) => {
     }, response);
     return true;
   }
+  else if (request.method === 'prompt-resolved') {
+    const o = prompt.cache[sender.tab.windowId];
+    if (o) {
+      o.resolve(request.password);
+      delete prompt.cache[sender.tab.windowId];
+    }
+  }
+  else if (request.method === 'bring-to-front') {
+    chrome.windows.update(sender.tab.windowId, {
+      focused: true
+    });
+  }
 };
 chrome.runtime.onMessage.addListener(onMessage);
 
@@ -382,48 +408,62 @@ chrome.browserAction.onClicked.addListener(tab => {
   if (tab.url.startsWith('http') === false) {
     return notify('bg_msg_1');
   }
-  const hostname = toHostname(tab.url);
-  const msg = chrome.i18n.getMessage('bg_msg_14');
 
-  chrome.tabs.executeScript({
-    'runAt': 'document_start',
-    'file': 'data/blocked/tld.js'
-  }, () => chrome.tabs.executeScript(tab.id, {
-    'runAt': 'document_start',
-    'code': `(() => {
-      window.stop();
-      const hostname = ${JSON.stringify(hostname)};
-      const domain =  tld.getDomain(hostname);
-      const msg = ${JSON.stringify(msg)}.replace('##', domain);
-      if (window.confirm(msg)) {
-        if (hostname === domain) {
-          return [domain];
+  const next = () => {
+    const hostname = toHostname(tab.url);
+    const msg = chrome.i18n.getMessage('bg_msg_14');
+
+    chrome.tabs.executeScript(tab.id, {
+      'runAt': 'document_start',
+      'file': 'data/blocked/tld.js'
+    }, () => chrome.tabs.executeScript(tab.id, {
+      'runAt': 'document_start',
+      'code': `(() => {
+        window.stop();
+        const hostname = ${JSON.stringify(hostname)};
+        const domain =  tld.getDomain(hostname);
+        const msg = ${JSON.stringify(msg)}.replace('##', domain);
+        if (window.confirm(msg)) {
+          if (hostname === domain) {
+            return [domain];
+          }
+          else {
+            return [domain, '*.' + domain];
+          }
+        }
+      })()`
+    }, r => {
+      if (chrome.runtime.lastError) {
+        notify(chrome.runtime.lastError.message);
+      }
+      if (r && r.length && r[0]) {
+        if (prefs.reverse) {
+          onMessage({
+            method: 'remove-from-list',
+            href: tab.url,
+            mode: 'reverse'
+          }, null, () => chrome.tabs.reload(tab.id));
         }
         else {
-          return [domain, '*.' + domain];
+          onMessage({
+            method: 'append-to-list',
+            hostnames: r[0]
+          }, null, () => chrome.tabs.reload(tab.id));
         }
       }
-    })()`
-  }, r => {
-    if (chrome.runtime.lastError) {
-      notify(chrome.runtime.lastError.message);
-    }
-    if (r && r.length && r[0]) {
-      if (prefs.reverse) {
-        onMessage({
-          method: 'remove-from-list',
-          href: tab.url,
-          mode: 'reverse'
-        }, null, () => chrome.tabs.reload(tab.id));
+    }));
+  };
+
+  if (prefs.password || prefs.sha256) {
+    prompt(chrome.i18n.getMessage('bg_msg_17')).then(password => {
+      if (password) {
+        sha256.validate({password}, next, msg => notify(msg || 'bg_msg_2'));
       }
-      else {
-        onMessage({
-          method: 'append-to-list',
-          hostnames: r[0]
-        }, null, () => chrome.tabs.reload(tab.id));
-      }
-    }
-  }));
+    });
+  }
+  else {
+    next();
+  }
 });
 // context menus
 const contextmenu = {
@@ -487,23 +527,13 @@ const contextmenu = {
         notify('bg_msg_15');
       };
 
-      const next = password => sha256.validate({password}, resolve, msg => notify(msg || 'bg_msg_2'));
 
       if (prefs.password || prefs.sha256) {
-        if (/Firefox/.test(navigator.userAgent)) {
-          chrome.tabs.executeScript({
-            code: `window.prompt("${chrome.i18n.getMessage('bg_msg_12')}")`
-          }, arr => {
-            const lastError = chrome.runtime.lastError;
-            if (lastError) {
-              return notify(lastError.message);
-            }
-            next(arr[0]);
-          });
-        }
-        else {
-          next(window.prompt(chrome.i18n.getMessage('bg_msg_12')));
-        }
+        prompt(chrome.i18n.getMessage('bg_msg_12')).then(password => {
+          if (password) {
+            sha256.validate({password}, resolve, msg => notify(msg || 'bg_msg_2'));
+          }
+        });
       }
       else {
         resolve();
