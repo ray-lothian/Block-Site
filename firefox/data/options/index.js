@@ -31,6 +31,7 @@ const prefs = {
   'wrong': 1, // minutes
   'title': true,
   'reverse': false,
+  'no-password-on-add': false,
   'map': {},
   'schedule': {
     time: {
@@ -101,6 +102,7 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.getElementById('title').checked = prefs.title;
   document.getElementById('initialBlock').checked = prefs.initialBlock;
   document.getElementById('reverse').checked = prefs.reverse;
+  document.getElementById('no-password-on-add').checked = prefs['no-password-on-add'];
   document.getElementById('timeout').value = prefs.timeout;
   document.getElementById('close').value = prefs.close;
   document.getElementById('wrong').value = prefs.wrong;
@@ -197,6 +199,7 @@ document.addEventListener('click', async e => {
       'title': document.getElementById('title').checked,
       'initialBlock': document.getElementById('initialBlock').checked,
       'reverse': document.getElementById('reverse').checked,
+      'no-password-on-add': document.getElementById('no-password-on-add').checked,
       'redirect': document.getElementById('redirect').value,
       'message': document.getElementById('message').value,
       'timeout': Math.max(Number(document.getElementById('timeout').value), 1),

@@ -9,6 +9,7 @@ const prefs = {
   'redirect': '',
   'wrong': 1, // minutes,
   'reverse': false,
+  'no-password-on-add': false,
   'map': {},
   'schedule': {
     days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -454,7 +455,7 @@ chrome.browserAction.onClicked.addListener(tab => {
     }));
   };
 
-  if (prefs.password || prefs.sha256) {
+  if ((prefs.password || prefs.sha256) && prefs['no-password-on-add'] === false) {
     prompt(chrome.i18n.getMessage('bg_msg_17')).then(password => {
       if (password) {
         sha256.validate({password}, next, msg => notify(msg || 'bg_msg_2'));
