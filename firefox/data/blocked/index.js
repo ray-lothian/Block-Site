@@ -48,15 +48,24 @@ const title = () => fetch(args.get('url')).then(r => r.text()).then(content => {
   }
 });
 // storage
-document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
-  title: true,
-  close: 0,
-  message: '',
-  password: '',
-  sha256: '',
-  reverse: false
-}, prefs => {
-  document.getElementById('message').textContent = prefs.message;
+
+Promise.all([
+  new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve)),
+  new Promise(resolve => chrome.storage.local.get({
+    title: true,
+    close: 0,
+    message: '',
+    css: '',
+    password: '',
+    sha256: '',
+    reverse: false
+  }, prefs => {
+    document.getElementById('css').textContent = prefs.css;
+    document.getElementById('message').textContent = prefs.message;
+
+    resolve(prefs);
+  }))
+]).then(a => a[1]).then(prefs => {
   if (prefs.title && args.get('url')) {
     title();
   }
@@ -116,7 +125,8 @@ document.addEventListener('DOMContentLoaded', () => chrome.storage.local.get({
       next();
     }
   });
-}));
+});
+
 // external commands
 chrome.runtime.onMessage.addListener(request => {
   if (request.method === 'press-exception') {
@@ -124,5 +134,12 @@ chrome.runtime.onMessage.addListener(request => {
     if (window.confirm(msg)) {
       document.getElementById('exception').click();
     }
+  }
+});
+
+// live style editing
+chrome.storage.onChanged.addListener(prefs => {
+  if (prefs.css) {
+    document.getElementById('css').textContent = prefs.css.newValue;
   }
 });

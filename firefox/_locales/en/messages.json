@@ -14,6 +14,9 @@
   "options_user_message": {
     "message": "User message:"
   },
+  "options_custom_css": {
+    "message": "Custom CSS:"
+  },
   "options_resolve": {
     "message": "Resolve the title of blocked pages (uncheck this option to prevent blocked servers from receiving any request)"
   },
@@ -112,6 +115,9 @@
   },
   "options_sup_2": {
     "message": "This is a custom message that is shown on blocked page. Could be an instruction to open this blocked page or the administrative contact"
+  },
+  "options_sup_3": {
+    "message": "Inject custom CSS rules into the blocked interface. You can use this section to hide different elements or change the font properties of these elements"
   },
   "options_sup_6": {
     "message": "To block hostnames containing a word use '*://*word*/*' rule. To block the same word inside the pathname part use '*://*/*word*' rule. If you just need to close a page with a rule, use the 'close' keyword in the 'Redirect To' box. To construct a regular expression rule, prepend the rule with 'R:' keyword. For instance, 'R:ht{2}ps*://.*\\.go{2}gle\\.com' blocks www.google.com on both HTTP and HTTPS protocols."

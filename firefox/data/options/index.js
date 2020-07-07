@@ -24,6 +24,7 @@ const prefs = {
   'timeout': 60, // seconds
   'close': 0, // seconds
   'message': '',
+  'css': '',
   'redirect': '',
   'blocked': [],
   'sha256': '',
@@ -107,6 +108,7 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.getElementById('close').value = prefs.close;
   document.getElementById('wrong').value = prefs.wrong;
   document.getElementById('message').value = prefs.message;
+  document.getElementById('css').value = prefs.css;
   document.getElementById('redirect').value = prefs.redirect;
   document.querySelector('#schedule [name=start]').value = prefs.schedule.time.start;
   document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
@@ -202,6 +204,7 @@ document.addEventListener('click', async e => {
       'no-password-on-add': document.getElementById('no-password-on-add').checked,
       'redirect': document.getElementById('redirect').value,
       'message': document.getElementById('message').value,
+      'css': document.getElementById('css').value,
       'timeout': Math.max(Number(document.getElementById('timeout').value), 1),
       'close': Math.max(Number(document.getElementById('close').value), 0),
       'wrong': Math.max(Number(document.getElementById('wrong').value), 1),
