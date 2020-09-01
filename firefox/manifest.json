@@ -1,6 +1,6 @@
 {
   "name": "Block Site",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "manifest_version": 2,
   "background": {
     "scripts": ["common.js"]

@@ -42,34 +42,35 @@
       </details>
     </div>
     <form id=schedule>
-      <table width="100%">
-        <colgroup>
-          <col width="50">
-          <col>
-        </colgroup>
-        <tr>
-          <td data-i18n="options_times"></td>
-          <td>
-
-            <div hbox align=center ><span data-i18n="options_times_from">from</span>&nbsp;<input type="time" name="start" flex="1">&nbsp;<span data-i18n="options_times_to">to</span>&nbsp;<input type="time" name="end" flex="1"></div>
-          </td>
-        </tr>
-        <tr>
-          <td data-i18n="options_days"></td>
-          <td>
-            <div hbox align=center><input type="text" name="days" flex="1" placeholder="days: Sun, Mon, Tue, Wed, Thu, Fri, Sat"></div>
-          </td>
-        </tr>
-        <tr>
-          <td><span data-i18n="options_hostname"></span></td>
-          <td>
-            <div hbox align=center>
-              <input type="text" list="rules" name="hostname" flex="1" data-i18n="options_sup_12" data-i18n-value="placeholder">
-              <datalist id="rules"></datalist>
-            </div>
-          </td>
-        </tr>
-      </table>
+      <div>
+        <h3>Date</h3>
+        <h3>From</h3>
+        <h3>To</h3>
+        <span>Monday</span>
+        <input data-id="Mon" type="time" name="start">
+        <input data-id="Mon" type="time" name="end">
+        <span>Tuesday</span>
+        <input data-id="Tue" type="time" name="start">
+        <input data-id="Tue" type="time" name="end">
+        <span>Wednesday</span>
+        <input data-id="Wed" type="time" name="start">
+        <input data-id="Wed" type="time" name="end">
+        <span>Thursday</span>
+        <input data-id="Thu" type="time" name="start">
+        <input data-id="Thu" type="time" name="end">
+        <span>Friday</span>
+        <input data-id="Fri" type="time" name="start">
+        <input data-id="Fri" type="time" name="end">
+        <span>Saturday</span>
+        <input data-id="Sat" type="time" name="start">
+        <input data-id="Sat" type="time" name="end">
+        <span>Sunday</span>
+        <input data-id="Sun" type="time" name="start">
+        <input data-id="Sun" type="time" name="end">
+        <span data-i18n="options_hostname"></span>
+        <input type="text" list="rules" name="hostname" flex="1" data-i18n="options_sup_12" data-i18n-value="placeholder" style="grid-column: 2/4;">
+      </div>
+      <datalist id="rules"></datalist>
     </form>
     <!-- blocking options -->
     <div>

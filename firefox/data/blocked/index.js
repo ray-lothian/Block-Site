@@ -14,8 +14,13 @@ if (args.get('url')) {
   o.domain = tld.getDomain(o.host);
 
   document.getElementById('url').href = o.href;
-  document.getElementById('sub-domain').textContent = o.hostname.replace(o.domain, '');
-  document.getElementById('domain').textContent = o.domain;
+  if (o.domain) {
+    document.getElementById('sub-domain').textContent = o.hostname.replace(o.domain, '');
+    document.getElementById('domain').textContent = o.domain;
+  }
+  else {
+    document.getElementById('domain').textContent = o.host;
+  }
   document.getElementById('pathname').textContent = o.pathname;
   document.getElementById('search').textContent = o.search;
 }

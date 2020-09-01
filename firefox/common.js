@@ -60,41 +60,58 @@ const toHostname = url => {
 
 const schedule = {
   test(d) {
-    let {days, time} = prefs.schedule;
+    // "days" and "time" are deprecated; use "times" instead
+    let {days, time, times} = prefs.schedule;
+    if (times) {
+      days = Object.keys(times);
+    }
+
     // per rule schedule
     for (const rule of schedule.rules) {
       if (rule.test(d.url)) {
         const index = schedule.rules.indexOf(rule);
         const o = Object.values(prefs.schedules)[index];
-        days = o.days;
+        times = o.times;
         time = o.time;
+        days = times ? Object.keys(times) : o.days;
         break;
       }
     }
-    if (days.length && time.start && time.end) {
+    if (days.length) {
       const d = new Date();
       const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
       if (days.indexOf(day) === -1) {
         return false;
       }
-      const now = d.getHours() * 60 + d.getMinutes();
-      const [ss, se] = time.start.split(':');
-      const start = Number(ss) * 60 + Number(se);
-      const [es, ee] = time.end.split(':');
-
-      const end = Number(es) * 60 + Number(ee);
-
-      if (start < end) {
-        if (now < start || now > end) {
-          return false; // range mismatch, do not block
+      const match = time => {
+        if (!time.start || !time.end) {
+          return false;
         }
+        const [ss, se] = time.start.split(':');
+        const start = Number(ss) * 60 + Number(se);
+        const [es, ee] = time.end.split(':');
+        const end = Number(es) * 60 + Number(ee);
+
+        if (start < end) {
+          if (now < start || now > end) {
+            return false; // range mismatch, do not block
+          }
+        }
+        else {
+          if (now > end && now < start) {
+            return false; // range mismatch, do not block
+          }
+        }
+        return true;
+      };
+      const now = d.getHours() * 60 + d.getMinutes();
+      // return true -> act like schedule is disabled
+      if (times) {
+        return times[day].some(match);
       }
       else {
-        if (now > end && now < start) {
-          return false; // range mismatch, do not block
-        }
+        return match(time);
       }
-      return true; // act like schedule is disabled
     }
     // schedule is disabled -> ignore
     return true;
@@ -244,10 +261,10 @@ observe.regexp = rule => {
 };
 observe.build = {
   direct() {
-    directPattern = prefs.blocked.map(observe.wildcard).map(observe.regexp);
+    directPattern = prefs.blocked.filter(a => a).map(observe.wildcard).map(observe.regexp);
   },
   reverse() {
-    reversePattern = prefs.blocked.map(observe.wildcard).map(observe.regexp);
+    reversePattern = prefs.blocked.filter(a => a).map(observe.wildcard).map(observe.regexp);
   }
 };
 
@@ -414,6 +431,8 @@ chrome.browserAction.onClicked.addListener(tab => {
     const hostname = toHostname(tab.url);
     const msg = chrome.i18n.getMessage('bg_msg_14');
 
+    console.log(hostname);
+
     chrome.tabs.executeScript(tab.id, {
       'runAt': 'document_start',
       'file': 'data/blocked/tld.js'
@@ -423,17 +442,21 @@ chrome.browserAction.onClicked.addListener(tab => {
         window.stop();
         const hostname = ${JSON.stringify(hostname)};
         const domain =  tld.getDomain(hostname);
-        const msg = ${JSON.stringify(msg)}.replace('##', domain);
+        const msg = ${JSON.stringify(msg)}.replace('##', domain || hostname);
         if (window.confirm(msg)) {
           if (hostname === domain) {
             return [domain];
           }
-          else {
+          else if (domain) {
             return [domain, '*.' + domain];
+          }
+          else if (hostname) {
+            return [hostname];
           }
         }
       })()`
     }, r => {
+      console.log(r);
       if (chrome.runtime.lastError) {
         notify(chrome.runtime.lastError.message);
       }

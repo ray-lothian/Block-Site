@@ -35,11 +35,12 @@ const prefs = {
   'no-password-on-add': false,
   'map': {},
   'schedule': {
-    time: {
+    time: { // deprecated
       start: '',
       end: ''
     },
-    days
+    days, // deprecated
+    times: null // per day scheduling {'Mon': [{start, end}], ...}
   },
   'schedules': {},
   'initialBlock': true,
@@ -95,10 +96,36 @@ document.getElementById('add').addEventListener('submit', e => {
   }
 });
 
+const fs = schedule => {
+  if (schedule.times) {
+    for (const day of days) {
+      document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
+      document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
+    }
+    // we only consider one range per day
+    for (const [day, [time]] of Object.entries(schedule.times)) {
+      document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
+      document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
+    }
+  }
+  else { // old method
+    for (const day of days) {
+      if (schedule.days.indexOf(day) !== -1) {
+        document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = schedule.time.start;
+        document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = schedule.time.end;
+      }
+      else {
+        document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
+        document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
+      }
+    }
+  }
+};
+
 const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   Object.assign(prefs, ps);
   if (table) {
-    prefs.blocked.forEach(add);
+    prefs.blocked.filter(a => a).forEach(add);
   }
   document.getElementById('title').checked = prefs.title;
   document.getElementById('initialBlock').checked = prefs.initialBlock;
@@ -110,10 +137,10 @@ const init = (table = true) => chrome.storage.local.get(prefs, ps => {
   document.getElementById('message').value = prefs.message;
   document.getElementById('css').value = prefs.css;
   document.getElementById('redirect').value = prefs.redirect;
-  document.querySelector('#schedule [name=start]').value = prefs.schedule.time.start;
-  document.querySelector('#schedule [name=end]').value = prefs.schedule.time.end;
-  document.querySelector('#schedule [name=days]').value = prefs.schedule.days.join(', ');
+
+  fs(prefs.schedule);
   document.querySelector('#schedule [name=hostname]').value = '';
+
   document.getElementById('contextmenu-resume').checked = prefs['contextmenu-resume'];
   document.getElementById('contextmenu-pause').checked = prefs['contextmenu-pause'];
 
@@ -134,9 +161,7 @@ init();
 document.querySelector('#schedule [name="hostname"]').addEventListener('input', e => {
   const schedule = prefs.schedules[e.target.value];
   if (schedule) {
-    document.querySelector('#schedule [name=start]').value = schedule.time.start;
-    document.querySelector('#schedule [name=end]').value = schedule.time.end;
-    document.querySelector('#schedule [name=days]').value = schedule.days.join(', ');
+    fs(schedule);
   }
 });
 
@@ -163,14 +188,16 @@ document.addEventListener('click', async e => {
   }
   else if (cmd === 'save') {
     let schedule = {
-      time: {
-        start: document.querySelector('#schedule [name=start]').value,
-        end: document.querySelector('#schedule [name=end]').value
-      },
-      days: document.querySelector('#schedule [name=days]').value.split(/\s*,\s*/)
-        .map(s => {
-          return days.filter(d => s.trim().toLowerCase().startsWith(d.toLowerCase())).shift();
-        }).filter((s, i, l) => s && l.indexOf(s) === i)
+      times: days.reduce((p, c) => {
+        const start = document.querySelector(`input[type=time][name=start][data-id=${c}]`).value;
+        const end = document.querySelector(`input[type=time][name=end][data-id=${c}]`).value;
+
+        if (start && end) {
+          p[c] = [{start, end}];
+        }
+
+        return p;
+      }, {})
     };
     const rule = document.querySelector('#schedule [name="hostname"]');
     if (rule.value) {
@@ -179,7 +206,7 @@ document.addEventListener('click', async e => {
         return toast('Schedule Blocking; ' + e.message, 3000, 'error');
       }
       else {
-        if (schedule.days.length && schedule.time.start && schedule.time.end) {
+        if (Object.values(schedule).some(({start, end}) => start && end)) {
           prefs.schedules[rule.value] = schedule;
         }
         else {
