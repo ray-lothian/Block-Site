@@ -126,7 +126,7 @@
     "message": "Prepare a text file containing all the blocking rules in plain text format. After importing, press the save button for the changes to take place. To disregard the imported rules, reload this page without saving."
   },
   "options_sup_10": {
-    "message": "When importing settings, all your existing settings will be overwritten."
+    "message": "When importing settings, all your existing settings will be overwritten. To export minified version, use Shift key while pressing the Export button"
   },
   "options_sup_11": {
     "message": "By providing a regular expression rule, you can limit the current schedule to the matching URLs. To have multiple schedules with different rules, fill the section for each rule and press the save button. To delete a saved rule, fill the rule part and wait for the extension to load the schedule, then delete the timing section without removing the rule itself."

@@ -21,7 +21,8 @@ const prefs = {
   'schedules': {},
   'initialBlock': true,
   'contextmenu-pause': true,
-  'contextmenu-resume': true
+  'contextmenu-resume': true,
+  'guid': '' // a unique GUID for exported managed JSON
 };
 
 const prompt = msg => {
@@ -84,9 +85,6 @@ const schedule = {
         return false;
       }
       const match = time => {
-        if (!time.start || !time.end) {
-          return false;
-        }
         const [ss, se] = time.start.split(':');
         const start = Number(ss) * 60 + Number(se);
         const [es, ee] = time.end.split(':');
@@ -107,10 +105,12 @@ const schedule = {
       const now = d.getHours() * 60 + d.getMinutes();
       // return true -> act like schedule is disabled
       if (times) {
-        return times[day].some(match);
+        return times[day].filter(({start, end}) => start && end).some(match);
       }
       else {
-        return match(time);
+        if (!time.start || !time.end) {
+          return match(time);
+        }
       }
     }
     // schedule is disabled -> ignore
@@ -269,10 +269,37 @@ observe.build = {
 };
 
 chrome.storage.local.get(prefs, p => {
-  Object.assign(prefs, p);
-  schedule.build();
-  observe();
-  contextmenu.build();
+  const next = () => {
+    Object.assign(prefs, p);
+    schedule.build();
+    observe();
+    contextmenu.build();
+  };
+
+  // update prefs from the managed storage
+  try {
+    chrome.storage.managed.get({
+      json: ''
+    }, rps => {
+      if (!chrome.runtime.lastError && rps.json) {
+        try {
+          rps = JSON.parse(rps.json);
+          if (p.guid !== rps.guid || rps['managed.storage.overwrite.on.start'] === true) {
+            p = Object.assign(prefs, rps);
+            chrome.storage.local.set(p);
+            console.warn('Your preferences are configured by the admin');
+          }
+        }
+        catch (e) {
+          console.warn('cannot parse the managed JSON string');
+        }
+      }
+      next();
+    });
+  }
+  catch (e) {
+    next();
+  }
 });
 chrome.storage.onChanged.addListener(ps => {
   Object.keys(ps).forEach(n => prefs[n] = ps[n].newValue);
@@ -431,8 +458,6 @@ chrome.browserAction.onClicked.addListener(tab => {
     const hostname = toHostname(tab.url);
     const msg = chrome.i18n.getMessage('bg_msg_14');
 
-    console.log(hostname);
-
     chrome.tabs.executeScript(tab.id, {
       'runAt': 'document_start',
       'file': 'data/blocked/tld.js'
@@ -456,7 +481,6 @@ chrome.browserAction.onClicked.addListener(tab => {
         }
       })()`
     }, r => {
-      console.log(r);
       if (chrome.runtime.lastError) {
         notify(chrome.runtime.lastError.message);
       }

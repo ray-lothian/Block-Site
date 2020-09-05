@@ -2,6 +2,10 @@
   --bg-color: rgba(0, 0, 0, 0.05);
   --code-color: #fcffda;
 }
+body {
+  background-color: #fff;
+  color: #4d5156;
+}
 @supports (-moz-appearance:none) {
   body {
     font-size: 13px;
@@ -10,6 +14,10 @@
   }
   h1 {
     font-size: 18px;
+    font-weight: normal;
+  }
+  h3 {
+    font-size: 14px;
     font-weight: normal;
   }
   textarea {
@@ -27,6 +35,9 @@
   }
   input[type=button]:disabled {
     opacity: 0.2;
+  }
+  input[type="time"] {
+    padding: 5px;
   }
 }
 
@@ -162,6 +173,12 @@ td {
   grid-gap: 5px;
 }
 
+.admin {
+  background-color: #ffffed;
+  border: solid 1px #e8ec3a;
+  padding: 10px;
+  margin: 15px 0;
+}
 .space {
   margin-bottom: 5px;
   display: block;

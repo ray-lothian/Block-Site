@@ -20,7 +20,7 @@ const warning = e => {
   return true;
 };
 
-const prefs = {
+const DEFAULTS = {
   'timeout': 60, // seconds
   'close': 0, // seconds
   'message': '',
@@ -47,6 +47,7 @@ const prefs = {
   'contextmenu-resume': true,
   'contextmenu-pause': true
 };
+const prefs = {};
 
 const list = document.getElementById('list');
 const wildcard = h => {
@@ -122,8 +123,9 @@ const fs = schedule => {
   }
 };
 
-const init = (table = true) => chrome.storage.local.get(prefs, ps => {
+const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   Object.assign(prefs, ps);
+
   if (table) {
     prefs.blocked.filter(a => a).forEach(add);
   }
@@ -206,15 +208,17 @@ document.addEventListener('click', async e => {
         return toast('Schedule Blocking; ' + e.message, 3000, 'error');
       }
       else {
-        if (Object.values(schedule).some(({start, end}) => start && end)) {
+        if (Object.values(schedule.times).some(times => times.some(({start, end}) => start && end))) {
           prefs.schedules[rule.value] = schedule;
         }
         else {
           delete prefs.schedules[rule.value];
+          console.log('deleting rule for', rule.value);
         }
         schedule = prefs.schedule;
       }
     }
+    console.log(schedule);
 
     const password = document.getElementById('password').value;
     const sha256 = password ? await new Promise(resolve => {
@@ -289,8 +293,17 @@ document.addEventListener('click', async e => {
   }
   else if (cmd === 'export') {
     chrome.storage.local.get(null, prefs => {
+      const guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+
       const blob = new Blob([
-        JSON.stringify(prefs, null, '\t')
+        JSON.stringify(Object.assign({
+          'managed.storage.overwrite.on.start': false,
+          guid
+        }, prefs), null, e.shiftKey ? '' : '  ')
       ], {type: 'application/json'});
       const href = URL.createObjectURL(blob);
       Object.assign(document.createElement('a'), {

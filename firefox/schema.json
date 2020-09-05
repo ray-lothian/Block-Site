@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "json": {
+      "title": "a Block Site compatible JSON string",
+      "type": "string"
+    }
+  }
+}
