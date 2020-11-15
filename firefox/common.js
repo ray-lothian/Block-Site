@@ -22,6 +22,8 @@ const prefs = {
   'initialBlock': true,
   'contextmenu-pause': true,
   'contextmenu-resume': true,
+  'contextmenu-frame': true,
+  'contextmenu-top': true,
   'guid': '' // a unique GUID for exported managed JSON
 };
 
@@ -276,6 +278,7 @@ chrome.storage.local.get(prefs, p => {
     contextmenu.build();
   };
 
+
   // update prefs from the managed storage
   try {
     chrome.storage.managed.get({
@@ -320,6 +323,16 @@ chrome.storage.onChanged.addListener(ps => {
   if (ps['contextmenu-resume']) {
     chrome.contextMenus.update('resume', {
       visible: prefs['contextmenu-resume']
+    });
+  }
+  if (ps['contextmenu-frame']) {
+    chrome.contextMenus.update('frame', {
+      visible: prefs['contextmenu-frame']
+    });
+  }
+  if (ps['contextmenu-top']) {
+    chrome.contextMenus.update('top', {
+      visible: prefs['contextmenu-top']
     });
   }
 });
@@ -443,27 +456,27 @@ const onMessage = (request, sender, response) => {
 };
 chrome.runtime.onMessage.addListener(onMessage);
 
-chrome.browserAction.onClicked.addListener(tab => {
+const userAction = (tabId, href, frameId) => {
   // this is an internal tab, press the unblock button
-  if (tab.url.indexOf(chrome.runtime.id) !== -1) {
-    return chrome.tabs.sendMessage(tab.id, {
+  if (href.indexOf(chrome.runtime.id) !== -1) {
+    return chrome.tabs.sendMessage(tabId, {
       method: 'press-exception'
     });
   }
-  if (tab.url.startsWith('http') === false) {
+  if (href.startsWith('http') === false) {
     return notify('bg_msg_1');
   }
 
   const next = () => {
-    const hostname = toHostname(tab.url);
+    const hostname = toHostname(href);
     const msg = chrome.i18n.getMessage('bg_msg_14');
 
-    chrome.tabs.executeScript(tab.id, {
-      'runAt': 'document_start',
-      'file': 'data/blocked/tld.js'
-    }, () => chrome.tabs.executeScript(tab.id, {
-      'runAt': 'document_start',
-      'code': `(() => {
+    chrome.tabs.executeScript(tabId, {
+      runAt: 'document_start',
+      file: 'data/blocked/tld.js'
+    }, () => chrome.tabs.executeScript(tabId, {
+      runAt: 'document_start',
+      code: `(() => {
         window.stop();
         const hostname = ${JSON.stringify(hostname)};
         const domain =  tld.getDomain(hostname);
@@ -484,19 +497,25 @@ chrome.browserAction.onClicked.addListener(tab => {
       if (chrome.runtime.lastError) {
         notify(chrome.runtime.lastError.message);
       }
+      const reload = () => chrome.tabs.executeScript(tabId, {
+        frameId,
+        code: 'location.reload()',
+        runAt: 'document_start'
+      });
+
       if (r && r.length && r[0]) {
         if (prefs.reverse) {
           onMessage({
             method: 'remove-from-list',
-            href: tab.url,
+            href,
             mode: 'reverse'
-          }, null, () => chrome.tabs.reload(tab.id));
+          }, null, reload);
         }
         else {
           onMessage({
             method: 'append-to-list',
             hostnames: r[0]
-          }, null, () => chrome.tabs.reload(tab.id));
+          }, null, reload);
         }
       }
     }));
@@ -512,6 +531,10 @@ chrome.browserAction.onClicked.addListener(tab => {
   else {
     next();
   }
+};
+
+chrome.browserAction.onClicked.addListener(tab => {
+  userAction(tab.id, tab.url, 0);
 });
 // context menus
 const contextmenu = {
@@ -558,9 +581,24 @@ const contextmenu = {
       contexts: ['browser_action'],
       visible: prefs['contextmenu-resume']
     });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_19'),
+      id: 'top',
+      contexts: ['page'],
+      visible: prefs['contextmenu-top']
+    });
+    chrome.contextMenus.create({
+      title: chrome.i18n.getMessage('bg_msg_18'),
+      id: 'frame',
+      contexts: ['frame'],
+      visible: prefs['contextmenu-frame']
+    });
   },
-  click(info) {
-    if (info.menuItemId === 'resume') {
+  click(info, tab) {
+    if (info.menuItemId === 'top' || info.menuItemId === 'frame') {
+      userAction(tab.id, info.menuItemId === 'top' ? info.pageUrl : info.frameUrl, info.frameId);
+    }
+    else if (info.menuItemId === 'resume') {
       paused = false;
       chrome.alarms.clear('paused');
       notify('bg_msg_16');
@@ -574,7 +612,6 @@ const contextmenu = {
         });
         notify('bg_msg_15');
       };
-
 
       if (prefs.password || prefs.sha256) {
         prompt(chrome.i18n.getMessage('bg_msg_12')).then(password => {

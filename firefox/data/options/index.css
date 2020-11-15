@@ -183,6 +183,13 @@ td {
   margin-bottom: 5px;
   display: block;
 }
+.view {
+  display: grid;
+  grid-gap: 2px 5px;
+  grid-template-columns: min-content min-content;
+  white-space: nowrap;
+  margin-left: 10px;
+}
 [hbox] {
   display: flex;
 }

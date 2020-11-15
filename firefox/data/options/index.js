@@ -45,7 +45,9 @@ const DEFAULTS = {
   'schedules': {},
   'initialBlock': true,
   'contextmenu-resume': true,
-  'contextmenu-pause': true
+  'contextmenu-pause': true,
+  'contextmenu-frame': true,
+  'contextmenu-top': true
 };
 const prefs = {};
 
@@ -145,6 +147,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
 
   document.getElementById('contextmenu-resume').checked = prefs['contextmenu-resume'];
   document.getElementById('contextmenu-pause').checked = prefs['contextmenu-pause'];
+  document.getElementById('contextmenu-frame').checked = prefs['contextmenu-frame'];
+  document.getElementById('contextmenu-top').checked = prefs['contextmenu-top'];
 
   const safe = prefs.password !== '' || prefs.sha256 !== '';
   document.querySelector('[data-cmd=unlock]').disabled = safe === false;
@@ -157,6 +161,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
     option.value = rule;
     document.getElementById('rules').appendChild(option);
   }
+  document.getElementById('mode-top').value = localStorage.getItem('mode-top') || 'complete';
+  document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'simple';
 });
 init();
 
@@ -218,7 +224,8 @@ document.addEventListener('click', async e => {
         schedule = prefs.schedule;
       }
     }
-    console.log(schedule);
+    localStorage.setItem('mode-top', document.getElementById('mode-top').value);
+    localStorage.setItem('mode-frame', document.getElementById('mode-frame').value);
 
     const password = document.getElementById('password').value;
     const sha256 = password ? await new Promise(resolve => {
@@ -253,7 +260,9 @@ document.addEventListener('click', async e => {
         return p;
       }, {}),
       'contextmenu-resume': document.getElementById('contextmenu-resume').checked,
-      'contextmenu-pause': document.getElementById('contextmenu-pause').checked
+      'contextmenu-pause': document.getElementById('contextmenu-pause').checked,
+      'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
+      'contextmenu-top': document.getElementById('contextmenu-top').checked
     }, () => {
       toast('Options saved');
       window.removeEventListener('beforeunload', warning);
@@ -300,10 +309,10 @@ document.addEventListener('click', async e => {
       });
 
       const blob = new Blob([
-        JSON.stringify(Object.assign({
+        JSON.stringify(Object.assign({}, prefs, {
           'managed.storage.overwrite.on.start': false,
           guid
-        }, prefs), null, e.shiftKey ? '' : '  ')
+        }), null, e.shiftKey ? '' : '  ')
       ], {type: 'application/json'});
       const href = URL.createObjectURL(blob);
       Object.assign(document.createElement('a'), {

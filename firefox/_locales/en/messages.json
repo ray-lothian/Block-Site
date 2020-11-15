@@ -143,8 +143,29 @@
   "options_contextmenu_resume": {
     "message": "Show resume context menu option on browser action's context"
   },
+  "options_contextmenu_top": {
+    "message": "Show \"(Un)Block this Page\" context menu option on page context"
+  },
+  "options_contextmenu_frame": {
+    "message": "Show \"(Un)Block this Frame\" context menu option on frame context"
+  },
   "options_no_pass_on_add": {
     "message": "Do not ask for the master password to block a new hostname"
+  },
+  "options_theme": {
+    "message": "Select visual mode for the blocked page"
+  },
+  "options_theme_top": {
+    "message": "For Page"
+  },
+  "options_theme_frame": {
+    "message": "For Frame"
+  },
+  "options_complete": {
+    "message": "Complete"
+  },
+  "options_simple": {
+    "message": "Simple"
   },
   "blocked_restricted": {
     "message": "Restricted Access"
@@ -217,5 +238,11 @@
   },
   "bg_msg_17": {
     "message": "Please enter the master password to continue"
+  },
+  "bg_msg_18": {
+    "message": "(Un)Block this Frame"
+  },
+  "bg_msg_19": {
+    "message": "(Un)Block this Page"
   }
 }

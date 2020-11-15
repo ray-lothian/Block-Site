@@ -133,3 +133,9 @@ html.dark input:focus {
 [align=center] {
   align-items: center;
 }
+
+html.simple header h1,
+html.simple header table,
+html.simple footer {
+  display: none !important;
+}

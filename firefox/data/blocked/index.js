@@ -136,7 +136,8 @@ Promise.all([
 chrome.runtime.onMessage.addListener(request => {
   if (request.method === 'press-exception') {
     const msg = chrome.i18n.getMessage('bg_msg_13').replace('##', document.getElementById('domain').textContent);
-    if (window.confirm(msg)) {
+    // Ignored call to 'confirm()'. The document is sandboxed, and the 'allow-modals' keyword is not set.
+    if (window.confirm(msg) || window.top !== window) {
       document.getElementById('exception').click();
     }
   }

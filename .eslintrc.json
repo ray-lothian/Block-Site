@@ -1,7 +1,6 @@
 {
   "extends": [
-    "eslint:recommended",
-    "google"
+    "eslint:recommended"
   ],
   "rules": {
     "no-var": 2,
