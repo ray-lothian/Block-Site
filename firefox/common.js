@@ -458,7 +458,7 @@ chrome.runtime.onMessage.addListener(onMessage);
 
 const userAction = (tabId, href, frameId) => {
   // this is an internal tab, press the unblock button
-  if (href.indexOf(chrome.runtime.id) !== -1) {
+  if (href.startsWith(chrome.runtime.getURL(''))) {
     return chrome.tabs.sendMessage(tabId, {
       method: 'press-exception'
     });
