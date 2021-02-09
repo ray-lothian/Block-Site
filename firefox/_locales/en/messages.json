@@ -228,7 +228,7 @@
     "message": "Unblock access to \"##\". Are you sure?"
   },
   "bg_msg_14": {
-    "message": "Access to \"##\" will be restricted. Are you sure?"
+    "message": "Access to \"##\" will be restricted with the following rules. Are you sure?"
   },
   "bg_msg_15": {
     "message": "Blocking is paused. You can now access the restricted URLs."

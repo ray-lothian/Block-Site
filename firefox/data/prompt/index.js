@@ -4,6 +4,14 @@ const args = new URLSearchParams(location.search);
 
 document.getElementById('message').textContent = args.get('message') || 'NA';
 
+if (args.get('hidden') === 'false') {
+  document.getElementById('password').type = 'text';
+}
+if (args.get('value')) {
+  document.getElementById('password').value = args.get('value');
+  document.getElementById('ok').disabled = false;
+}
+
 document.getElementById('cancel').addEventListener('click', () => {
   chrome.runtime.sendMessage({
     method: 'prompt-resolved'

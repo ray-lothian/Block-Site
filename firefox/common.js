@@ -27,9 +27,10 @@ const prefs = {
   'guid': '' // a unique GUID for exported managed JSON
 };
 
-const prompt = msg => {
+const prompt = (msg, value = '', hidden = true) => {
   return new Promise((resolve, reject) => chrome.windows.create({
-    url: 'data/prompt/index.html?message=' + encodeURIComponent(msg),
+    url: 'data/prompt/index.html?message=' + encodeURIComponent(msg) +
+      '&value=' + encodeURIComponent(value) + '&hidden=' + hidden,
     type: 'popup',
     width: 600,
     height: 180,
@@ -484,44 +485,44 @@ const userAction = (tabId, href, frameId) => {
         window.stop();
         const hostname = ${JSON.stringify(hostname)};
         const domain =  tld.getDomain(hostname);
-        const msg = ${JSON.stringify(msg)}.replace('##', domain || hostname);
-        if (window.confirm(msg)) {
-          if (hostname === domain) {
-            return [domain];
-          }
-          else if (domain) {
-            return [domain, '*.' + domain];
-          }
-          else if (hostname) {
-            return [hostname];
-          }
+        if (hostname === domain) {
+          return [domain];
+        }
+        else if (domain) {
+          return [domain, '*.' + domain];
+        }
+        else if (hostname) {
+          return [hostname];
         }
       })()`
     }, r => {
       if (chrome.runtime.lastError) {
-        notify(chrome.runtime.lastError.message);
+        return notify(chrome.runtime.lastError.message);
       }
+
       const reload = () => chrome.tabs.executeScript(tabId, {
         frameId,
         code: 'location.reload()',
         runAt: 'document_start'
       });
 
-      if (r && r.length && r[0]) {
-        if (prefs.reverse) {
-          onMessage({
-            method: 'remove-from-list',
-            href,
-            mode: 'reverse'
-          }, null, reload);
+      prompt(msg.replace('##', r[0][0]), r[0].join(', '), false).then(a => {
+        if (a) {
+          if (prefs.reverse) {
+            onMessage({
+              method: 'remove-from-list',
+              href,
+              mode: 'reverse'
+            }, null, reload);
+          }
+          else {
+            onMessage({
+              method: 'append-to-list',
+              hostnames: a.split(/\s*,\s*/)
+            }, null, reload);
+          }
         }
-        else {
-          onMessage({
-            method: 'append-to-list',
-            hostnames: r[0]
-          }, null, reload);
-        }
-      }
+      });
     }));
   };
 
