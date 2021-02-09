@@ -453,6 +453,10 @@ const onMessage = (request, sender, response) => {
       focused: true
     });
   }
+  else if (request.method === 'ask-for-password') {
+    prompt(chrome.i18n.getMessage('bg_msg_17')).then(response);
+    return true;
+  }
 };
 chrome.runtime.onMessage.addListener(onMessage);
 
@@ -647,10 +651,11 @@ chrome.alarms.onAlarm.addListener(alarm => {
         if (reason === 'install' || (prefs.faqs && reason === 'update')) {
           const doUpdate = (Date.now() - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
           if (doUpdate && previousVersion !== version) {
-            tabs.create({
+            tabs.query({active: true, currentWindow: true}, tbs => tabs.create({
               url: page + '?version=' + version + (previousVersion ? '&p=' + previousVersion : '') + '&type=' + reason,
-              active: reason === 'install'
-            });
+              active: reason === 'install',
+              ...(tbs && tbs.length && {index: tbs[0].index + 1})
+            }));
             storage.local.set({'last-update': Date.now()});
           }
         }

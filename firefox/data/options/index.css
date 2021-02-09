@@ -5,12 +5,20 @@
 body {
   background-color: #fff;
   color: #4d5156;
+  font-size: 13px;
+  max-width: 80%;
+  margin: 10px auto;
+}
+@media screen and (max-width: 600px)  {
+  body {
+    margin: 10px;
+    max-width: unset;
+  }
 }
 @supports (-moz-appearance:none) {
   body {
     font-size: 13px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    margin: 15px;
   }
   h1 {
     font-size: 18px;
