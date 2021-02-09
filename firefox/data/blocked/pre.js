@@ -11,5 +11,5 @@ if (window === window.top) {
   document.documentElement.classList.add(localStorage.getItem('mode-top') || 'complete');
 }
 else {
-  document.documentElement.classList.add(localStorage.getItem('mode-frame') || 'simple');
+  document.documentElement.classList.add(localStorage.getItem('mode-frame') || 'complete');
 }
