@@ -516,6 +516,7 @@ const userAction = (tabId, href, frameId) => {
             }, null, reload);
           }
           else {
+            console.log(a.split(/\s*,\s*/), a);
             onMessage({
               method: 'append-to-list',
               hostnames: a.split(/\s*,\s*/)
