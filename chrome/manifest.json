@@ -44,7 +44,6 @@
   ],
   "options_ui": {
     "open_in_tab": true,
-    "chrome_style": true,
     "page": "data/options/index.html"
   },
   "incognito": "split"

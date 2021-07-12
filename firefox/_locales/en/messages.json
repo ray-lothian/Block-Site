@@ -71,11 +71,14 @@
   "options_support": {
     "message": "Support Development"
   },
+  "options_preview": {
+    "message": "Usage Preview"
+  },
   "options_unlock": {
     "message": "Unlock Options"
   },
   "options_save": {
-    "message": "Save"
+    "message": "Save Options"
   },
   "options_block_header": {
     "message": "Add a Rule"
@@ -166,6 +169,9 @@
   },
   "options_simple": {
     "message": "Simple"
+  },
+  "options_intro": {
+    "message": "To save options or set master password scroll down"
   },
   "blocked_restricted": {
     "message": "Restricted Access"

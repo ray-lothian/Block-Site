@@ -399,6 +399,10 @@ document.getElementById('support').addEventListener('click', () => chrome.tabs.c
   url: chrome.runtime.getManifest().homepage_url + '?rd=donate'
 }));
 
+document.getElementById('preview').addEventListener('click', () => chrome.tabs.create({
+  url: 'https://www.youtube.com/watch?v=maE-gOUSH4c'
+}));
+
 /* change reminder */
 document.addEventListener('change', () => {
   window.addEventListener('beforeunload', warning);
@@ -414,3 +418,12 @@ document.getElementById('rules-container').addEventListener('click', e => {
     }
   }
 });
+
+const links = window.links = (d = document) => {
+  for (const a of [...d.querySelectorAll('[data-href]')]) {
+    if (a.hasAttribute('href') === false) {
+      a.href = chrome.runtime.getManifest().homepage_url + '#' + a.dataset.href;
+    }
+  }
+};
+document.addEventListener('DOMContentLoaded', () => links());

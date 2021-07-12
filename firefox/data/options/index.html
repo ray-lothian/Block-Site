@@ -7,9 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
+    <div class="admin" data-i18n="options_intro"></div>
     <!-- block -->
     <div class="header">
-      <h1 data-i18n="options_block_header" style="margin-top: 0;"></h1>
+      <h1 style="margin-top: 0;">
+        <a data-href="faq3" target="_blank" data-i18n="options_block_header"></a>
+      </h1>
       <details>
         <summary data-i18n="options_instruction"></summary>
         <span data-i18n="options_sup_6"></span>
@@ -35,7 +38,9 @@
     </div>
     <!-- schedule -->
     <div class="header">
-      <h1 data-i18n="options_schedule_header"></h1>
+      <h1>
+        <a data-href="faq12" target="_blank" data-i18n="options_schedule_header"></a>
+      </h1>
       <details>
         <summary data-i18n="options_instruction"></summary>
         <span data-i18n="options_sup_11"></span>
@@ -135,11 +140,11 @@
     </div>
     <div vbox class="space">
       <span data-i18n="options_user_message" class="space"></span>
-      <textarea id="message" rows="4" flex="1" data-i18n="options_sup_2" data-i18n-value="placeholder"></textarea>
+      <textarea id="message" rows="6" flex="1" data-i18n="options_sup_2" data-i18n-value="placeholder"></textarea>
     </div>
     <div vbox class="space">
       <span data-i18n="options_custom_css" class="space"></span>
-      <textarea id="css" rows="4" flex="1" data-i18n="options_sup_3" data-i18n-value="placeholder"></textarea>
+      <textarea id="css" rows="6" flex="1" data-i18n="options_sup_3" data-i18n-value="placeholder"></textarea>
     </div>
     <div hbox class="space" align="center">
       <input type="checkbox" id="title">&nbsp;
@@ -155,7 +160,9 @@
     <div id="explore" data-cols="4"></div>
     <!-- rules -->
     <div class="header">
-      <h1 data-i18n="options_rules_header"></h1>
+      <h1>
+        <a data-href="faq10" target="_blank" data-i18n="options_rules_header"></a>
+      </h1>
       <details>
         <summary data-i18n="options_instruction"></summary>
         <span data-i18n="options_sup_8"></span>
@@ -180,8 +187,11 @@
 
     <div>
       <h1 data-i18n="options_tools_header"></h1>
-      <div id="tools">
+      <p>
         <input type="button" data-i18n-value="value" data-i18n="options_support" id="support">
+        <input type="button" data-i18n-value="value" data-i18n="options_preview" id="preview">
+      </p>
+      <div id="tools">
         <input type="button" data-i18n-value="value" data-i18n="options_save" data-cmd="save" disabled="true">
         <form id="save-container" data-i18n="options_master_password_comment" data-i18n-value="title">
           <input type="password" id="password" data-i18n="options_master_password" data-i18n-value="placeholder">&nbsp;
