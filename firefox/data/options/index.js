@@ -85,6 +85,13 @@ function add(hostname) {
   return rd;
 }
 
+function remove(hostname) {
+  const rulesContainer = document.getElementById('rules-container');
+  const rules = [...rulesContainer.children];
+  const matchingRules = rules.filter(e => e.attributes['data-hostname'].value === hostname);
+  matchingRules.forEach(e=>e.remove());
+}
+
 document.getElementById('add').addEventListener('submit', e => {
   e.preventDefault();
   const hostname = e.target.querySelector('input[type=text]').value;
@@ -124,6 +131,84 @@ const fs = schedule => {
     }
   }
 };
+
+const save = () => {
+  grant(async () => {
+    let schedule = {
+      times: days.reduce((p, c) => {
+        const start = document.querySelector(`input[type=time][name=start][data-id=${c}]`).value;
+        const end = document.querySelector(`input[type=time][name=end][data-id=${c}]`).value;
+
+        if (start && end) {
+          p[c] = [{start, end}];
+        }
+
+        return p;
+      }, {})
+    };
+    const rule = document.querySelector('#schedule [name="hostname"]');
+    if (rule.value) {
+      const e = validateRegex(rule.value);
+      if (e) {
+        return toast('Schedule Blocking; ' + e.message, 3000, 'error');
+      }
+      else {
+        if (Object.values(schedule.times).some(times => times.some(({start, end}) => start && end))) {
+          prefs.schedules[rule.value] = schedule;
+        }
+        else {
+          delete prefs.schedules[rule.value];
+          console.log('deleting rule for', rule.value);
+        }
+        schedule = prefs.schedule;
+      }
+    }
+    localStorage.setItem('mode-top', document.getElementById('mode-top').value);
+    localStorage.setItem('mode-frame', document.getElementById('mode-frame').value);
+
+    const password = document.getElementById('password').value;
+    const sha256 = password ? await new Promise(resolve => {
+      chrome.runtime.getBackgroundPage(bg => resolve(bg.sha256(password)));
+    }) : '';
+
+    // clear deprecated password preference
+    chrome.storage.local.remove('password');
+    chrome.storage.local.set({
+      sha256,
+      'title': document.getElementById('title').checked,
+      'initialBlock': document.getElementById('initialBlock').checked,
+      'reverse': document.getElementById('reverse').checked,
+      'no-password-on-add': document.getElementById('no-password-on-add').checked,
+      'redirect': document.getElementById('redirect').value,
+      'message': document.getElementById('message').value,
+      'css': document.getElementById('css').value,
+      'timeout': Math.max(Number(document.getElementById('timeout').value), 1),
+      'close': Math.max(Number(document.getElementById('close').value), 0),
+      'wrong': Math.max(Number(document.getElementById('wrong').value), 1),
+      schedule,
+      'schedules': prefs.schedules,
+      'blocked': [...document.querySelectorAll('#rules-container > div')]
+        .map(tr => tr.dataset.hostname)
+        .filter((s, i, l) => s && l.indexOf(s) === i),
+      'map': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
+        const {hostname} = c.dataset;
+        const mapped = c.querySelector('input[type=text]').value;
+        if (mapped) {
+          p[hostname] = mapped;
+        }
+        return p;
+      }, {}),
+      'contextmenu-resume': document.getElementById('contextmenu-resume').checked,
+      'contextmenu-pause': document.getElementById('contextmenu-pause').checked,
+      'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
+      'contextmenu-top': document.getElementById('contextmenu-top').checked
+    }, () => {
+      toast('Options saved');
+      window.removeEventListener('beforeunload', warning);
+      init(false);
+    });
+  });
+}
 
 // double-check password; based on https://github.com/ray-lothian/Block-Site/issues/51
 const grant = callback => chrome.storage.local.get({
@@ -182,6 +267,20 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   }
   document.getElementById('mode-top').value = localStorage.getItem('mode-top') || 'complete';
   document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'complete'; // 'simple'
+
+  const queryString = window.location.search.substr(1);
+  if (queryString) {
+    const [key, value] = queryString.split('=');
+    var newURL = location.href.split("?")[0];
+    window.history.pushState('object', document.title, newURL);
+    if (key === 'add') {
+      add(value);
+      save();
+    } else if (key === 'remove') {
+      remove(value);
+      save();
+    }
+  }
 });
 init();
 
@@ -218,81 +317,7 @@ document.addEventListener('click', async e => {
     target.closest('div').remove();
   }
   else if (cmd === 'save') {
-    grant(async () => {
-      let schedule = {
-        times: days.reduce((p, c) => {
-          const start = document.querySelector(`input[type=time][name=start][data-id=${c}]`).value;
-          const end = document.querySelector(`input[type=time][name=end][data-id=${c}]`).value;
-
-          if (start && end) {
-            p[c] = [{start, end}];
-          }
-
-          return p;
-        }, {})
-      };
-      const rule = document.querySelector('#schedule [name="hostname"]');
-      if (rule.value) {
-        const e = validateRegex(rule.value);
-        if (e) {
-          return toast('Schedule Blocking; ' + e.message, 3000, 'error');
-        }
-        else {
-          if (Object.values(schedule.times).some(times => times.some(({start, end}) => start && end))) {
-            prefs.schedules[rule.value] = schedule;
-          }
-          else {
-            delete prefs.schedules[rule.value];
-            console.log('deleting rule for', rule.value);
-          }
-          schedule = prefs.schedule;
-        }
-      }
-      localStorage.setItem('mode-top', document.getElementById('mode-top').value);
-      localStorage.setItem('mode-frame', document.getElementById('mode-frame').value);
-
-      const password = document.getElementById('password').value;
-      const sha256 = password ? await new Promise(resolve => {
-        chrome.runtime.getBackgroundPage(bg => resolve(bg.sha256(password)));
-      }) : '';
-
-      // clear deprecated password preference
-      chrome.storage.local.remove('password');
-      chrome.storage.local.set({
-        sha256,
-        'title': document.getElementById('title').checked,
-        'initialBlock': document.getElementById('initialBlock').checked,
-        'reverse': document.getElementById('reverse').checked,
-        'no-password-on-add': document.getElementById('no-password-on-add').checked,
-        'redirect': document.getElementById('redirect').value,
-        'message': document.getElementById('message').value,
-        'css': document.getElementById('css').value,
-        'timeout': Math.max(Number(document.getElementById('timeout').value), 1),
-        'close': Math.max(Number(document.getElementById('close').value), 0),
-        'wrong': Math.max(Number(document.getElementById('wrong').value), 1),
-        schedule,
-        'schedules': prefs.schedules,
-        'blocked': [...document.querySelectorAll('#rules-container > div')]
-          .map(tr => tr.dataset.hostname)
-          .filter((s, i, l) => s && l.indexOf(s) === i),
-        'map': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
-          const {hostname} = c.dataset;
-          const mapped = c.querySelector('input[type=text]').value;
-          if (mapped) {
-            p[hostname] = mapped;
-          }
-          return p;
-        }, {}),
-        'contextmenu-resume': document.getElementById('contextmenu-resume').checked,
-        'contextmenu-pause': document.getElementById('contextmenu-pause').checked,
-        'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
-        'contextmenu-top': document.getElementById('contextmenu-top').checked
-      }, () => {
-        toast('Options saved');
-        window.removeEventListener('beforeunload', warning);
-        init(false);
-      });
-    });
+    save();
   }
   else if (cmd === 'import-txt') {
     const input = document.createElement('input');
