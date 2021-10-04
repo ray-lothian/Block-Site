@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Prompt :: Block Site</title>
+  </head>
+  <style type="text/css">
+    html {
+      height: 100%;
+      background-color: #fff;
+      color: #4d5156;
+    }
+    input {
+      background-color: #d9e4ec;
+      color: #4d5156;
+      border: none;
+      border-radius: 0;
+      padding: 10px;
+      margin-top: 10px;
+      outline: none;
+    }
+    input[type=submit],
+    input[type=button] {
+      cursor: pointer;
+      width: 100px;
+    }
+    input[type=submit]:disabled,
+    input[type=button]:disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: "Helvetica Neue",Helvetica,sans-serif;
+      font-size: 13px;
+      margin: 10px;
+      height: calc(100% - 20px);
+    }
+    #password {
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+  <body>
+    <p id="message">Please enter the password</p>
+    <form>
+      <div style="flex: 1;">
+        <input type="password" id="password" autofocus required>
+      </div>
+      <div style="text-align: right">
+        <input type="button" id="cancel" value="Cancel">
+        <input type="submit" id="ok" value="OK" disabled>
+      </div>
+    </form>
+    <script src="index.js"></script>
+  </body>
+</html>

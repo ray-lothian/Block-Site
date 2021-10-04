@@ -1,0 +1,44 @@
+{
+  "country-flags": {
+    "name": "Country Flags & IP WHOIS"
+  },
+  "save-images": {
+    "name": "Download All Images"
+  },
+  "tab-discard": {
+    "name": "Auto Tab Discard"
+  },
+  "send-to": {
+    "name": "Send to VLC"
+  },
+  "useragent-switcher": {
+    "name": "User-Agent Switcher and Manager"
+  },
+  "chrome-reader-view": {
+    "name": "Reader View"
+  },
+  "dark-theme": {
+    "name": "Dark Theme"
+  },
+  "mute-tab": {
+    "name": "Mute Tab"
+  },
+  "proxy-switcher": {
+    "name": "Proxy Switcher"
+  },
+  "font-finder": {
+    "name": "Font Finder"
+  },
+  "popup-blocker": {
+    "name": "Popup Blocker"
+  },
+  "audio-equalizer": {
+    "name": "Audio Equalizer"
+  },
+  "search-all-tabs": {
+    "name": "Search all Tabs"
+  },
+  "bookmarks-commander": {
+    "name": "Bookmarks Commander"
+  }
+}

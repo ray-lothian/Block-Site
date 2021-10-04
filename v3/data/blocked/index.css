@@ -1,0 +1,145 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 13px;
+  color: #4e4e4e;
+  background: #f0f0f0 url('blocked.svg') center center no-repeat;
+  background-size: 50vh;
+}
+@media screen and (max-width: 550px) {
+  body {
+    background-size: 50vw;
+  }
+}
+
+header h1 {
+  text-align: center;
+  font-weight: normal;
+}
+header table {
+  table-layout: fixed;
+}
+header td:last-of-type {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+header,
+p,
+footer {
+  padding: 10px;
+}
+#options::before {
+  content: '|';
+  padding: 0 5px;
+  color: #fff;
+}
+footer span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media screen and (max-width: 500px) {
+  footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 20px;
+  }
+  #options::before {
+    display: none;
+  }
+}
+
+form {
+  display: inline-block;
+  margin-left: 5px;
+}
+input[type=text],
+input[type=password] {
+  outline: none;
+  border: solid 1px #ccc;
+  height: 22px;
+  line-height: 22px;
+  text-indent: 5px;
+  min-width: 150px;
+  background-color: #f0f0f0;
+}
+input:focus {
+  background-color: #fff;
+}
+a {
+  text-decoration: none;
+  color: #006cc3;
+}
+html.dark a {
+  color: #90bbde;
+}
+
+#domain {
+  font-size: 150%;
+}
+#sub-domain,
+#pathname,
+#search {
+  opacity: 0.5;
+}
+#switch {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url('button_on.svg') no-repeat center center;
+  background-size: 32px;
+  width: 64px;
+  height: 48px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+html.dark body {
+  background-color: #222837;
+  background-image: url('blocked_dark.svg');
+  color: #c7c7c7;
+}
+html.dark #switch {
+  background-image: url('button_off.svg');
+}
+html.dark input[type=text],
+html.dark input[type=password] {
+  background-color: #3c3c3c;
+  color: #d0d0d0;
+}
+html.dark input:focus {
+  background-color: #575757;
+}
+
+[hbox] {
+  display: flex;
+  flex-direction: row;
+}
+[vbox] {
+  display: flex;
+  flex-direction: column;
+}
+[flex="1"] {
+  flex: 1;
+}
+[align=center] {
+  align-items: center;
+}
+
+html.simple header h1,
+html.simple header table,
+html.simple footer {
+  display: none !important;
+}
+
+#message {
+  white-space: pre;
+}

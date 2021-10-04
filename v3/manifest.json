@@ -1,0 +1,57 @@
+{
+  "name": "Block Site",
+  "version": "0.4.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "description": "__MSG_app_description__",
+  "default_locale": "en",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications",
+    "alarms",
+    "contextMenus",
+    "declarativeNetRequest",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "storage": {
+    "managed_schema": "schema.json"
+  },
+  "icons": {
+    "16": "data/icons/16.png",
+    "32": "data/icons/32.png",
+    "48": "data/icons/48.png",
+    "64": "data/icons/64.png",
+    "128": "data/icons/128.png",
+    "256": "data/icons/256.png"
+  },
+  "homepage_url": "https://add0n.com/block-site.html",
+  "action":{
+    "default_icon": {
+      "16": "/data/icons/16.png",
+      "32": "/data/icons/32.png"
+    }
+  },
+  "options_ui": {
+    "page": "data/options/index.html",
+    "open_in_tab": true
+  },
+  "web_accessible_resources": [{
+    "resources": [
+      "/data/blocked/index.html",
+      "/data/close/index.html"
+    ],
+    "matches": ["*://*/*"]
+  }],
+  "incognito": "split",
+  "commands": {
+    "_execute_action": {
+      "description": "Press the action button"
+    }
+  }
+}

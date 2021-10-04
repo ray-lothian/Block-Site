@@ -1,0 +1,203 @@
+{
+  "app_description": {
+    "message": "Un bloqueur et redirecteur d'URL personnalisable et protégé par mot de passe."
+  },
+  "options_master_password": {
+    "message": "Mot de passe principale"
+  },
+  "options_master_password_comment": {
+    "message": "Entrez un mot de passe principal pour protéger vos préférences"
+  },
+  "options_redirect": {
+    "message": "Rediriger vers :"
+  },
+  "options_user_message": {
+    "message": "Message utilisateur :"
+  },
+  "options_resolve": {
+    "message": "Récupérer le titre des pages bloquées (décochez cette option pour empêcher les serveurs bloqués de recevoir toute demande)"
+  },
+  "options_startup": {
+    "message": "Effectuer un blocage sur les pages existantes après l'initialisation"
+  },
+  "options_allow_access": {
+    "message": "Autoriser l'accès au nom d'hôte débloqué pour (en secondes)"
+  },
+  "options_block_period": {
+    "message": "Bloquer la vérification du mot de passe en cas de saisie multiple d'un mot de passe erroné (en minutes)"
+  },
+  "options_close_blocked": {
+    "message": "Fermer après:"
+  },
+  "options_close_msg_blocked": {
+    "message": "(utilisez zéro pour ne pas fermer automatiquement)"
+  },
+  "options_times": {
+    "message": "Temps:"
+  },
+  "options_times_from": {
+    "message": "de"
+  },
+  "options_times_to": {
+    "message": "à"
+  },
+  "options_days": {
+    "message": "Jours:"
+  },
+  "options_hostname": {
+    "message": "Règle:"
+  },
+  "options_reverse": {
+    "message": "Fonctionner en mode inversé/ liste blanche"
+  },
+  "options_new_hostname": {
+    "message": "Bloquer une nouvelle url "
+  },
+  "options_add": {
+    "message": "Ajouter"
+  },
+  "options_matching": {
+    "message": "Modèle de correspondance"
+  },
+  "options_redirect_2": {
+    "message": "Rediriger vers"
+  },
+  "options_remove": {
+    "message": "Supprimer"
+  },
+  "options_support": {
+    "message": "Soutenir le développement"
+  },
+  "options_unlock": {
+    "message": "Déverrouiller les options"
+  },
+  "options_save": {
+    "message": "Sauvegarder"
+  },
+  "options_block_header": {
+    "message": "Ajouter une Règle"
+  },
+  "options_blocing_options_header": {
+    "message": "Options de blocage"
+  },
+  "options_list_header": {
+    "message": "Règles existantes"
+  },
+  "options_page_header": {
+    "message": "Page bloquée"
+  },
+  "options_tools_header": {
+    "message": "Outils"
+  },
+  "options_rules_header": {
+    "message": "Règles d'importation"
+  },
+  "options_import_txt": {
+    "message": "Importer les règles (fichier TXT)"
+  },
+  "options_schedule_header": {
+    "message": "Blocage en fonction des horaires"
+  },
+  "options_import_header": {
+    "message": "Sauvegarde et restauration"
+  },
+  "options_export_json": {
+    "message": "Exporter (Fichier JSON)"
+  },
+  "options_import_json": {
+    "message": "Importer (Fichier JSON)"
+  },
+  "options_sup_1": {
+    "message": "Possibilité de rediriger les demandes bloquées vers cette URL"
+  },
+  "options_sup_2": {
+    "message": "Il s'agit d'un message personnalisé qui est affiché sur la page bloquée. Il peut s'agir par exemple d'une instruction ou du contact administratif"
+  },
+  "options_sup_6": {
+    "message": "Pour bloquer les noms d'hôtes contenant un mot, utilisez la règle '*://*mot*/*'. Pour bloquer le même mot dans la partie du nom de chemin, utilisez la règle '*://*/*mot*'. Si vous devez simplement fermer une page avec une règle, utilisez le mot-clé 'close' dans la case 'Redirection vers'. Pour construire une règle d'expression régulière, préparez la règle avec le mot-clé 'R :''. Par exemple, 'R:ht{2}ps*://.*\\.go{2}gle\\.com' bloque www.google.com sur les deux protocoles HTTP et HTTPS."
+  },
+  "options_sup_8": {
+    "message": "Préparez un fichier texte contenant toutes les règles de blocage en format texte simple. Après l'importation, appuyez sur le bouton d'enregistrement pour que les modifications soient effectuées. Pour annuler et ne pas tenir compte des règles importées, rechargez cette page sans l'enregistrer."
+  },
+  "options_sup_9": {
+    "message": "Le fichier JSON exporté contient votre mot de passe principal. Ne partagez pas ce fichier."
+  },
+  "options_sup_10": {
+    "message": "Lors de l'importation des paramètres, tous vos paramètres existants seront écrasés."
+  },
+  "options_sup_11": {
+    "message": "En fournissant une règle d'expression régulière, vous pouvez limiter l'accès aux URL en fonction des jours et de l'heure. Pour avoir plusieurs programmations avec des règles différentes, remplissez la section pour chaque règle et appuyez sur le bouton de sauvegarder. Pour supprimer une règle sauvegardée, remplissez la case \"règle\", attendez un instant que l'extension charge l'horaire, puis supprimez la section d'horaire sans supprimer la règle elle-même et appuyer sur \"Sauvegarder\"."
+  },
+  "options_sup_12": {
+    "message": "une expression régulière pour limiter l'exposition"
+  },
+  "options_instruction": {
+    "message": "Instruction"
+  },
+  "blocked_restricted": {
+    "message": "Accès restreint"
+  },
+  "blocked_title": {
+    "message": "Titre"
+  },
+  "blocked_since": {
+    "message": "Bloqué depuis"
+  },
+  "blocked_master_password": {
+    "message": "Entrez le mot de passe principal pour débloquer :"
+  },
+  "blocked_options": {
+    "message": "Page des options"
+  },
+  "blocked_remove_blocking": {
+    "message": "Supprimer le blocage"
+  },
+  "blocked_add_to_whitelist": {
+    "message": "Ajouter à la liste blanche"
+  },
+  "blocked_no_action": {
+    "message": "Le mot de passe principal n'est pas correct. Remplissez la case et réessayez"
+  },
+  "bg_msg_1": {
+    "message": "Cet onglet n'a pas d'URL valide"
+  },
+  "bg_msg_2": {
+    "message": "Mauvais mot de passe ! Veuillez réessayer !"
+  },
+  "bg_msg_3": {
+    "message": "Allez à la page des options et définissez un mot de passe principal"
+  },
+  "bg_msg_4": {
+    "message": "Trop de mauvais mots de passe. Veuillez patienter pendant ## minute(s) et réessayer."
+  },
+  "bg_msg_5": {
+    "message": "Blocage suspendu"
+  },
+  "bg_msg_6": {
+    "message": "Rependre le Blocage"
+  },
+  "bg_msg_7": {
+    "message": "10 minutes"
+  },
+  "bg_msg_8": {
+    "message": "30 minutes"
+  },
+  "bg_msg_9": {
+    "message": "1 heure"
+  },
+  "bg_msg_10": {
+    "message": "6 heures"
+  },
+  "bg_msg_11": {
+    "message": "1 jour"
+  },
+  "bg_msg_12": {
+    "message": "Veuillez entrer le mot de passe principal pour interrompre le blocage"
+  },
+  "bg_msg_13": {
+    "message": "Ajouter \"##\" à la liste blanche?"
+  },
+  "bg_msg_14": {
+    "message": "Ajouter \"##\" à la liste noire?"
+  }
+}
