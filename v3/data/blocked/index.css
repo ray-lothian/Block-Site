@@ -9,7 +9,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 13px;
   color: #4e4e4e;
-  background: #f0f0f0 url('blocked.svg') center center no-repeat;
+  background: #f0f0f0 url('images/blocked.svg') center center no-repeat;
   background-size: 50vh;
 }
 @media screen and (max-width: 550px) {
@@ -38,7 +38,7 @@ footer {
 #options::before {
   content: '|';
   padding: 0 5px;
-  color: #fff;
+  opacity: 0.2;
 }
 footer span {
   white-space: nowrap;
@@ -63,12 +63,12 @@ form {
 input[type=text],
 input[type=password] {
   outline: none;
-  border: solid 1px #ccc;
-  height: 22px;
-  line-height: 22px;
-  text-indent: 5px;
   min-width: 150px;
-  background-color: #f0f0f0;
+  background-color: #fff;
+  border: none;
+  width: 50%;
+  box-sizing: border-box;
+  padding: 5px 10px;
 }
 input:focus {
   background-color: #fff;
@@ -82,7 +82,7 @@ html.dark a {
 }
 
 #domain {
-  font-size: 150%;
+  font-weight: bold;
 }
 #sub-domain,
 #pathname,
@@ -93,7 +93,7 @@ html.dark a {
   position: absolute;
   top: 0;
   right: 0;
-  background: url('button_on.svg') no-repeat center center;
+  background: url('images/button_on.svg') no-repeat center center;
   background-size: 32px;
   width: 64px;
   height: 48px;
@@ -104,19 +104,16 @@ html.dark a {
 
 html.dark body {
   background-color: #222837;
-  background-image: url('blocked_dark.svg');
+  background-image: url('images/blocked_dark.svg');
   color: #c7c7c7;
 }
 html.dark #switch {
-  background-image: url('button_off.svg');
+  background-image: url('images/button_off.svg');
 }
 html.dark input[type=text],
 html.dark input[type=password] {
-  background-color: #3c3c3c;
+  background-color: #353a44;
   color: #d0d0d0;
-}
-html.dark input:focus {
-  background-color: #575757;
 }
 
 [hbox] {

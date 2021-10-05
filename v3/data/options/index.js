@@ -243,7 +243,7 @@ document.addEventListener('click', async e => {
           }
           else {
             delete prefs.schedules[rule.value];
-            console.log('deleting rule for', rule.value);
+            console.warn('Deleting rules for', rule.value);
           }
           schedule = prefs.schedule;
         }

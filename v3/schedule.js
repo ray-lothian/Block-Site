@@ -44,12 +44,18 @@ const schedule = {
             end.getDate() + ((days.indexOf(day) - end.getDay() + 6) % 6)
           );
 
+          if (start.getTime() >= end.getTime()) {
+            notify(`Schedule time for "${day}" - "${rule}" rule is ignored!
+
+"From" must be less than "To"`);
+            continue;
+          }
+
           const now = Date.now();
           if (start.getTime() < now && end.getTime() < now) {
             start.setDate(start.getDate() + 7);
             end.setDate(end.getDate() + 7);
           }
-
           const guid = (Math.random() + 1).toString(36).substring(7);
           chrome.alarms.create('schedule.start.' + guid + '.' + rule, {
             when: start.getTime(),

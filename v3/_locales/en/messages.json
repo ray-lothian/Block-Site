@@ -135,7 +135,7 @@
     "message": "By providing a regular expression rule, you can limit the current schedule to the matching URLs. To have multiple schedules with different rules, fill the section for each rule and press the save button. To delete a saved rule, fill the rule part and wait for the extension to load the schedule, then delete the timing section without removing the rule itself."
   },
   "options_sup_12": {
-    "message": "a regular expression to limit the exposure"
+    "message": "a regular expression to limit the exposure of the current schedule"
   },
   "options_instruction": {
     "message": "Instruction"
@@ -183,7 +183,7 @@
     "message": "Blocked Since"
   },
   "blocked_master_password": {
-    "message": "Enter the master password to unblock:"
+    "message": "Enter the master password to unblock"
   },
   "blocked_options": {
     "message": "Options Page"

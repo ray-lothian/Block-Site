@@ -2,11 +2,12 @@
 
 /* update rules */
 const update = () => storage({
-  initialBlock: true,
-  blocked: [],
-  map: {},
-  reverse: false,
-  redirect: '' // use custom redirect page
+  'max-number-of-rules': 500,
+  'initialBlock': true,
+  'blocked': [],
+  'map': {},
+  'reverse': false,
+  'redirect': '' // use custom redirect page
 }).then(async prefs => {
   // remove old rules
   const rules = await chrome.declarativeNetRequest.getDynamicRules();
@@ -36,71 +37,75 @@ const update = () => storage({
       addRules: [rule]
     });
   }
+  const hs = prefs.blocked.filter((s, i, l) => s && l.indexOf(s) === i);
+  if (hs.length > prefs['max-number-of-rules']) {
+    notify(`You have too many blocking rules! Only the first 500 rules are applied.
 
-  for (const h of prefs.blocked) {
-    if (h) {
-      // find free id
-      let id;
-      for (let n = 1; ; n += 1) {
-        if (ids.indexOf(n) === -1) {
-          id = n;
-          ids.push(id);
-          break;
-        }
+Please merge them to keep the list less than ${prefs['max-number-of-rules']} items.`);
+  }
+
+  for (const h of hs.slice(0, prefs['max-number-of-rules'])) {
+    // find a free id
+    let id;
+    for (let n = 1; ; n += 1) {
+      if (ids.indexOf(n) === -1) {
+        id = n;
+        ids.push(id);
+        break;
       }
-      // construct rule
-      const rule = {
-        id,
-        action: {},
-        condition: {
-          resourceTypes: ['main_frame', 'sub_frame'],
-          isUrlFilterCaseSensitive: false,
-          regexFilter: convert(h)
-        }
-      };
-      if (prefs.reverse) {
+    }
+    // construct rule
+    const rule = {
+      id,
+      action: {},
+      condition: {
+        resourceTypes: ['main_frame', 'sub_frame'],
+        isUrlFilterCaseSensitive: false,
+        regexFilter: convert(h)
+      }
+    };
+    if (prefs.reverse) {
+      Object.assign(rule.action, {
+        type: 'allow'
+      });
+    }
+    else {
+      if (prefs.map[h] === 'close') {
         Object.assign(rule.action, {
-          type: 'allow'
+          type: 'redirect',
+          redirect: {
+            extensionPath: '/data/close/index.html'
+          }
+        });
+      }
+      else if (prefs.map[h]) {
+        Object.assign(rule.action, {
+          type: 'redirect',
+          redirect: {
+            regexSubstitution: prefs.map[h]
+          }
         });
       }
       else {
-        if (prefs.map[h] === 'close') {
-          Object.assign(rule.action, {
-            type: 'redirect',
-            redirect: {
-              extensionPath: '/data/close/index.html'
-            }
-          });
-        }
-        else if (prefs.map[h]) {
-          Object.assign(rule.action, {
-            type: 'redirect',
-            redirect: {
-              regexSubstitution: prefs.map[h]
-            }
-          });
-        }
-        else {
-          Object.assign(rule.action, {
-            type: 'redirect',
-            redirect: {
-              regexSubstitution: (prefs.redirect || chrome.runtime.getURL('/data/blocked/index.html')) + '?url=\\0'
-            }
-          });
-        }
-      }
-
-      try {
-        await chrome.declarativeNetRequest.updateDynamicRules({
-          addRules: [rule]
+        Object.assign(rule.action, {
+          type: 'redirect',
+          redirect: {
+            regexSubstitution: (prefs.redirect || chrome.runtime.getURL('/data/blocked/index.html')) + '?url=\\0'
+          }
         });
       }
-      catch (e) {
-        console.warn(e);
-        notify(`cannot add rule "${h}"
+    }
 
-  Error: ` + e.message);
-      }
+    try {
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        addRules: [rule]
+      });
+    }
+    catch (e) {
+      console.warn(e);
+      notify(`cannot add rule "${h}"
+
+Error: ` + e.message);
     }
   }
   // get existing tabs
@@ -140,6 +145,12 @@ const update = () => storage({
       }
     }
   }
+
+  chrome.action.setTitle({
+    title: chrome.runtime.getManifest().name + `
+
+Number of active filters: ` + regExps.length
+  });
 });
 
 chrome.storage.onChanged.addListener(ps => {

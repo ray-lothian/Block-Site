@@ -97,7 +97,10 @@ const convert = (h = '') => {
       return '^' + h.split('*').map(convert.escape).join('.*');
     }
   }
-  return h.substr(2);
+  if (h.startsWith('R:^')) {
+    return h.substr(2);
+  }
+  return '^.*' + h.substr(2);
 };
 convert.escape = str => {
   const specials = [
@@ -222,11 +225,8 @@ const userAction = async (tabId, href, frameId) => {
           /* global tld */
           window.stop();
           const domain = tld.getDomain(location.hostname);
-          if (location.hostname === domain) {
+          if (domain) {
             return [domain];
-          }
-          else if (domain) {
-            return [domain, '*.' + domain];
           }
           return [location.hostname];
         }
@@ -281,7 +281,6 @@ chrome.action.onClicked.addListener(tab => {
 
 /* messaging */
 chrome.runtime.onMessage.addListener((request, sender, response) => {
-  console.log(request);
   if (request.method === 'convert') {
     response(request.hosts.map(convert));
   }

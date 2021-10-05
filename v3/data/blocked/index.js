@@ -29,13 +29,11 @@ if (args.has('url')) {
 
 document.addEventListener('submit', e => {
   e.preventDefault();
-  console.log(1);
   chrome.runtime.sendMessage({
     method: 'open-once',
     url: href.split('?')[0] + '*',
     password: e.target.querySelector('[type=password]').value
   }, resp => {
-    console.log(resp);
     document.getElementById('url').click();
   });
 });
@@ -125,7 +123,6 @@ Promise.all([
         if (document.getElementById('sub-domain').textContent) {
           hostnames.push('*.' + document.getElementById('domain').textContent);
         }
-        console.log(hostnames);
         document.title = `Added ${hostnames.length} new rule(s)`;
         chrome.storage.local.set({
           blocked: [...prefs.blocked, ...hostnames]
