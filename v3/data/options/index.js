@@ -43,6 +43,7 @@ const DEFAULTS = {
     times: null // per day scheduling {'Mon': [{start, end}], ...}
   },
   'schedules': {},
+  'schedule-offset': 0, // minutes
   'initialBlock': true,
   'contextmenu-resume': true,
   'contextmenu-pause': true,
@@ -152,6 +153,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   }
   document.getElementById('title').checked = prefs.title;
   document.getElementById('initialBlock').checked = prefs.initialBlock;
+  document.getElementById('schedule-offset').value = prefs['schedule-offset'];
+  document.getElementById('schedule-offset').dispatchEvent(new Event('input'));
   document.getElementById('reverse').checked = prefs.reverse;
   document.getElementById('no-password-on-add').checked = prefs['no-password-on-add'];
   document.getElementById('timeout').value = prefs.timeout;
@@ -265,6 +268,7 @@ document.addEventListener('click', async e => {
         sha256,
         'title': document.getElementById('title').checked,
         'initialBlock': document.getElementById('initialBlock').checked,
+        'schedule-offset': Number(document.getElementById('schedule-offset').value),
         'reverse': document.getElementById('reverse').checked,
         'no-password-on-add': document.getElementById('no-password-on-add').checked,
         'redirect': document.getElementById('redirect').value,
@@ -430,3 +434,14 @@ const links = window.links = (d = document) => {
   }
 };
 document.addEventListener('DOMContentLoaded', () => links());
+
+document.getElementById('schedule-offset').oninput = e => {
+  const t = new Date();
+  // apply offset
+  console.log(t);
+  t.setTime(
+    t.getTime() + Number(e.target.value) * 60 * 1000
+  );
+  console.log(t);
+  document.getElementById('local-time').textContent = t.toLocaleString();
+}

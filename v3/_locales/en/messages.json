@@ -104,6 +104,9 @@
   "options_schedule_header": {
     "message": "Schedule Blocking"
   },
+  "options_schedule_offset": {
+    "message": "Schedule offset in minutes"
+  },
   "options_import_header": {
     "message": "Backup and Restore"
   },

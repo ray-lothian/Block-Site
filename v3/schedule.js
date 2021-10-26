@@ -13,8 +13,9 @@ const schedule = {
     });
     // schedules
     const prefs = await storage({
-      schedule: {},
-      schedules: {}
+      'schedule': {},
+      'schedules': {},
+      'schedule-offset': 0 // in minutes
     });
 
     const schedules = prefs.schedules;
@@ -27,21 +28,35 @@ const schedule = {
       for (const [day, arr] of Object.entries(value.times)) {
         for (const o of arr) {
           const start = new Date();
+          // apply offset
+          start.setTime(
+            start.getTime() + prefs['schedule-offset'] * 60 * 1000
+          );
           const [sh, sm] = o.start.split(':');
           start.setSeconds(0);
           start.setMinutes(Number(sm));
           start.setHours(Number(sh));
           start.setDate(
-            start.getDate() + ((days.indexOf(day) - start.getDay() + 6) % 6)
+            start.getDate() - ((days.indexOf(day) - start.getDay() + 6) % 6)
+          );
+          start.setTime(
+            start.getTime() - prefs['schedule-offset'] * 60 * 1000
           );
 
           const end = new Date();
+          // apply offset
+          end.setTime(
+            end.getTime() + prefs['schedule-offset'] * 60 * 1000
+          );
           const [eh, em] = o.end.split(':');
           end.setSeconds(0);
           end.setMinutes(Number(em));
           end.setHours(Number(eh));
           end.setDate(
-            end.getDate() + ((days.indexOf(day) - end.getDay() + 6) % 6)
+            end.getDate() - ((days.indexOf(day) - end.getDay() + 6) % 6)
+          );
+          end.setTime(
+            end.getTime() - prefs['schedule-offset'] * 60 * 1000
           );
 
           if (start.getTime() >= end.getTime()) {
@@ -51,7 +66,10 @@ const schedule = {
             continue;
           }
 
+          console.log(start, end);
+
           const now = Date.now();
+
           if (start.getTime() < now && end.getTime() < now) {
             start.setDate(start.getDate() + 7);
             end.setDate(end.getDate() + 7);
