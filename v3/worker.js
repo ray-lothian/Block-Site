@@ -16,6 +16,7 @@ const notify = message => chrome.notifications.create(null, {
 });
 
 /* imports */
+// importScripts('v2.js');
 try {
   importScripts('blocker.js');
 }

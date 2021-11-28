@@ -28,6 +28,7 @@ const schedule = {
       for (const [day, arr] of Object.entries(value.times)) {
         for (const o of arr) {
           const start = new Date();
+          const ofsb = start.getTimezoneOffset();
           // apply offset
           start.setTime(
             start.getTime() + prefs['schedule-offset'] * 60 * 1000
@@ -42,6 +43,9 @@ const schedule = {
           start.setTime(
             start.getTime() - prefs['schedule-offset'] * 60 * 1000
           );
+          // consider timezone changes
+          const ofsa = start.getTimezoneOffset();
+          start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
 
           const end = new Date();
           // apply offset
@@ -58,6 +62,9 @@ const schedule = {
           end.setTime(
             end.getTime() - prefs['schedule-offset'] * 60 * 1000
           );
+          // consider timezone changes
+          const ofea = end.getTimezoneOffset();
+          end.setTime(end.getTime() + (ofsb - ofea) * 60 * 1000);
 
           if (start.getTime() >= end.getTime()) {
             notify(`Schedule time for "${day}" - "${rule}" rule is ignored!
