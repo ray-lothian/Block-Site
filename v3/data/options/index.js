@@ -107,9 +107,27 @@ const fs = schedule => {
       document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
     }
     // we only consider one range per day
-    for (const [day, [time]] of Object.entries(schedule.times)) {
-      document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
-      document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
+    for (const [day, times] of Object.entries(schedule.times)) {
+      console.log(times);
+      times.forEach((time, i) => {
+        if (i === 0) {
+          document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
+          document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
+        }
+        else {
+          const so = document.querySelector(`input[type=time][name=start][data-id=${day}]`);
+          const s = so.cloneNode(true);
+          s.value = time.start;
+          const eo = document.querySelector(`input[type=time][name=end][data-id=${day}]`);
+          const e = eo.cloneNode(true);
+          e.value = time.end;
+          const l = so.previousElementSibling.cloneNode(true);
+
+          eo.after(e);
+          eo.after(s);
+          eo.after(l);
+        }
+      });
     }
   }
   else { // old method
@@ -224,11 +242,16 @@ document.addEventListener('click', async e => {
     grant(async () => {
       let schedule = {
         times: days.reduce((p, c) => {
-          const start = document.querySelector(`input[type=time][name=start][data-id=${c}]`).value;
-          const end = document.querySelector(`input[type=time][name=end][data-id=${c}]`).value;
+          const starts = [...document.querySelectorAll(`input[type=time][name=start][data-id=${c}]`)].map(e => e.value);
+          const ends = [...document.querySelectorAll(`input[type=time][name=end][data-id=${c}]`)].map(e => e.value);
 
-          if (start && end) {
-            p[c] = [{start, end}];
+          for (let n = 0; n < starts.length; n += 1) {
+            const start = starts[n];
+            const end = ends[n];
+            if (start && end) {
+              p[c] = p[c] || [];
+              p[c].push({start, end});
+            }
           }
 
           return p;
