@@ -2,7 +2,7 @@
 
 /* update rules */
 const update = () => storage({
-  'max-number-of-rules': 500,
+  'max-number-of-rules': (chrome.declarativeNetRequest.MAX_NUMBER_OF_REGEX_RULES || 1000) / 2,
   'initialBlock': true,
   'blocked': [],
   'map': {},

@@ -92,7 +92,7 @@ prompt.instances = {};
 const convert = (h = '') => {
   if (h.startsWith('R:') === false) {
     if (h.indexOf('://') === -1 && h.indexOf('*') === -1) {
-      return `^https*:\\/\\/([^/])*` + convert.escape(h);
+      return `^https*:\\/\\/([^/]+\\.)*` + convert.escape(h);
     }
     else {
       return '^' + h.split('*').map(convert.escape).join('.*');
@@ -343,10 +343,16 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     return true;
   }
   else if (request.method === 'block') {
-    console.log(request);
     chrome.tabs.update(sender.tab.id, {
-      url: chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + sender.tab.url
+      url: chrome.runtime.getURL('/data/blocked/index.html') + '?type=secondary&url=' + sender.tab.url
     });
+  }
+  else if (request.method === 'get-schedule-rules') {
+    chrome.declarativeNetRequest.getDynamicRules().then(rules => {
+      response(rules.filter(r => r.action?.type === 'allow'));
+    });
+
+    return true;
   }
 });
 

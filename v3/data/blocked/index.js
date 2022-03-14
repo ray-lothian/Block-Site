@@ -106,18 +106,12 @@ Promise.all([
             }, resp => {
               const len = prefs.blocked.length;
               prefs.blocked = [...prefs.blocked].filter((s, i) => {
-                if (resp[i].startsWith('||')) {
-                  const host = resp[i].slice(2);
-                  return (url.startsWith('http://' + host) || url.startsWith('https://' + host)) ? false : true;
+                try {
+                  const r = new RegExp(resp[i], 'i');
+                  return r.test(url) === false;
                 }
-                else {
-                  try {
-                    const r = new RegExp(resp[i], 'i');
-                    return r.test(url) === false;
-                  }
-                  catch (e) {
-                    return true;
-                  }
+                catch (e) {
+                  return true;
                 }
               });
               document.title = `Removed ${len - prefs.blocked.length} rule(s)`;

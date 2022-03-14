@@ -10,24 +10,26 @@ navigator.serviceWorker.getRegistrations().then(registrations => {
           hosts: prefs.blocked
         }, rules => {
           for (const rule of rules) {
-            if (rule.startsWith('||')) {
-              if (location.href.startsWith('https://' + rule.slice(2)) || location.href.startsWith('http://' + rule.slice(2))) {
-                chrome.runtime.sendMessage({
-                  method: 'block'
-                });
-              }
-            }
-            else {
-              try {
-                const r = new RegExp(rule, 'i');
-                if (r.test(location.href)) {
+            try {
+              const r = new RegExp(rule, 'i');
+              if (r.test(location.href)) {
+                // make sure the rule does not match schedule
+                return chrome.runtime.sendMessage({
+                  method: 'get-schedule-rules'
+                }, schedules => {
+                  for (const schedule of schedules) {
+                    const r = new RegExp(schedule.condition.regexFilter, 'i');
+                    if (r.test(location.href)) {
+                      return;
+                    }
+                  }
                   chrome.runtime.sendMessage({
                     method: 'block'
                   });
-                }
+                });
               }
-              catch (e) {}
             }
+            catch (e) {}
           }
         });
       }
