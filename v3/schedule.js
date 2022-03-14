@@ -73,8 +73,6 @@ const schedule = {
             continue;
           }
 
-          console.log(start, end);
-
           const now = Date.now();
 
           if (start.getTime() < now && end.getTime() < now) {

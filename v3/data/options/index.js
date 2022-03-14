@@ -438,10 +438,8 @@ document.addEventListener('DOMContentLoaded', () => links());
 document.getElementById('schedule-offset').oninput = e => {
   const t = new Date();
   // apply offset
-  console.log(t);
   t.setTime(
     t.getTime() + Number(e.target.value) * 60 * 1000
   );
-  console.log(t);
   document.getElementById('local-time').textContent = t.toLocaleString();
-}
+};

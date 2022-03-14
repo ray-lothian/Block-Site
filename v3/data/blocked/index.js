@@ -105,9 +105,20 @@ Promise.all([
               hosts: prefs.blocked
             }, resp => {
               const len = prefs.blocked.length;
-              prefs.blocked = prefs.blocked.filter((s, i) => {
-                const r = new RegExp(resp[i], 'i');
-                return r.test(url) === false;
+              prefs.blocked = [...prefs.blocked].filter((s, i) => {
+                if (resp[i].startsWith('||')) {
+                  const host = resp[i].slice(2);
+                  return (url.startsWith('http://' + host) || url.startsWith('https://' + host)) ? false : true;
+                }
+                else {
+                  try {
+                    const r = new RegExp(resp[i], 'i');
+                    return r.test(url) === false;
+                  }
+                  catch (e) {
+                    return true;
+                  }
+                }
               });
               document.title = `Removed ${len - prefs.blocked.length} rule(s)`;
 

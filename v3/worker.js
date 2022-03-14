@@ -88,7 +88,7 @@ const prompt = (msg, value = '', hidden = true) => {
 };
 prompt.instances = {};
 
-/* helper */
+/* helper; check sw-blocker and block/index.js for compatibility checks */
 const convert = (h = '') => {
   if (h.startsWith('R:') === false) {
     if (h.indexOf('://') === -1 && h.indexOf('*') === -1) {
@@ -341,6 +341,12 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     });
 
     return true;
+  }
+  else if (request.method === 'block') {
+    console.log(request);
+    chrome.tabs.update(sender.tab.id, {
+      url: chrome.runtime.getURL('/data/blocked/index.html') + '?url=' + sender.tab.url
+    });
   }
 });
 
