@@ -217,7 +217,7 @@ a:visited {
 
 #schedule > div {
   display: grid;
-  grid-template-columns: min-content repeat(2, 1fr);
+  grid-template-columns: min-content repeat(2, 1fr) min-content;
   grid-gap: 5px;
   align-items: center;
 }

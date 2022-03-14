@@ -108,24 +108,17 @@ const fs = schedule => {
     }
     // we only consider one range per day
     for (const [day, times] of Object.entries(schedule.times)) {
-      console.log(times);
       times.forEach((time, i) => {
         if (i === 0) {
           document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
           document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
         }
         else {
-          const so = document.querySelector(`input[type=time][name=start][data-id=${day}]`);
-          const s = so.cloneNode(true);
-          s.value = time.start;
-          const eo = document.querySelector(`input[type=time][name=end][data-id=${day}]`);
-          const e = eo.cloneNode(true);
-          e.value = time.end;
-          const l = so.previousElementSibling.cloneNode(true);
-
-          eo.after(e);
-          eo.after(s);
-          eo.after(l);
+          const [start, end] = addSchedlue(
+            document.querySelector(`input[type=time][name=start][data-id=${day}]`)
+          );
+          start.value = time.start;
+          end.value = time.end;
         }
       });
     }
@@ -253,6 +246,7 @@ document.addEventListener('click', async e => {
               p[c].push({start, end});
             }
           }
+          console.log(p);
 
           return p;
         }, {})
@@ -466,3 +460,35 @@ document.getElementById('schedule-offset').oninput = e => {
   );
   document.getElementById('local-time').textContent = t.toLocaleString();
 };
+
+const addSchedlue = target => {
+  // find first element
+  let span = target;
+  while (span.tagName !== 'SPAN') {
+    span = span.previousElementSibling;
+  }
+  const start = span.nextElementSibling;
+  const ns = start.cloneNode(true);
+  ns.value = '';
+  const end = start.nextElementSibling;
+  const ne = end.cloneNode(true);
+  ne.value = '';
+
+  const add = [...document.querySelectorAll(`#schedule [data-id=${start.dataset.id}][name=end]`)].pop()
+    .nextElementSibling;
+
+  add.after(document.createElement('span'));
+  add.after(ne);
+  add.after(ns);
+  add.after(span.cloneNode(true));
+
+  return [ns, ne];
+};
+
+document.getElementById('schedule').addEventListener('click', e => {
+  const cmd = e.target.dataset.cmd;
+
+  if (cmd === 'add') {
+    addSchedlue(e.target);
+  }
+});
