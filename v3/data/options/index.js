@@ -246,7 +246,6 @@ document.addEventListener('click', async e => {
               p[c].push({start, end});
             }
           }
-          console.log(p);
 
           return p;
         }, {})
