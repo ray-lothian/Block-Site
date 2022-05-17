@@ -279,8 +279,21 @@ document.addEventListener('click', async e => {
           const {hostname} = c.dataset;
           const mapped = c.querySelector('input[type=text]').value;
           if (mapped) {
-            p[hostname] = mapped;
+            // https://github.com/ray-lothian/Block-Site/issues/81
+            if (hostname.includes('://')) {
+              try {
+                p[(new URL(hostname)).hostname] = mapped;
+              }
+              catch (e) {
+                p[hostname] = mapped;
+              }
+            }
+            else {
+              p[hostname] = mapped;
+            }
           }
+          console.log(p);
+
           return p;
         }, {}),
         'contextmenu-resume': document.getElementById('contextmenu-resume').checked,

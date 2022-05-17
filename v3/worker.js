@@ -77,7 +77,7 @@ const prompt = (msg, value = '', hidden = true) => {
           '&value=' + encodeURIComponent(value) + '&hidden=' + hidden,
         type: 'popup',
         width: 600,
-        height: 180,
+        height: 200, // test on Windows
         left: win.left + Math.round((win.width - 600) / 2),
         top: win.top + Math.round((win.height - 180) / 2)
       }, w => {
