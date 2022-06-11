@@ -34,8 +34,8 @@ const validate = () => chrome.storage.local.get({
   }
 });
 
-// service worker
-navigator.serviceWorker.getRegistrations().then(registrations => {
+// https://github.com/ray-lothian/Block-Site/issues/85
+navigator?.serviceWorker?.getRegistrations()?.then(registrations => {
   if (registrations.length) {
     validate();
   }
