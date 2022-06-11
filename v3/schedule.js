@@ -70,6 +70,7 @@ const schedule = {
           }
 
           const guid = (Math.random() + 1).toString(36).substring(7);
+
           chrome.alarms.create('schedule.start.' + guid + '.' + rule, {
             when: start.getTime(),
             periodInMinutes: 7 * 24 * 60
@@ -91,6 +92,8 @@ chrome.storage.onChanged.addListener(prefs => {
 chrome.runtime.onInstalled.addListener(schedule.update);
 chrome.runtime.onStartup.addListener(schedule.update);
 
+
+const schTMPIds = {}; // in case more than one schedule fired
 chrome.alarms.onAlarm.addListener(async o => {
   if (o.name.startsWith('schedule.') === false) {
     return;
@@ -106,7 +109,8 @@ chrome.alarms.onAlarm.addListener(async o => {
     // find free id
     const ids = rules.map(r => r.id);
     for (let id = 1000; ; id += 1) {
-      if (ids.indexOf(id) === -1) {
+      if (ids.indexOf(id) === -1 && schTMPIds[id] !== true) {
+        schTMPIds[id] = true;
         chrome.declarativeNetRequest.updateDynamicRules({
           addRules: [{
             id,
@@ -120,6 +124,8 @@ chrome.alarms.onAlarm.addListener(async o => {
               'resourceTypes': ['main_frame', 'sub_frame']
             }
           }]
+        }).then(() => {
+          delete schTMPIds[id];
         }).catch(e => notify(`Cannot apply "${rule}" schedule rule:
 
 Error: ${e.message}`));
@@ -136,6 +142,7 @@ Error: ${e.message}`));
         return r.condition.regexFilter === rule;
       }
     }).map(r => r.id);
+
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds
     });
