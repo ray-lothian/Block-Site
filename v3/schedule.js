@@ -23,6 +23,7 @@ const schedule = {
       schedules['global'] = prefs.schedule;
     }
     // set alarms
+    const now = Date.now();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     for (const [rule, value] of Object.entries(schedules)) {
       for (const [day, arr] of Object.entries(value.times)) {
@@ -38,7 +39,7 @@ const schedule = {
           start.setMinutes(Number(sm));
           start.setHours(Number(sh));
           start.setDate(
-            start.getDate() - ((days.indexOf(day) - start.getDay() + 6) % 6)
+            start.getDate() + (days.indexOf(day) - start.getDay())
           );
           start.setTime(
             start.getTime() - prefs['schedule-offset'] * 60 * 1000
@@ -47,24 +48,19 @@ const schedule = {
           const ofsa = start.getTimezoneOffset();
           start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
 
-          const end = new Date();
-          // apply offset
-          end.setTime(
-            end.getTime() + prefs['schedule-offset'] * 60 * 1000
-          );
+          const end = new Date(start);
           const [eh, em] = o.end.split(':');
           end.setSeconds(0);
           end.setMinutes(Number(em));
           end.setHours(Number(eh));
-          end.setDate(
-            end.getDate() - ((days.indexOf(day) - end.getDay() + 6) % 6)
-          );
-          end.setTime(
-            end.getTime() - prefs['schedule-offset'] * 60 * 1000
-          );
-          // consider timezone changes
-          const ofea = end.getTimezoneOffset();
-          end.setTime(end.getTime() + (ofsb - ofea) * 60 * 1000);
+
+          if (start.getTime() < now && end.getTime() < now) {
+            start.setDate(start.getDate() + 7);
+            end.setDate(end.getDate() + 7);
+          }
+
+          // console.log(start, 'Start');
+          // console.log(end, 'End');
 
           if (start.getTime() >= end.getTime()) {
             notify(`Schedule time for "${day}" - "${rule}" rule is ignored!
@@ -73,12 +69,6 @@ const schedule = {
             continue;
           }
 
-          const now = Date.now();
-
-          if (start.getTime() < now && end.getTime() < now) {
-            start.setDate(start.getDate() + 7);
-            end.setDate(end.getDate() + 7);
-          }
           const guid = (Math.random() + 1).toString(36).substring(7);
           chrome.alarms.create('schedule.start.' + guid + '.' + rule, {
             when: start.getTime(),

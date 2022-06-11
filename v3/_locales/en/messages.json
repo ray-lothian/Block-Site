@@ -102,7 +102,7 @@
     "message": "Import Rules (TXT File)"
   },
   "options_schedule_header": {
-    "message": "Schedule Blocking"
+    "message": "Schedule Unblocking"
   },
   "options_schedule_offset": {
     "message": "Schedule offset in minutes"

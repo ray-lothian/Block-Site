@@ -101,12 +101,24 @@ document.getElementById('add').addEventListener('submit', e => {
 });
 
 const fs = schedule => {
+  // cleanup
+  const es = [];
+  for (const e of document.querySelectorAll('#schedule [data-extra=true]')) {
+    es.push(e);
+    es.push(e.nextElementSibling);
+    es.push(e.nextElementSibling.nextElementSibling);
+    es.push(e.nextElementSibling.nextElementSibling.nextElementSibling);
+  }
+  for (const e of es) {
+    e.remove();
+  }
+
   if (schedule.times) {
     for (const day of days) {
       document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
       document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
     }
-    // we only consider one range per day
+    console.log(schedule);
     for (const [day, times] of Object.entries(schedule.times)) {
       times.forEach((time, i) => {
         if (i === 0) {
@@ -238,9 +250,18 @@ document.addEventListener('click', async e => {
           const starts = [...document.querySelectorAll(`input[type=time][name=start][data-id=${c}]`)].map(e => e.value);
           const ends = [...document.querySelectorAll(`input[type=time][name=end][data-id=${c}]`)].map(e => e.value);
 
+          const listed = [];
+
           for (let n = 0; n < starts.length; n += 1) {
             const start = starts[n];
             const end = ends[n];
+
+            const key = start + '-' + end;
+            if (listed.includes(key)) {
+              continue;
+            }
+            listed.push(key);
+
             if (start && end) {
               p[c] = p[c] || [];
               p[c].push({start, end});
@@ -250,6 +271,7 @@ document.addEventListener('click', async e => {
           return p;
         }, {})
       };
+
       const rule = document.querySelector('#schedule [name="hostname"]');
       if (rule.value) {
         const e = validateRegex(rule.value);
@@ -394,6 +416,7 @@ document.addEventListener('click', async e => {
             input.remove();
             const json = JSON.parse(event.target.result);
             chrome.storage.local.clear(() => chrome.storage.local.set(json, () => {
+              window.removeEventListener('beforeunload', warning);
               chrome.runtime.reload();
               window.close();
             }));
@@ -479,7 +502,9 @@ const addSchedlue = target => {
   add.after(document.createElement('span'));
   add.after(ne);
   add.after(ns);
-  add.after(span.cloneNode(true));
+  const title = span.cloneNode(true);
+  title.dataset.extra = true;
+  add.after(title);
 
   return [ns, ne];
 };
