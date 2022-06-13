@@ -253,5 +253,11 @@
   },
   "bg_msg_19": {
     "message": "(Un)Block this Page"
+  },
+  "bg_msg_20": {
+    "message": "Cannot extract any domain name for this page"
+  },
+  "bg_msg_21": {
+    "message": "It is not possible to block the Extension Gallery"
   }
 }

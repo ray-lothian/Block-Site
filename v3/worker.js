@@ -1,5 +1,3 @@
-/* global importScripts */
-
 /*
   1-998: blocking rules
   998: one-time browsing
@@ -12,38 +10,16 @@ const notify = message => chrome.notifications.create(null, {
   type: 'basic',
   iconUrl: '/data/icons/48.png',
   title: chrome.runtime.getManifest().name,
-  message: message
+  message
 });
 
+/* translate */
+const translate = id => chrome.i18n.getMessage(id) || id;
+
 /* imports */
-// importScripts('v2.js');
-try {
-  importScripts('blocker.js');
-}
-catch (e) {
-  console.warn(e);
-  notify(`Failed to local "blocker.js"
-
-Error: ${e.message}`);
-}
-try {
-  importScripts('schedule.js');
-}
-catch (e) {
-  console.warn(e);
-  notify(`Failed to local "schedule.js"
-
-Error: ${e.message}`);
-}
-try {
-  importScripts('contextmenu.js');
-}
-catch (e) {
-  console.warn(e);
-  notify(`Failed to local "contextmenu.js"
-
-Error: ${e.message}`);
-}
+self.importScripts('blocker.js');
+self.importScripts('schedule.js');
+self.importScripts('contextmenu.js');
 
 /* prompt */
 chrome.runtime.onConnect.addListener(port => {
@@ -51,6 +27,7 @@ chrome.runtime.onConnect.addListener(port => {
     const o = prompt.instances[port.sender.tab.windowId];
     if (o) {
       o.resolve('');
+      chrome.windows.remove(port.sender.tab.windowId);
       delete prompt.instances[port.sender.tab.windowId];
     }
   });
@@ -136,9 +113,7 @@ sha256.validate = ({password}, resolve, reject) => storage({
     };
   }
   if (prefs.retries.count >= 5) {
-    return translate('bg_msg_4').then(msg => {
-      reject(msg.replace('##', prefs.wrong));
-    });
+    return reject(translate('bg_msg_4').replace('##', prefs.wrong));
   }
 
   const f = () => {
@@ -184,16 +159,6 @@ sha256.validate = ({password}, resolve, reject) => storage({
 /* storage */
 const storage = prefs => new Promise(resolve => chrome.storage.local.get(prefs, resolve));
 
-/* translate */
-const translate = async id => {
-  const lang = navigator.language.split('-')[0];
-  translate.objects = translate.objects || await Promise.all([
-    fetch('_locales/' + lang + '/messages.json').then(r => r.json()).catch(() => ({})),
-    fetch('_locales/en/messages.json').then(r => r.json())
-  ]);
-  return translate.objects[0][id]?.message || translate.objects[1][id]?.message || id;
-};
-
 /* user action */
 const userAction = async (tabId, href, frameId) => {
   // this is an internal tab, press the unblock button
@@ -203,7 +168,7 @@ const userAction = async (tabId, href, frameId) => {
     });
   }
   if (href.startsWith('http') === false) {
-    return notify(await translate('bg_msg_1'));
+    return notify(translate('bg_msg_1'));
   }
 
   const prefs = await storage({
@@ -215,41 +180,61 @@ const userAction = async (tabId, href, frameId) => {
   });
 
   const next = async () => {
-    try {
-      await chrome.scripting.executeScript({
-        target: {tabId},
-        files: ['data/blocked/tld.js']
-      });
-      const r = await chrome.scripting.executeScript({
-        target: {tabId},
-        func: () => {
-          /* global tld */
-          window.stop();
-          const domain = tld.getDomain(location.hostname);
-          if (domain) {
-            return [domain];
-          }
-          return [location.hostname];
-        }
-      });
+    const reload = () => chrome.tabs.executeScript(tabId, {
+      frameId,
+      code: 'location.reload()',
+      runAt: 'document_start'
+    });
 
-      const reload = () => chrome.tabs.executeScript(tabId, {
-        frameId,
-        code: 'location.reload()',
-        runAt: 'document_start'
+    if (prefs.reverse) {
+      prefs.blocked = prefs.blocked.filter(s => {
+        const r = new RegExp(convert(s), 'i');
+
+        return r.test(href) === false;
       });
-
-      if (prefs.reverse) {
-        prefs.blocked = prefs.blocked.filter(s => {
-          const r = new RegExp(convert(s), 'i');
-
-          return r.test(href) === false;
+      chrome.storage.local.set(prefs);
+    }
+    else {
+      const msg = translate('bg_msg_14');
+      // find domain
+      let domains = [];
+      try {
+        await chrome.scripting.executeScript({
+          target: {tabId},
+          files: ['data/blocked/tld.js']
         });
-        chrome.storage.local.set(prefs);
+        const r = await chrome.scripting.executeScript({
+          target: {tabId},
+          func: () => {
+            /* global tld */
+            window.stop();
+            const domain = tld.getDomain(location.hostname);
+            if (domain) {
+              return [domain];
+            }
+            return [location.hostname];
+          }
+        });
+        domains = r[0].result;
       }
-      else {
-        const msg = await translate('bg_msg_14');
-        prompt(msg.replace('##', r[0].result[0]), r[0].result.join(', '), false).then(async a => {
+      catch (e) {
+        try {
+          if (href.startsWith('http')) {
+            const {hostname} = new URL(href);
+            if (hostname === 'chrome.google.com' || hostname === 'microsoftedge.microsoft.com') {
+              notify(translate('bg_msg_21'));
+            }
+            else {
+              domains.push(hostname);
+            }
+          }
+        }
+        catch (e) {}
+      }
+      domains = domains.filter((s, i, l) => s && l.indexOf(s) === i);
+
+      if (domains.length) {
+        prompt(msg.replace('##', domains[0]), domains.join(', '), false).then(async a => {
           if (a) {
             const prefs = await storage({
               blocked: []
@@ -259,17 +244,16 @@ const userAction = async (tabId, href, frameId) => {
           }
         });
       }
-    }
-    catch (e) {
-      console.warn(e);
-      notify(e.message);
+      else {
+        notify(translate('bg_msg_20'));
+      }
     }
   };
 
   if ((prefs.password || prefs.sha256) && prefs['no-password-on-add'] === false) {
-    const password = await prompt(await translate('bg_msg_17'));
+    const password = await prompt(translate('bg_msg_17'));
     if (password) {
-      sha256.validate({password}, next, async msg => notify(msg || await translate('bg_msg_2')));
+      sha256.validate({password}, next, async msg => notify(msg || translate('bg_msg_2')));
     }
   }
   else {
@@ -288,12 +272,12 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   else if (request.method === 'check-password') {
     sha256.validate(request, () => response(true), async msg => {
       response(false);
-      notify(msg || await translate('bg_msg_2'));
+      notify(msg || translate('bg_msg_2'));
     });
     return true;
   }
   else if (request.method === 'ask-for-password') {
-    translate('bg_msg_17').then(msg => prompt(msg)).then(response);
+    prompt(translate('bg_msg_17')).then(response);
     return true;
   }
   else if (request.method === 'convert-to-sha256') {
@@ -333,10 +317,10 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       };
 
       if (prefs.password === '' && prefs.sha256 === '') {
-        notify(await translate('bg_msg_3'));
+        notify(translate('bg_msg_3'));
       }
       else {
-        sha256.validate(request, next, async msg => notify(msg || await translate('bg_msg_2')));
+        sha256.validate(request, next, async msg => notify(msg || translate('bg_msg_2')));
       }
     });
 
