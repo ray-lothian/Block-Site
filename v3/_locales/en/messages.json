@@ -191,6 +191,9 @@
   "blocked_options": {
     "message": "Options Page"
   },
+  "blocked_rate": {
+    "message": "Rate Us"
+  },
   "blocked_remove_blocking": {
     "message": "Remove Blocking"
   },

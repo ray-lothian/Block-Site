@@ -35,16 +35,25 @@ p,
 footer {
   padding: 10px;
 }
+#rate {
+  color: #ff6305;
+}
+#rate::after,
 #options::before {
   content: '|';
   padding: 0 5px;
   opacity: 0.2;
 }
+#rate[data-hide=true] {
+  display: none;
+}
+
 footer span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 @media screen and (max-width: 500px) {
   footer {
     display: grid !important;
