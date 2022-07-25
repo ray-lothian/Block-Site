@@ -68,6 +68,9 @@
   "options_remove": {
     "message": "Remove"
   },
+  "options_rate": {
+    "message": "Rate Us"
+  },
   "options_support": {
     "message": "Support Development"
   },
@@ -262,5 +265,8 @@
   },
   "bg_msg_21": {
     "message": "It is not possible to block the Extension Gallery"
+  },
+  "bg_msg_22": {
+    "message": "Options"
   }
 }

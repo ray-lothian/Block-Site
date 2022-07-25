@@ -516,3 +516,21 @@ document.getElementById('schedule').addEventListener('click', e => {
     addSchedlue(e.target);
   }
 });
+document.getElementById('rate').onclick = () => {
+  let url = 'https://chrome.google.com/webstore/detail/block-site/lebiggkccaodkkmjeimmbogdedcpnmfb/reviews/';
+  if (/Edg/.test(navigator.userAgent)) {
+    url = 'https://microsoftedge.microsoft.com/addons/detail/deiilejafkhhgekckholkdhfhopcnmeb';
+  }
+  else if (/Firefox/.test(navigator.userAgent)) {
+    url = 'https://addons.mozilla.org/firefox/addon/block-website/reviews/';
+  }
+  else if (/OPR/.test(navigator.userAgent)) {
+    url = 'https://addons.opera.com/extensions/details/block-site-2/';
+  }
+
+  chrome.storage.local.set({
+    'rate': false
+  }, () => chrome.tabs.create({
+    url
+  }));
+};

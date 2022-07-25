@@ -48,6 +48,13 @@ const once = () => chrome.storage.local.get({
     contexts: ['action'],
     visible: prefs['contextmenu-resume']
   }, () => chrome.runtime.lastError);
+  if (/Firefox/.test(navigator.userAgent)) {
+    chrome.contextMenus.create({
+      title: await translate('bg_msg_22'),
+      id: 'options',
+      contexts: ['action']
+    }, () => chrome.runtime.lastError);
+  }
   chrome.contextMenus.create({
     title: await translate('bg_msg_19'),
     id: 'top',
@@ -88,7 +95,10 @@ chrome.storage.onChanged.addListener(ps => {
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId.startsWith('pause-')) {
+  if (info.menuItemId === 'options') {
+    chrome.runtime.openOptionsPage();
+  }
+  else if (info.menuItemId.startsWith('pause-')) {
     const resolve = () => {
       const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
       chrome.alarms.create('release.pause', {

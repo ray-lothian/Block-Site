@@ -338,6 +338,9 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
     return true;
   }
+  else if (request.method === 'close-page') {
+    chrome.tabs.remove(sender.tab.id);
+  }
 });
 
 /* update prefs from the managed storage */
