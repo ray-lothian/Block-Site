@@ -101,6 +101,45 @@ document.getElementById('add').addEventListener('submit', e => {
 });
 
 const fs = schedule => {
+  fs.clean();
+
+  const root = document.getElementById('schedule');
+
+  if (schedule.times) {
+    for (const day of days) {
+      root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
+      root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
+    }
+    for (const [day, times] of Object.entries(schedule.times)) {
+      times.forEach((time, i) => {
+        if (i === 0) {
+          root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
+          root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
+        }
+        else {
+          const [start, end] = addSchedlue(
+            root.querySelector(`input[type=time][name=start][data-id=${day}]`)
+          );
+          start.value = time.start;
+          end.value = time.end;
+        }
+      });
+    }
+  }
+  else { // old method
+    for (const day of days) {
+      if (schedule.days.indexOf(day) !== -1) {
+        root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = schedule.time.start;
+        root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = schedule.time.end;
+      }
+      else {
+        root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
+        root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
+      }
+    }
+  }
+};
+fs.clean = (wipe = false) => {
   // cleanup
   const es = [];
   for (const e of document.querySelectorAll('#schedule [data-extra=true]')) {
@@ -112,39 +151,9 @@ const fs = schedule => {
   for (const e of es) {
     e.remove();
   }
-
-  if (schedule.times) {
-    for (const day of days) {
-      document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
-      document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
-    }
-    console.log(schedule);
-    for (const [day, times] of Object.entries(schedule.times)) {
-      times.forEach((time, i) => {
-        if (i === 0) {
-          document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
-          document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
-        }
-        else {
-          const [start, end] = addSchedlue(
-            document.querySelector(`input[type=time][name=start][data-id=${day}]`)
-          );
-          start.value = time.start;
-          end.value = time.end;
-        }
-      });
-    }
-  }
-  else { // old method
-    for (const day of days) {
-      if (schedule.days.indexOf(day) !== -1) {
-        document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = schedule.time.start;
-        document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = schedule.time.end;
-      }
-      else {
-        document.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
-        document.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
-      }
+  if (wipe) {
+    for (const e of document.querySelectorAll('#schedule input[type=time]')) {
+      e.value = '';
     }
   }
 };
@@ -247,8 +256,10 @@ document.addEventListener('click', async e => {
     grant(async () => {
       let schedule = {
         times: days.reduce((p, c) => {
-          const starts = [...document.querySelectorAll(`input[type=time][name=start][data-id=${c}]`)].map(e => e.value);
-          const ends = [...document.querySelectorAll(`input[type=time][name=end][data-id=${c}]`)].map(e => e.value);
+          const starts = [...document.querySelectorAll(`#schedule input[type=time][name=start][data-id=${c}]`)]
+            .map(e => e.value);
+          const ends = [...document.querySelectorAll(`#schedule input[type=time][name=end][data-id=${c}]`)]
+            .map(e => e.value);
 
           const listed = [];
 
@@ -534,3 +545,4 @@ document.getElementById('rate').onclick = () => {
     url
   }));
 };
+

@@ -179,6 +179,15 @@
   "options_intro": {
     "message": "To save options or set master password scroll down"
   },
+  "options_sch_helper_1": {
+    "message": "Generate unblocking periods for the following blocked hours"
+  },
+  "options_sch_helper_2": {
+    "message": "Generate"
+  },
+  "options_sch_helper_3": {
+    "message": "Clear All"
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },

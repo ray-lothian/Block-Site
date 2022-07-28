@@ -46,6 +46,28 @@
         <span data-i18n="options_sup_11"></span>
       </details>
     </div>
+    <form id="schedule-helper">
+      <p data-i18n="options_sch_helper_1"></p>
+      <div>
+        From
+        <input type="time" name="start" required>
+        To
+        <input data-id="Mon" type="time" name="end" required>
+      </div>
+      <div>
+        <label><input type="checkbox" checked data-id="Mon">Monday</label>
+        <label><input type="checkbox" checked data-id="Tue">Tuesday</label>
+        <label><input type="checkbox" checked data-id="Wed">Wednesday</label>
+        <label><input type="checkbox" checked data-id="Thu">Thursday</label>
+        <label><input type="checkbox" checked data-id="Fri">Friday</label>
+        <label><input type="checkbox" checked data-id="Sat">Saturday</label>
+        <label><input type="checkbox" checked data-id="Sun">Sunday</label>
+      </div>
+      <div>
+        <input type="submit" data-i18n-value="value" data-i18n="options_sch_helper_2">
+        <input type="button" id="clean-schedules" data-i18n-value="value" data-i18n="options_sch_helper_3">
+      </div>
+    </form>
     <form id=schedule>
       <div>
         <h3>Date</h3>
@@ -231,6 +253,7 @@
     </div>
 
     <script src="index.js"></script>
+    <script src="helper.js"></script>
     <script async src="matched.js"></script>
   </body>
 </html>

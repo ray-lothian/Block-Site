@@ -246,6 +246,37 @@ a:visited {
   align-items: center;
   white-space: nowrap;
 }
+
+#schedule-helper {
+  padding: 10px;
+  background-color: rgba(128, 128, 128, 0.1);
+}
+#schedule-helper > div:first-of-type {
+  display: grid;
+  grid-template-columns: min-content 1fr min-content 1fr;
+  align-items: center;
+  grid-gap: 5px;
+}
+#schedule-helper > div:nth-of-type(2) {
+  margin: 10px 0;
+  display: flex;
+  gap: 10px;
+  flex-flow: wrap;
+}
+#schedule-helper > div:nth-of-type(2) label {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+#schedule-helper > div:last-of-type {
+  display: flex;
+  gap: 5px;
+  justify-content: end;
+}
+#schedule-helper input:invalid {
+  border-color: var(--border);
+}
+
 [hbox] {
   display: flex;
 }
