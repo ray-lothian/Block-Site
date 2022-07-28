@@ -4,6 +4,7 @@
 const update = () => storage({
   'max-number-of-rules': (chrome.declarativeNetRequest.MAX_NUMBER_OF_REGEX_RULES || 1000) / 2,
   'initialBlock': true,
+  'initialBlockCurrent': true,
   'blocked': [],
   'map': {},
   'reverse': false,
@@ -109,9 +110,16 @@ Error: ` + e.message);
     }
   }
   // get existing tabs
-  const tabs = prefs.initialBlock ? await chrome.tabs.query({
+  const options = {
     url: '*://*/*'
-  }) : [];
+  };
+  if (prefs.initialBlock === false) {
+    options.active = true;
+    options.currentWindow = true;
+  }
+  const tabs = prefs.initialBlock === false && prefs.initialBlockCurrent === false ?
+    [] : await chrome.tabs.query(options);
+
   // get schedule rules
   const scheduleRegExp = (await chrome.declarativeNetRequest.getDynamicRules())
     .filter(r => r.id > 999)

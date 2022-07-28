@@ -45,6 +45,7 @@ const DEFAULTS = {
   'schedules': {},
   'schedule-offset': 0, // minutes
   'initialBlock': true,
+  'initialBlockCurrent': true,
   'contextmenu-resume': true,
   'contextmenu-pause': true,
   'contextmenu-frame': true,
@@ -185,6 +186,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   }
   document.getElementById('title').checked = prefs.title;
   document.getElementById('initialBlock').checked = prefs.initialBlock;
+  document.getElementById('initialBlockCurrent').checked = prefs.initialBlockCurrent;
   document.getElementById('schedule-offset').value = prefs['schedule-offset'];
   document.getElementById('schedule-offset').dispatchEvent(new Event('input'));
   document.getElementById('reverse').checked = prefs.reverse;
@@ -317,6 +319,7 @@ document.addEventListener('click', async e => {
         sha256,
         'title': document.getElementById('title').checked,
         'initialBlock': document.getElementById('initialBlock').checked,
+        'initialBlockCurrent': document.getElementById('initialBlockCurrent').checked,
         'schedule-offset': Number(document.getElementById('schedule-offset').value),
         'reverse': document.getElementById('reverse').checked,
         'no-password-on-add': document.getElementById('no-password-on-add').checked,

@@ -23,6 +23,9 @@
   "options_startup": {
     "message": "Perform blocking on existing pages after initialization"
   },
+  "options_startup_current": {
+    "message": "Block the current matched page when a new rule is added"
+  },
   "options_allow_access": {
     "message": "Allow access to the unblocked hostname for (in seconds)"
   },

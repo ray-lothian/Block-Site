@@ -1,55 +1,55 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="index.css">
-    <title data-i18n="blocked_restricted"></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="pre.js"></script>
-    <style type="text/css" id="css"></style>
-  </head>
-  <body>
-    <header vbox>
-      <h1 flex="1" data-i18n="blocked_restricted"></h1>
-      <table width="100%">
-        <colgroup>
-          <col width="130px">
-          <col>
-        </colgroup>
-        <tbody>
-          <tr>
-            <td data-i18n="blocked_title"></td>
-            <td id="title">...</td>
-          </tr>
-          <tr>
-            <td style="padding-top: 15px; padding-bottom: 15px;">URL</td>
-            <td style="padding-top: 15px; padding-bottom: 15px;"><a id="url" href="">
-              <span id="sub-domain"></span>
-              <span id="domain">...</span>
-              <span id="pathname"></span>
-              <span id="search"></span>
-            </a></td>
-          </tr>
-          <tr>
-            <td data-i18n="blocked_since"></td>
-            <td id="date">...</td>
-          </tr>
-        </tbody>
-      </table>
-    </header>
-    <p id="message"></p>
-    <div flex="1"></div>
-    <footer hbox align=center>
-      <form flex="1" hbox>
-        <input type="password" required="true" data-i18n="blocked_master_password" data-i18n-value="placeholder">
-      </form>
-      <a href="#" id="rate" data-i18n="blocked_rate" data-hide=true>-</a>
-      <a href="#" id="exception">-</a>
-      <a href="#" id="options" data-i18n="blocked_options"></a>
-    </footer>
-    <input type="button" id="switch">
-    <script src="tld.js"></script>
-    <script src="index.js"></script>
-    <script src="rate.js"></script>
-  </body>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="index.css">
+  <title data-i18n="blocked_restricted"></title>
+  <script type="text/javascript" src="pre.js"></script>
+  <style type="text/css" id="css"></style>
+</head>
+<body>
+  <header vbox>
+    <h1 flex="1" data-i18n="blocked_restricted"></h1>
+    <table width="100%">
+      <colgroup>
+        <col width="130px">
+        <col>
+      </colgroup>
+      <tbody>
+        <tr>
+          <td data-i18n="blocked_title"></td>
+          <td id="title">...</td>
+        </tr>
+        <tr>
+          <td style="padding-top: 15px; padding-bottom: 15px;">URL</td>
+          <td style="padding-top: 15px; padding-bottom: 15px;"><a id="url" href="">
+            <span id="sub-domain"></span>
+            <span id="domain">...</span>
+            <span id="pathname"></span>
+            <span id="search"></span>
+          </a></td>
+        </tr>
+        <tr>
+          <td data-i18n="blocked_since"></td>
+          <td id="date">...</td>
+        </tr>
+      </tbody>
+    </table>
+  </header>
+  <p id="message"></p>
+  <div flex="1"></div>
+  <footer hbox align=center>
+    <form flex="1" hbox>
+      <input type="password" required="true" data-i18n="blocked_master_password" data-i18n-value="placeholder">
+    </form>
+    <a href="#" id="rate" data-i18n="blocked_rate" data-hide=true>-</a>
+    <a href="#" id="exception">-</a>
+    <a href="#" id="options" data-i18n="blocked_options"></a>
+  </footer>
+  <input type="button" id="switch">
+  <script src="tld.js"></script>
+  <script src="index.js"></script>
+  <script src="rate.js"></script>
+</body>
 </html>
