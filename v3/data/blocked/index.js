@@ -82,6 +82,9 @@ Promise.all([
       document.title = title + ` (${prefs.close})`;
       prefs.close -= 1;
       if (prefs.close === -1) {
+        chrome.runtime.sendMessage({
+          method: 'close-page'
+        });
         window.close();
       }
     }, 1000);
