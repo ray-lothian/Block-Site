@@ -1,4 +1,4 @@
-/* global convert, storage, notify */
+/* global convert, storage, notify, once, isFF */
 
 /* update rules */
 const update = () => storage({
@@ -10,6 +10,7 @@ const update = () => storage({
   'reverse': false,
   'redirect': '' // use custom redirect page
 }).then(async prefs => {
+  console.log(prefs);
   // remove old rules
   const rules = await chrome.declarativeNetRequest.getDynamicRules();
   await chrome.declarativeNetRequest.updateDynamicRules({
@@ -166,7 +167,9 @@ chrome.storage.onChanged.addListener(ps => {
     update();
   }
 });
-chrome.runtime.onInstalled.addListener(update);
+once(update, isFF ? undefined : {
+  installed: true
+});
 
 // if a page uses history API to push state, the blocker script is not being called
 chrome.tabs.onUpdated.addListener((tabId, info) => {

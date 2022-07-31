@@ -1,75 +1,73 @@
-/* global translate, notify, storage, sha256, userAction */
+/* global translate, notify, storage, sha256, userAction, isFF, once */
 
-const once = () => chrome.storage.local.get({
+once(() => chrome.storage.local.get({
   'contextmenu-pause': true,
   'contextmenu-resume': true,
   'contextmenu-frame': true,
   'contextmenu-top': true
-}, async prefs => {
+}, prefs => {
   const root = chrome.contextMenus.create({
-    title: await translate('bg_msg_5'),
+    title: translate('bg_msg_5'),
     id: 'pause',
     contexts: ['action'],
     visible: prefs['contextmenu-pause']
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_7'),
+    title: translate('bg_msg_7'),
     id: 'pause-10',
     contexts: ['action'],
     parentId: root
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_8'),
+    title: translate('bg_msg_8'),
     id: 'pause-30',
     contexts: ['action'],
     parentId: root
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_9'),
+    title: translate('bg_msg_9'),
     id: 'pause-60',
     contexts: ['action'],
     parentId: root
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_10'),
+    title: translate('bg_msg_10'),
     id: 'pause-360',
     contexts: ['action'],
     parentId: root
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_11'),
+    title: translate('bg_msg_11'),
     id: 'pause-1440',
     contexts: ['action'],
     parentId: root
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_6'),
+    title: translate('bg_msg_6'),
     id: 'resume',
     contexts: ['action'],
     visible: prefs['contextmenu-resume']
   }, () => chrome.runtime.lastError);
-  if (/Firefox/.test(navigator.userAgent)) {
+  if (isFF) {
     chrome.contextMenus.create({
-      title: await translate('bg_msg_22'),
+      title: translate('bg_msg_22'),
       id: 'options',
       contexts: ['action']
     }, () => chrome.runtime.lastError);
   }
   chrome.contextMenus.create({
-    title: await translate('bg_msg_19'),
+    title: translate('bg_msg_19'),
     id: 'top',
     contexts: ['page'],
     visible: prefs['contextmenu-top']
   }, () => chrome.runtime.lastError);
   chrome.contextMenus.create({
-    title: await translate('bg_msg_18'),
+    title: translate('bg_msg_18'),
     id: 'frame',
     contexts: ['frame'],
     visible: prefs['contextmenu-frame']
   }, () => chrome.runtime.lastError);
-});
-chrome.runtime.onInstalled.addListener(once);
-chrome.runtime.onStartup.addListener(once);
+}));
 
 chrome.storage.onChanged.addListener(ps => {
   if (ps['contextmenu-pause']) {
@@ -127,9 +125,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     });
 
     if (prefs.password || prefs.sha256) {
-      prompt(await translate('bg_msg_12')).then(password => {
+      prompt(translate('bg_msg_12')).then(password => {
         if (password) {
-          sha256.validate({password}, resolve, async msg => notify(msg || await translate('bg_msg_2')));
+          sha256.validate({password}, resolve, msg => notify(msg || translate('bg_msg_2')));
         }
       });
     }
@@ -142,18 +140,18 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [999]
     });
-    notify(await translate('bg_msg_16'));
+    notify(translate('bg_msg_16'));
   }
   else if (info.menuItemId === 'top' || info.menuItemId === 'frame') {
     userAction(tab.id, info.menuItemId === 'top' ? info.pageUrl : info.frameUrl, info.frameId);
   }
 });
 
-chrome.alarms.onAlarm.addListener(async alarm => {
+chrome.alarms.onAlarm.addListener(alarm => {
   if (alarm.name === 'release.pause') {
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [999]
     });
-    notify(await translate('bg_msg_16'));
+    notify(translate('bg_msg_16'));
   }
 });

@@ -1,4 +1,5 @@
-/* global notify, storage */
+/* global notify, storage, once */
+
 const schedule = {
   async update() {
     // clear schedule alarms
@@ -89,9 +90,7 @@ chrome.storage.onChanged.addListener(prefs => {
     schedule.update();
   }
 });
-chrome.runtime.onInstalled.addListener(schedule.update);
-chrome.runtime.onStartup.addListener(schedule.update);
-
+once(schedule.update);
 
 const schTMPIds = {}; // in case more than one schedule fired
 chrome.alarms.onAlarm.addListener(async o => {

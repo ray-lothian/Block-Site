@@ -4,19 +4,10 @@
   999: pause blocking
   1000-: schedules
 */
-
-/* notify */
-const notify = message => chrome.notifications.create(null, {
-  type: 'basic',
-  iconUrl: '/data/icons/48.png',
-  title: chrome.runtime.getManifest().name,
-  message
-});
-
-/* translate */
-const translate = id => chrome.i18n.getMessage(id) || id;
+/* global translate, notify, once */
 
 /* imports */
+self.importScripts('helper.js');
 self.importScripts('blocker.js');
 self.importScripts('schedule.js');
 self.importScripts('contextmenu.js');
@@ -344,29 +335,25 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 });
 
 /* update prefs from the managed storage */
-{
-  const once = () => chrome.storage.managed.get({
-    json: ''
-  }, async rps => {
-    if (!chrome.runtime.lastError && rps.json) {
-      try {
-        rps = JSON.parse(rps.json);
-        const prefs = await storage(null);
+once(() => chrome.storage.managed.get({
+  json: ''
+}, async rps => {
+  if (!chrome.runtime.lastError && rps.json) {
+    try {
+      rps = JSON.parse(rps.json);
+      const prefs = await storage(null);
 
-        if (prefs.guid !== rps.guid || rps['managed.storage.overwrite.on.start'] === true) {
-          Object.assign(prefs, rps);
-          chrome.storage.local.set(prefs);
-          console.warn('Your preferences are configured by the admin');
-        }
-      }
-      catch (e) {
-        console.warn('cannot parse the managed JSON string');
+      if (prefs.guid !== rps.guid || rps['managed.storage.overwrite.on.start'] === true) {
+        Object.assign(prefs, rps);
+        chrome.storage.local.set(prefs);
+        console.warn('Your preferences are configured by the admin');
       }
     }
-  });
-  chrome.runtime.onStartup.addListener(once);
-  chrome.runtime.onInstalled.addListener(once);
-}
+    catch (e) {
+      console.warn('cannot parse the managed JSON string');
+    }
+  }
+}));
 
 /* release open once */
 chrome.alarms.onAlarm.addListener(async alarm => {
