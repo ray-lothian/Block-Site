@@ -10,7 +10,6 @@ const update = () => storage({
   'reverse': false,
   'redirect': '' // use custom redirect page
 }).then(async prefs => {
-  console.log(prefs);
   // remove old rules
   const rules = await chrome.declarativeNetRequest.getDynamicRules();
   await chrome.declarativeNetRequest.updateDynamicRules({

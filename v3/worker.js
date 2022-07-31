@@ -4,57 +4,13 @@
   999: pause blocking
   1000-: schedules
 */
-/* global translate, notify, once */
+/* global translate, notify, once, storage */
 
 /* imports */
 self.importScripts('helper.js');
 self.importScripts('blocker.js');
 self.importScripts('schedule.js');
 self.importScripts('contextmenu.js');
-
-/* prompt */
-chrome.runtime.onConnect.addListener(port => {
-  port.onDisconnect.addListener(() => {
-    const o = prompt.instances[port.sender.tab.windowId];
-    if (o) {
-      o.resolve('');
-      chrome.windows.remove(port.sender.tab.windowId);
-      delete prompt.instances[port.sender.tab.windowId];
-    }
-  });
-  port.onMessage.addListener(request => {
-    if (request.method === 'prompt-resolved') {
-      const o = prompt.instances[port.sender.tab.windowId];
-      if (o) {
-        o.resolve(request.password);
-        delete prompt.instances[port.sender.tab.windowId];
-      }
-    }
-    else if (request.method === 'bring-to-front') {
-      chrome.windows.update(port.sender.tab.windowId, {
-        focused: true
-      });
-    }
-  });
-});
-const prompt = (msg, value = '', hidden = true) => {
-  return new Promise((resolve, reject) => {
-    chrome.windows.getCurrent(win => {
-      chrome.windows.create({
-        url: 'data/prompt/index.html?message=' + encodeURIComponent(msg) +
-          '&value=' + encodeURIComponent(value) + '&hidden=' + hidden,
-        type: 'popup',
-        width: 600,
-        height: 200, // test on Windows
-        left: win.left + Math.round((win.width - 600) / 2),
-        top: win.top + Math.round((win.height - 180) / 2)
-      }, w => {
-        prompt.instances[w.id] = {resolve, reject};
-      });
-    });
-  });
-};
-prompt.instances = {};
 
 /* helper; check sw-blocker and block/index.js for compatibility checks */
 const convert = (h = '') => {
@@ -146,9 +102,6 @@ sha256.validate = ({password}, resolve, reject) => storage({
     f();
   }
 });
-
-/* storage */
-const storage = prefs => new Promise(resolve => chrome.storage.local.get(prefs, resolve));
 
 /* user action */
 const userAction = async (tabId, href, frameId) => {
@@ -244,7 +197,7 @@ const userAction = async (tabId, href, frameId) => {
   if ((prefs.password || prefs.sha256) && prefs['no-password-on-add'] === false) {
     const password = await prompt(translate('bg_msg_17'));
     if (password) {
-      sha256.validate({password}, next, async msg => notify(msg || translate('bg_msg_2')));
+      sha256.validate({password}, next, msg => notify(msg || translate('bg_msg_2')));
     }
   }
   else {
@@ -261,7 +214,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     response(request.hosts.map(convert));
   }
   else if (request.method === 'check-password') {
-    sha256.validate(request, () => response(true), async msg => {
+    sha256.validate(request, () => response(true), msg => {
       response(false);
       notify(msg || translate('bg_msg_2'));
     });
@@ -280,7 +233,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       'timeout': 60, // seconds
       'sha256': '', // sha256 hash code of the user password
       'password': '' // deprecated
-    }).then(async prefs => {
+    }).then(prefs => {
       const next = async () => {
         try {
           await chrome.declarativeNetRequest.updateDynamicRules({
@@ -311,7 +264,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         notify(translate('bg_msg_3'));
       }
       else {
-        sha256.validate(request, next, async msg => notify(msg || translate('bg_msg_2')));
+        sha256.validate(request, next, msg => notify(msg || translate('bg_msg_2')));
       }
     });
 
@@ -356,14 +309,13 @@ once(() => chrome.storage.managed.get({
 }));
 
 /* release open once */
-chrome.alarms.onAlarm.addListener(async alarm => {
+chrome.alarms.onAlarm.addListener(alarm => {
   if (alarm.name === 'release.open.once') {
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [998]
     });
   }
 });
-
 
 /* FAQs & Feedback */
 {

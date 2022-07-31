@@ -6,9 +6,23 @@
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
 });
 
+// post with health check
+const post = (o, c = () => {}) => {
+  const check = () => {
+    if (confirm('Worker is not responding! Would you like to restart the extension?')) {
+      chrome.runtime.reload();
+    }
+  };
+  const id = setTimeout(check, 2000);
+
+  chrome.runtime.sendMessage(o, r => {
+    clearTimeout(id);
+    c(r);
+  });
+};
+
 const args = new URLSearchParams(location.search);
 const href = location.search.split('url=')[1];
-
 
 document.getElementById('date').textContent = (new Date()).toLocaleString();
 if (args.has('url')) {
@@ -29,11 +43,11 @@ if (args.has('url')) {
 
 document.addEventListener('submit', e => {
   e.preventDefault();
-  chrome.runtime.sendMessage({
+  post({
     method: 'open-once',
     url: href.split('?')[0] + '*',
     password: e.target.querySelector('[type=password]').value
-  }, resp => {
+  }, () => {
     document.getElementById('url').click();
   });
 });
@@ -82,7 +96,7 @@ Promise.all([
       document.title = title + ` (${prefs.close})`;
       prefs.close -= 1;
       if (prefs.close === -1) {
-        chrome.runtime.sendMessage({
+        post({
           method: 'close-page'
         });
         window.close();
@@ -93,9 +107,9 @@ Promise.all([
   document.getElementById('exception').textContent = chrome.i18n.getMessage(
     prefs.reverse ? 'blocked_add_to_whitelist' : 'blocked_remove_blocking'
   );
-  document.getElementById('exception').addEventListener('click', async e => {
+  document.getElementById('exception').addEventListener('click', e => {
     e.stopPropagation();
-    const next = async () => {
+    const next = () => {
       const url = document.getElementById('url');
       if (prefs.reverse === false) {
         chrome.storage.local.get({
@@ -103,7 +117,7 @@ Promise.all([
           blocked: []
         }, prefs => {
           if (prefs.reverse === false) {
-            chrome.runtime.sendMessage({
+            post({
               method: 'convert',
               hosts: prefs.blocked
             }, resp => {
@@ -141,7 +155,7 @@ Promise.all([
     };
     const password = document.querySelector('[type=password]');
     if (prefs.password || prefs.sha256) {
-      chrome.runtime.sendMessage({
+      post({
         method: 'check-password',
         password: password.value
       }, resp => {
