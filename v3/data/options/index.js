@@ -49,7 +49,8 @@ const DEFAULTS = {
   'contextmenu-resume': true,
   'contextmenu-pause': true,
   'contextmenu-frame': true,
-  'contextmenu-top': true
+  'contextmenu-top': true,
+  'pause-periods': [5, 10, 15, 30, 60, 360, 1440]
 };
 const prefs = {};
 
@@ -219,6 +220,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   }
   document.getElementById('mode-top').value = localStorage.getItem('mode-top') || 'complete';
   document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'complete'; // 'simple'
+
+  document.getElementById('pause-periods').value = prefs['pause-periods'].join(', ');
 });
 init();
 
@@ -248,13 +251,21 @@ document.getElementById('save-container').onsubmit = e => {
   });
 };
 
-document.addEventListener('click', async e => {
+document.addEventListener('click', e => {
   const {target} = e;
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
     target.closest('div').remove();
   }
   else if (cmd === 'save') {
+    const periods = document.getElementById('pause-periods').value
+      .split(/\s*,\s*/)
+      .map(Number)
+      .filter(n => isNaN(n) === false && n > 0)
+      .filter((n, i, l) => l.indexOf(n) == i);
+
+    periods.sort((a, b) => a - b);
+
     grant(async () => {
       let schedule = {
         times: days.reduce((p, c) => {
@@ -345,7 +356,9 @@ document.addEventListener('click', async e => {
         'contextmenu-resume': document.getElementById('contextmenu-resume').checked,
         'contextmenu-pause': document.getElementById('contextmenu-pause').checked,
         'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
-        'contextmenu-top': document.getElementById('contextmenu-top').checked
+        'contextmenu-top': document.getElementById('contextmenu-top').checked,
+
+        'pause-periods': periods
       }, () => {
         toast('Options saved');
         window.removeEventListener('beforeunload', warning);

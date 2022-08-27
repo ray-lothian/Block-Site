@@ -191,6 +191,9 @@
   "options_sch_helper_3": {
     "message": "Clear All"
   },
+  "options_contextmenu_periods": {
+    "message": "Pause Periods (in minutes)"
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },
@@ -233,21 +236,6 @@
   "bg_msg_6": {
     "message": "Resume Blocking"
   },
-  "bg_msg_7": {
-    "message": "10 minutes"
-  },
-  "bg_msg_8": {
-    "message": "30 minutes"
-  },
-  "bg_msg_9": {
-    "message": "1 hour"
-  },
-  "bg_msg_10": {
-    "message": "6 hours"
-  },
-  "bg_msg_11": {
-    "message": "1 day"
-  },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
   },
@@ -256,12 +244,6 @@
   },
   "bg_msg_14": {
     "message": "Access to \"##\" will be restricted with the following rules. Are you sure?"
-  },
-  "bg_msg_15": {
-    "message": "Blocking is paused. You can now access the restricted URLs."
-  },
-  "bg_msg_16": {
-    "message": "Blocking is resumed."
   },
   "bg_msg_17": {
     "message": "Please enter the master password to continue"
@@ -280,5 +262,23 @@
   },
   "bg_msg_22": {
     "message": "Options"
+  },
+  "bg_msg_23": {
+    "message": "minute"
+  },
+  "bg_msg_24": {
+    "message": "minutes"
+  },
+  "bg_msg_25": {
+    "message": "hour"
+  },
+  "bg_msg_26": {
+    "message": "hours"
+  },
+  "bg_msg_27": {
+    "message": "Blocking is paused"
+  },
+  "bg_msg_28": {
+    "message": "Blocking is resumed"
   }
 }

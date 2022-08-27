@@ -231,6 +231,9 @@ a:visited {
   margin-bottom: 5px;
   display: block;
 }
+.gap {
+  gap: 5px;
+}
 .indent {
   margin-left: 32px;
 }
