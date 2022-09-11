@@ -12,6 +12,7 @@
   --admin-bg: #ffffed;
   --admin-border: #e8ec3a;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: rgba(0, 0, 0, 0.05);
@@ -34,6 +35,7 @@ body {
   max-width: 80%;
   margin: 10px auto;
 }
+
 @media screen and (max-width: 600px) {
   body {
     margin: 10px;

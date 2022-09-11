@@ -40,12 +40,17 @@ chrome.runtime.onConnect.addListener(port => {
     }
   });
 });
-const prompt = (msg, value = '', hidden = true) => {
+const prompt = (message, value = '', hidden = true, command = '') => {
   return new Promise((resolve, reject) => {
+    const args = new URLSearchParams('');
+    args.set('message', message);
+    args.set('value', value);
+    args.set('hidden', hidden);
+    args.set('command', command);
+
     chrome.windows.getCurrent(win => {
       chrome.windows.create({
-        url: 'data/prompt/index.html?message=' + encodeURIComponent(msg) +
-          '&value=' + encodeURIComponent(value) + '&hidden=' + hidden,
+        url: 'data/prompt/index.html?' + args.toString(),
         type: 'popup',
         width: 600,
         height: 200, // test on Windows
@@ -65,12 +70,7 @@ const once = (c, prop = {
   installed: true
 }) => {
   if (isFF) {
-    if (prop.startup) {
-      once.cache.push(c);
-    }
-    if (prop.installed) {
-      chrome.runtime.onInstalled.addListener(c);
-    }
+    once.cache.add(c);
   }
   else {
     if (prop.startup) {
@@ -81,16 +81,10 @@ const once = (c, prop = {
     }
   }
 };
-once.cache = [];
+once.cache = new Set();
 
 if (isFF) {
-  const controller = new AbortController();
-  const signal = controller.signal;
-
-  const next = () => {
-    if (signal.aborted) {
-      return;
-    }
+  document.addEventListener('DOMContentLoaded', () => {
     for (const c of once.cache) {
       try {
         c();
@@ -99,12 +93,5 @@ if (isFF) {
         console.warn(e);
       }
     }
-  };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(next, 500);
-  });
-  chrome.runtime.onInstalled.addListener(() => {
-    controller.abort();
   });
 }

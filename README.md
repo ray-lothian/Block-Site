@@ -6,6 +6,7 @@ A browser extension to block website access using hostname matching and more
 
 ### Links
   * Homepage: https://add0n.com/block-site.html
+  * Short Review: https://webextension.org/blog/2022/04/17/block-site-extension.html
   * Chrome: https://chrome.google.com/webstore/detail/block-site/lebiggkccaodkkmjeimmbogdedcpnmfb
   * Firefox: https://addons.mozilla.org/en-GB/firefox/addon/block-website/
   * Opera: https://addons.opera.com/en-gb/extensions/details/block-site-2/

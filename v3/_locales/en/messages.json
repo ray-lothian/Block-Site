@@ -204,7 +204,7 @@
     "message": "Blocked Since"
   },
   "blocked_master_password": {
-    "message": "Enter the master password to unblock"
+    "message": "Enter the master password, then press enter to unblock for a minute"
   },
   "blocked_options": {
     "message": "Options Page"
@@ -254,11 +254,8 @@
   "bg_msg_19": {
     "message": "(Un)Block this Page"
   },
-  "bg_msg_20": {
-    "message": "Cannot extract any domain name for this page"
-  },
   "bg_msg_21": {
-    "message": "It is not possible to block the Extension Gallery"
+    "message": "It is most likely not possible to block the Extension Gallery. You can try anyway!"
   },
   "bg_msg_22": {
     "message": "Options"

@@ -2,7 +2,7 @@
 
 const periods = () => chrome.storage.local.get({
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440]
-}).then(prefs => {
+}, prefs => {
   chrome.contextMenus.create({
     title: translate('bg_msg_5'),
     id: 'pause',
@@ -33,6 +33,10 @@ const periods = () => chrome.storage.local.get({
   };
   read.plural = new Intl.PluralRules(navigator.language);
 
+  if (prefs['pause-periods'].length === 0) {
+    prefs['pause-periods'].push(5, 10, 15, 30, 60, 360, 1440);
+  }
+
   for (const period of prefs['pause-periods']) {
     chrome.contextMenus.create({
       title: read(period),
@@ -44,7 +48,9 @@ const periods = () => chrome.storage.local.get({
 });
 chrome.storage.onChanged.addListener(ps => {
   if (ps['pause-periods']) {
-    Promise.all(ps['pause-periods'].oldValue.map(s => new Promise(resolve => chrome.contextMenus.remove('pause-' + s, resolve)))).then(periods);
+    Promise.all(
+      ps['pause-periods'].oldValue.map(s => new Promise(resolve => chrome.contextMenus.remove('pause-' + s, resolve)))
+    ).then(periods);
   }
 });
 
@@ -113,8 +119,7 @@ const resume = () => {
   chrome.action.setIcon({
     path: {
       '16': '/data/icons/16.png',
-      '32': '/data/icons/32.png',
-      '48': '/data/icons/48.png'
+      '32': '/data/icons/32.png'
     }
   });
   chrome.action.setTitle({
@@ -149,8 +154,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         chrome.action.setIcon({
           path: {
             '16': '/data/icons/paused/16.png',
-            '32': '/data/icons/paused/32.png',
-            '48': '/data/icons/paused/48.png'
+            '32': '/data/icons/paused/32.png'
           }
         });
         chrome.action.setTitle({

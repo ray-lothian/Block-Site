@@ -39,13 +39,15 @@
   </header>
   <p id="message"></p>
   <div flex="1"></div>
-  <footer hbox align=center>
+  <footer>
     <form flex="1" hbox>
       <input type="password" required="true" data-i18n="blocked_master_password" data-i18n-value="placeholder">
     </form>
-    <a href="#" id="rate" data-i18n="blocked_rate" data-hide=true>-</a>
-    <a href="#" id="exception">-</a>
-    <a href="#" id="options" data-i18n="blocked_options"></a>
+    <div>
+      <a href="#" id="rate" data-i18n="blocked_rate" data-hide=true>-</a>
+      <a href="#" id="exception">-</a>
+      <a href="#" id="options" data-i18n="blocked_options"></a>
+    </div>
   </footer>
   <input type="button" id="switch">
   <script src="tld.js"></script>

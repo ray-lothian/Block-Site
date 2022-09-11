@@ -1,4 +1,4 @@
-/* globals tld */
+/* global tld */
 'use strict';
 
 // localization
@@ -47,8 +47,10 @@ document.addEventListener('submit', e => {
     method: 'open-once',
     url: href.split('?')[0] + '*',
     password: e.target.querySelector('[type=password]').value
-  }, () => {
-    document.getElementById('url').click();
+  }, b => {
+    if (b) {
+      document.getElementById('url').click();
+    }
   });
 });
 

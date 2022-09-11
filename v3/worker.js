@@ -123,12 +123,8 @@ const userAction = async (tabId, href, frameId) => {
     'password': '' // deprecated
   });
 
-  const next = async () => {
-    const reload = () => chrome.tabs.executeScript(tabId, {
-      frameId,
-      code: 'location.reload()',
-      runAt: 'document_start'
-    });
+  const next = () => {
+    const reload = () => frameId !== 0 && chrome.tabs.reload(tabId);
 
     if (prefs.reverse) {
       prefs.blocked = prefs.blocked.filter(s => {
@@ -136,61 +132,18 @@ const userAction = async (tabId, href, frameId) => {
 
         return r.test(href) === false;
       });
-      chrome.storage.local.set(prefs);
+      chrome.storage.local.set(prefs, reload());
     }
     else {
-      const msg = translate('bg_msg_14');
-      // find domain
-      let domains = [];
-      try {
-        await chrome.scripting.executeScript({
-          target: {tabId},
-          files: ['data/blocked/tld.js']
-        });
-        const r = await chrome.scripting.executeScript({
-          target: {tabId},
-          func: () => {
-            /* global tld */
-            window.stop();
-            const domain = tld.getDomain(location.hostname);
-            if (domain) {
-              return [domain];
-            }
-            return [location.hostname];
-          }
-        });
-        domains = r[0].result;
-      }
-      catch (e) {
-        try {
-          if (href.startsWith('http')) {
-            const {hostname} = new URL(href);
-            if (hostname === 'chrome.google.com' || hostname === 'microsoftedge.microsoft.com') {
-              notify(translate('bg_msg_21'));
-            }
-            else {
-              domains.push(hostname);
-            }
-          }
+      prompt(translate('bg_msg_14'), href, false, 'convert-to-domain').then(async a => {
+        if (a) {
+          const prefs = await storage({
+            blocked: []
+          });
+          prefs.blocked.push(...a.split(/\s*,\s*/));
+          chrome.storage.local.set(prefs, reload());
         }
-        catch (e) {}
-      }
-      domains = domains.filter((s, i, l) => s && l.indexOf(s) === i);
-
-      if (domains.length) {
-        prompt(msg.replace('##', domains[0]), domains.join(', '), false).then(async a => {
-          if (a) {
-            const prefs = await storage({
-              blocked: []
-            });
-            prefs.blocked.push(...a.split(/\s*,\s*/));
-            chrome.storage.local.set(prefs);
-          }
-        });
-      }
-      else {
-        notify(translate('bg_msg_20'));
-      }
+      });
     }
   };
 
@@ -256,15 +209,20 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
           response(true);
         }
         catch (e) {
+          response(false);
           notify(e.message);
         }
       };
 
       if (prefs.password === '' && prefs.sha256 === '') {
+        response(false);
         notify(translate('bg_msg_3'));
       }
       else {
-        sha256.validate(request, next, msg => notify(msg || translate('bg_msg_2')));
+        sha256.validate(request, next, msg => {
+          response(false);
+          notify(msg || translate('bg_msg_2'));
+        });
       }
     });
 
@@ -283,7 +241,9 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     return true;
   }
   else if (request.method === 'close-page') {
-    chrome.tabs.remove(sender.tab.id);
+    if (sender.frameId === 0) {
+      chrome.tabs.remove(sender.tab.id);
+    }
   }
 });
 
