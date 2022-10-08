@@ -195,7 +195,7 @@
     "message": "Pause Periods (in minutes)"
   },
   "options_incognito": {
-    "message": "option page is not available on the incognito context"
+    "message": "Options page is not available on the incognito context"
   },
   "blocked_restricted": {
     "message": "Restricted Access"
