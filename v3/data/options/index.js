@@ -5,6 +5,14 @@
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
 });
 
+// do not work in incognito
+if (chrome.extension.inIncognitoContext) {
+  window.addEventListener('load', () => {
+    alert(chrome.i18n.getMessage('options_incognito'));
+    window.close();
+  });
+}
+
 const toast = (msg, period = 750, type = 'info') => {
   const e = document.getElementById('toast');
   e.dataset.type = type;

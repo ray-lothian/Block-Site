@@ -141,7 +141,7 @@ const userAction = async (tabId, href, frameId) => {
             blocked: []
           });
           prefs.blocked.push(...a.split(/\s*,\s*/));
-          chrome.storage.local.set(prefs, reload());
+          chrome.storage.local.set(prefs, reload);
         }
       });
     }

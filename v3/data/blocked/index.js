@@ -61,6 +61,11 @@ document.getElementById('switch').addEventListener('click', () => {
 });
 document.getElementById('options').addEventListener('click', e => {
   e.stopPropagation();
+
+  if (chrome.extension.inIncognitoContext) {
+    return alert(chrome.i18n.getMessage('bg_msg_29'));
+  }
+
   chrome.runtime.openOptionsPage();
 });
 
@@ -111,6 +116,11 @@ Promise.all([
   );
   document.getElementById('exception').addEventListener('click', e => {
     e.stopPropagation();
+
+    if (chrome.extension.inIncognitoContext) {
+      return alert(chrome.i18n.getMessage('bg_msg_29'));
+    }
+
     const next = () => {
       const url = document.getElementById('url');
       if (prefs.reverse === false) {
