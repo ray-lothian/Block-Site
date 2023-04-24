@@ -66,15 +66,25 @@ document.getElementById('password').addEventListener('input', e => {
   document.getElementById('ok').disabled = e.target.value === '';
 });
 
-window.addEventListener('blur', () => port.postMessage({
+window.addEventListener('blur', () => setTimeout(() => port.postMessage({
   method: 'bring-to-front'
-}));
+})), 1000);
 window.onbeforeunload = () => port.postMessage({
   method: 'prompt-resolved'
 });
 
 document.addEventListener('keyup', e => {
   if (e.code === 'Escape') {
+    window.close();
+  }
+});
+
+// close all other prompts since we do not support multiple at the moment
+chrome.runtime.sendMessage({
+  method: 'close-prompts'
+});
+chrome.runtime.onMessage.addListener(request => {
+  if (request.method === 'close-prompts') {
     window.close();
   }
 });
