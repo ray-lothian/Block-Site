@@ -113,7 +113,7 @@ chrome.alarms.onAlarm.addListener(async o => {
         chrome.declarativeNetRequest.updateDynamicRules({
           addRules: [{
             id,
-            'priority': 2,
+            'priority': 4,
             'action': {
               'type': 'allow'
             },

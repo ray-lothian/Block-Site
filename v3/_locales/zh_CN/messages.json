@@ -1,0 +1,191 @@
+{
+  "app_description": {
+    "message": "个性化的且具有密码保护功能的网站封锁与重定向工具"
+  },
+  "options_master_password": {
+    "message": "管理员密码"
+  },
+  "options_master_password_comment": {
+    "message": "输入管理员密码以保护你的偏好设置"
+  },
+  "options_redirect": {
+    "message": "重定向至："
+  },
+  "options_user_message": {
+    "message": "用户信息："
+  },
+  "options_resolve": {
+    "message": "解析被封锁网页的标题（取消该选项以免被封锁的服务器收到请求）"
+  },
+  "options_startup": {
+    "message": "初始化后封锁现存页面"
+  },
+  "options_allow_access": {
+    "message": "解除封锁后允许访问网址的时长（秒）"
+  },
+  "options_block_period": {
+    "message": "多次输入错误密码后封锁密码核查（分钟）"
+  },
+  "options_close_blocked": {
+    "message": "多长时间后自动关闭："
+  },
+  "options_close_msg_blocked": {
+    "message": "（设置为0以取消自动关闭）"
+  },
+  "options_times": {
+    "message": "时刻"
+  },
+  "options_days": {
+    "message": "天"
+  },
+  "options_hostname": {
+    "message": "规则"
+  },
+  "options_reverse": {
+    "message": "反向操作（仅可访问与规则匹配的网址，而不是封锁这些网址）"
+  },
+  "options_new_hostname": {
+    "message": "封锁新网址"
+  },
+  "options_add": {
+    "message": "增加"
+  },
+  "options_matching": {
+    "message": "匹配模式"
+  },
+  "options_redirect_2": {
+    "message": "重定向至"
+  },
+  "options_remove": {
+    "message": "移除"
+  },
+  "options_support": {
+    "message": "支持发展"
+  },
+  "options_unlock": {
+    "message": "解除封锁选项"
+  },
+  "options_save": {
+    "message": "保存"
+  },
+  "options_block_header": {
+    "message": "增加一条规则"
+  },
+  "options_blocing_options_header": {
+    "message": "封锁选项"
+  },
+  "options_list_header": {
+    "message": "既有规则"
+  },
+  "options_page_header": {
+    "message": "被封锁的页面"
+  },
+  "options_tools_header": {
+    "message": "工具"
+  },
+  "options_rules_header": {
+    "message": "导入规则"
+  },
+  "options_import_txt": {
+    "message": "导入规则（TXT文件）"
+  },
+  "options_schedule_header": {
+    "message": "设置封锁日程"
+  },
+  "options_import_header": {
+    "message": "备份与恢复"
+  },
+  "options_export_json": {
+    "message": "导出（JSON文件）"
+  },
+  "options_import_json": {
+    "message": "导入（JSON文件）"
+  },
+  "options_sup_1": {
+    "message": "可将被封锁的网址重定向至该 HTTP(S) URL"
+  },
+  "options_sup_2": {
+    "message": "这是呈现在封锁页面上的自定义信息。该信息可用来指导如何解除封锁，或者呈现管理员的联系方式。"
+  },
+  "options_sup_6": {
+    "message": "若要封锁包含word的网址，请使用规则“*://*word*/*”。若要封锁网址路径包含word的网址，请使用“*://*/*word*”规则。若仅需要关闭页面，在‘重定向至’方格中输入关键词“close”。若要建立正则表达式规则，在规则头部追加“R:”关键词。例如： “R: ht{2}ps*://.*\\.go{2}gle\\.com”将封锁基于HTTP与HTTPS协议的www.google.com网址。"
+  },
+  "options_sup_8": {
+    "message": "准备一份包含所有屏蔽规则的纯文本文件（txt）。导入后，点击保存按钮以使其生效。若要废弃导入的规则，不点击保存按钮、重新加载本页面即可。"
+  },
+  "options_sup_9": {
+    "message": "导出的JSON文件包含你的管理员密码。不要分享该文件给他人。"
+  },
+  "options_sup_10": {
+    "message": "在导入设置时，既有设置会被覆盖。"
+  },
+  "options_sup_11": {
+    "message": "通过正则表达式，你可以设置当前日程仅应用于匹配的URLs。若要为不同规则设置不同日程，则须为每项规则逐一设置日程并保存。若要删除已保存的规则，则须在“规则”所对应的方格填入已保存的规则，本插件将自动加载相应的日程，之后你可以只删除规则中的日程，而不必删除整个规则。"
+  },
+  "options_sup_12": {
+    "message": "正则表达式"
+  },
+  "options_instruction": {
+    "message": "教程"
+  },
+  "blocked_restricted": {
+    "message": "限制访问"
+  },
+  "blocked_title": {
+    "message": "标题"
+  },
+  "blocked_since": {
+    "message": "封锁开始时间"
+  },
+  "blocked_master_password": {
+    "message": "输入管理员密码以解除封锁"
+  },
+  "blocked_options": {
+    "message": "选项页面"
+  },
+  "blocked_remove_blocking": {
+    "message": "移除封锁"
+  },
+  "blocked_add_to_whitelist": {
+    "message": "加入白名单"
+  },
+  "blocked_no_action": {
+    "message": "管理员密码不正确。填写并重试。"
+  },
+  "bg_msg_1": {
+    "message": "该标签页无有效URL"
+  },
+  "bg_msg_2": {
+    "message": "密码错误！请重试！"
+  },
+  "bg_msg_3": {
+    "message": "到选项页面设置管理员密码"
+  },
+  "bg_msg_4": {
+    "message": "密码错误次数过多。请等待##分钟后重试。"
+  },
+  "bg_msg_5": {
+    "message": "暂停封锁"
+  },
+  "bg_msg_6": {
+    "message": "恢复封锁"
+  },
+  "bg_msg_7": {
+    "message": "10分钟"
+  },
+  "bg_msg_8": {
+    "message": "30分钟"
+  },
+  "bg_msg_9": {
+    "message": "1小时"
+  },
+  "bg_msg_10": {
+    "message": "6小时"
+  },
+  "bg_msg_11": {
+    "message": "1天"
+  },
+  "bg_msg_12": {
+    "message": "请输入管理员密码以暂停封锁"
+  }
+}

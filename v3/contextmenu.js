@@ -142,7 +142,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
           removeRuleIds: [999],
           addRules: [{
             'id': 999,
-            'priority': 3,
+            'priority': 5,
             'action': {
               'type': 'allow'
             },

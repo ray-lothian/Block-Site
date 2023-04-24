@@ -72,6 +72,7 @@ Please merge them to keep the list less than ${prefs['max-number-of-rules']} ite
     }
     else {
       if (prefs.map[h] === 'close') {
+        rule.priority = 3;
         Object.assign(rule.action, {
           type: 'redirect',
           redirect: {
@@ -80,6 +81,7 @@ Please merge them to keep the list less than ${prefs['max-number-of-rules']} ite
         });
       }
       else if (prefs.map[h]) {
+        rule.priority = 2;
         Object.assign(rule.action, {
           type: 'redirect',
           redirect: {

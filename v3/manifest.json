@@ -54,8 +54,6 @@
   }],
   "incognito": "split",
   "commands": {
-    "_execute_action": {
-      "description": "Press the action button"
-    }
+    "_execute_action": {}
   }
 }

@@ -193,7 +193,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
             removeRuleIds: [998],
             addRules: [{
               'id': 998,
-              'priority': 3,
+              'priority': 5,
               'action': {
                 'type': 'allow'
               },
