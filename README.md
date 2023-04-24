@@ -5,7 +5,7 @@ A browser extension to block website access using hostname matching and more
 [![Preview](https://img.youtube.com/vi/maE-gOUSH4c/0.jpg)](https://www.youtube.com/watch?v=maE-gOUSH4c)
 
 ### Links
-  * Homepage: https://add0n.com/block-site.html
+  * Homepage: https://webextension.org/listing/block-site.html
   * Short Review: https://webextension.org/blog/2022/04/17/block-site-extension.html
   * Chrome: https://chrome.google.com/webstore/detail/block-site/lebiggkccaodkkmjeimmbogdedcpnmfb
   * Firefox: https://addons.mozilla.org/en-GB/firefox/addon/block-website/
