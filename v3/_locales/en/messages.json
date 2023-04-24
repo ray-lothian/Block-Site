@@ -197,6 +197,12 @@
   "options_incognito": {
     "message": "Options page is not available on the incognito context"
   },
+  "options_remove_all": {
+    "message": "Remove all existing rules"
+  },
+  "options_remove_all_confirm": {
+    "message": "Are you sure you want to remove all existing blocking rules?\n\nYou can refresh the page without saving to restore the rules."
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },

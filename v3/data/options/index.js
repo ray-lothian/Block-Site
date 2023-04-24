@@ -570,3 +570,10 @@ document.getElementById('rate').onclick = () => {
   }));
 };
 
+document.getElementById('remove-all').onclick = () => {
+  if (confirm(chrome.i18n.getMessage('options_remove_all_confirm'))) {
+    for (const input of document.querySelectorAll('#rules-container [data-cmd=remove]')) {
+      input.click();
+    }
+  }
+};

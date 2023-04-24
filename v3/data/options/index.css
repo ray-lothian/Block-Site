@@ -256,6 +256,12 @@ a:visited {
   align-items: center;
   white-space: nowrap;
 }
+.btn {
+  background-color: var(--bg-color);
+  padding: 2px 10px;
+  margin-left: 5px;
+  font-size: 0.8rem;
+}
 
 #schedule-helper {
   padding: 10px;
