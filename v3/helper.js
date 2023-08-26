@@ -40,13 +40,14 @@ chrome.runtime.onConnect.addListener(port => {
     }
   });
 });
-const prompt = (message, value = '', hidden = true, command = '') => {
+const prompt = (message, value = '', hidden = true, command = '', extra = {}) => {
   return new Promise((resolve, reject) => {
     const args = new URLSearchParams('');
     args.set('message', message);
     args.set('value', value);
     args.set('hidden', hidden);
     args.set('command', command);
+    args.set('extra', JSON.stringify(extra));
 
     chrome.windows.getCurrent(win => {
       chrome.windows.create({

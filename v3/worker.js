@@ -135,14 +135,11 @@ const userAction = async (tabId, href, frameId) => {
       chrome.storage.local.set(prefs, reload());
     }
     else {
-      prompt(translate('bg_msg_14'), href, false, 'convert-to-domain').then(async a => {
-        if (a) {
-          const prefs = await storage({
-            blocked: []
-          });
-          prefs.blocked.push(...a.split(/\s*,\s*/));
-          chrome.storage.local.set(prefs, reload);
-        }
+      chrome.tabs.sendMessage(tabId, {
+        method: 'get-referrer'
+      }, (referrer = '') => {
+        chrome.runtime.lastError;
+        prompt(translate('bg_msg_14'), href, false, 'convert-to-domain', {referrer, tabId});
       });
     }
   };

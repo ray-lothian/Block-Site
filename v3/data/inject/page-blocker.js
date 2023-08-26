@@ -41,11 +41,19 @@ navigator?.serviceWorker?.getRegistrations()?.then(registrations => {
   }
 });
 
-// push state
+// https://github.com/ray-lothian/Block-Site/issues/111
+if (navigator.userAgent.includes('OPR/')) {
+  validate();
+}
+
 let href = location.href;
-chrome.runtime.onMessage.addListener(request => {
+chrome.runtime.onMessage.addListener((request, sender, response) => {
+  // push state
   if (request.method === 'address-changed' && href !== location.href) {
     href = location.href;
     validate();
+  }
+  else if (request.method === 'get-referrer') {
+    response(document.referrer);
   }
 });

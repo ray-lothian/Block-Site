@@ -4,6 +4,7 @@
 
 const STORES = ['chrome.google.com', 'microsoftedge.microsoft.com', 'addons.mozilla.org', 'addons.opera.com'];
 const args = new URLSearchParams(location.search);
+const extra = JSON.parse(args.get('extra') || '{}');
 
 document.getElementById('message').textContent = args.get('message') || 'NA';
 
@@ -24,19 +25,32 @@ if (args.get('command') === 'convert-to-domain') {
   s.onload = () => {
     try {
       const next = d => {
-        document.getElementById('message').textContent = args.get('message').replace('##', d);
-        document.getElementById('password').value = d;
+        let v = d;
+        const ds = [d];
+        // referrer
+        if (extra.referrer) {
+          const domain = tld.getDomain(extra.referrer);
+          if (domain && ds.includes(domain) === false) {
+            v += ' [' + chrome.i18n.getMessage('pp_msg_1').replace('##', domain) + ']';
+          }
+        }
+        document.getElementById('password').value = ds.join(', ');
+        document.getElementById('message').textContent = args.get('message').replace('##', v);
 
-        if (STORES.includes(d)) {
-          setTimeout(() => alert(chrome.i18n.getMessage('bg_msg_21')), 2000);
+        for (const d of ds) {
+          if (STORES.includes(d)) {
+            setTimeout(() => alert(chrome.i18n.getMessage('bg_msg_21')), 2000);
+          }
         }
       };
 
-      const domain = tld.getDomain(location.hostname);
+      const domain = tld.getDomain(args.get('value'));
+
       if (domain) {
         return next(domain);
       }
       const o = new URL(args.get('value'));
+
       next(o.hostname);
     }
     catch (e) {
@@ -48,18 +62,45 @@ if (args.get('command') === 'convert-to-domain') {
 }
 
 document.getElementById('cancel').addEventListener('click', () => {
-  port.postMessage({
-    method: 'prompt-resolved'
-  });
+  try {
+    port.postMessage({
+      method: 'prompt-resolved'
+    });
+  }
+  catch (e) {}
   window.close();
 });
 document.querySelector('form').addEventListener('submit', e => {
   e.preventDefault();
-  port.postMessage({
-    method: 'prompt-resolved',
-    password: document.getElementById('password').value
-  });
-  window.close();
+  const password = document.getElementById('password').value;
+
+  const next = () => {
+    try {
+      port.postMessage({
+        method: 'prompt-resolved',
+        password
+      });
+    }
+    catch (e) {}
+    window.close();
+  };
+
+  if (args.get('command') === 'convert-to-domain') {
+    chrome.storage.local.get({
+      blocked: []
+    }, prefs => {
+      prefs.blocked.push(...password.split(/\s*,\s*/));
+      chrome.storage.local.set(prefs, () => {
+        if (extra.tabId) {
+          chrome.tabs.reload(extra.tabId);
+        }
+        next();
+      });
+    });
+  }
+  else {
+    next();
+  }
 });
 
 document.getElementById('password').addEventListener('input', e => {

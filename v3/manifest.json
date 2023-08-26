@@ -29,7 +29,7 @@
     "128": "data/icons/128.png",
     "256": "data/icons/256.png"
   },
-  "homepage_url": "https://webextension.org/listing/block-site.html?d",
+  "homepage_url": "https://webextension.org/listing/block-site.html",
   "action": {
     "default_icon": {
       "16": "/data/icons/16.png",
