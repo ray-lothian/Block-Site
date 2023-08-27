@@ -203,6 +203,9 @@
   "options_remove_all_confirm": {
     "message": "Are you sure you want to remove all existing blocking rules?\n\nYou can refresh the page without saving to restore the rules."
   },
+  "options_manual_pause": {
+    "message": "Forever"
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },

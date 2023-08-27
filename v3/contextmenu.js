@@ -45,6 +45,12 @@ const periods = () => chrome.storage.local.get({
       parentId: 'pause'
     }, () => chrome.runtime.lastError);
   }
+  chrome.contextMenus.create({
+    title: translate('options_manual_pause'),
+    id: 'pause-NaN',
+    contexts: ['action'],
+    parentId: 'pause'
+  }, () => chrome.runtime.lastError);
 });
 chrome.storage.onChanged.addListener(ps => {
   if (ps['pause-periods']) {
@@ -135,10 +141,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   else if (info.menuItemId.startsWith('pause-')) {
     const resolve = async () => {
       try {
-        const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
-        chrome.alarms.create('release.pause', {
-          when
-        });
+        if (info.menuItemId !== 'pause-NaN') {
+          const when = Date.now() + Number(info.menuItemId.replace('pause-', '')) * 60 * 1000;
+          chrome.alarms.create('release.pause', {
+            when
+          });
+        }
         await chrome.declarativeNetRequest.updateDynamicRules({
           removeRuleIds: [999],
           addRules: [{

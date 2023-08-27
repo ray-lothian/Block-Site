@@ -1,4 +1,4 @@
-/* global convert, storage, notify, once, isFF */
+/* global convert, storage, notify, once, isFF, translate */
 
 /* update rules */
 const update = () => storage({
@@ -158,11 +158,25 @@ Error: ` + e.message);
     }
   }
 
-  chrome.action.setTitle({
-    title: chrome.runtime.getManifest().name + `
+  // do we have a manual pause
+  if (rules.filter(r => r.id === 999).length) {
+    chrome.action.setIcon({
+      path: {
+        '16': '/data/icons/paused/16.png',
+        '32': '/data/icons/paused/32.png'
+      }
+    });
+    chrome.action.setTitle({
+      title: translate('bg_msg_27')
+    });
+  }
+  else {
+    chrome.action.setTitle({
+      title: chrome.runtime.getManifest().name + `
 
-Number of active filters: ` + regExps.length
-  });
+  Number of active filters: ` + regExps.length
+    });
+  }
 });
 
 chrome.storage.onChanged.addListener(ps => {
