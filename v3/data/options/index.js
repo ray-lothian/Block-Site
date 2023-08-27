@@ -1,3 +1,4 @@
+/* global getRelativeTime */
 'use strict';
 
 // localization
@@ -88,8 +89,14 @@ function add(hostname) {
   div.dataset.pattern = node.querySelector('[data-id=href]').textContent = wildcard(hostname);
   div.dataset.hostname = hostname;
   div.dataset.note = JSON.stringify(prefs.notes[hostname] || {
-    date: Date.now()
+    date: Date.now(),
+    origin: 'options'
   });
+  const d = new Date(prefs.notes[hostname]?.date);
+  if (isNaN(d) === false) {
+    node.querySelector('[data-id=date]').textContent = getRelativeTime(d);
+  }
+
   const rd = node.querySelector('input');
   rd.value = prefs.map[hostname] || '';
   rd.disabled = hostname.indexOf('*') !== -1;
@@ -195,6 +202,16 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   Object.assign(prefs, ps);
 
   if (table) {
+    const blocked = prefs.blocked;
+    blocked.sort((a, b) => {
+      const da = prefs.notes[a]?.date;
+      const db = prefs.notes[b]?.date;
+
+      if (da && db) {
+        return da - db;
+      }
+    });
+
     prefs.blocked.filter(a => a).forEach(add);
   }
   document.getElementById('title').checked = prefs.title;

@@ -94,7 +94,8 @@ document.querySelector('form').addEventListener('submit', e => {
         if (prefs.blocked.includes(rule) === false) {
           prefs.blocked.push(rule);
           prefs.notes[rule] = {
-            date: Date.now()
+            date: Date.now(),
+            origin: 'prompt'
           };
         }
       }

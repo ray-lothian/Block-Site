@@ -1,4 +1,4 @@
-/* global tld */
+/* global tld, getRelativeTime */
 'use strict';
 
 // localization
@@ -25,15 +25,13 @@ const args = new URLSearchParams(location.search);
 const href = location.search.split('url=')[1];
 
 if (args.has('date')) {
-  try {
-    const d = new Date(parseInt(args.get('date')));
-    if (isNaN(d)) {
-      throw Error('Invalid Date');
-    }
+  let d = new Date(parseInt(args.get('date')));
+  if (isNaN(d)) {
+    d = new Date();
     document.getElementById('date').textContent = d.toLocaleString();
   }
-  catch (e) {
-    document.getElementById('date').textContent = (new Date()).toLocaleString();
+  else {
+    document.getElementById('date').textContent = getRelativeTime(d);
   }
 }
 if (args.has('url')) {
@@ -180,7 +178,8 @@ Promise.all([
           if (prefs.blocked.includes(hostname) === false) {
             prefs.blocked.push(hostname);
             prefs.notes[hostname] = {
-              date: Date.now()
+              date: Date.now(),
+              origin: 'blocked'
             };
           }
         }
