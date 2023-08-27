@@ -35,6 +35,7 @@ const DEFAULTS = {
   'css': '',
   'redirect': '',
   'blocked': [],
+  'notes': {},
   'sha256': '',
   'password': '', // deprecated
   'wrong': 1, // minutes
@@ -86,6 +87,9 @@ function add(hostname) {
   const div = node.querySelector('div');
   div.dataset.pattern = node.querySelector('[data-id=href]').textContent = wildcard(hostname);
   div.dataset.hostname = hostname;
+  div.dataset.note = JSON.stringify(prefs.notes[hostname] || {
+    date: Date.now()
+  });
   const rd = node.querySelector('input');
   rd.value = prefs.map[hostname] || '';
   rd.disabled = hostname.indexOf('*') !== -1;
@@ -353,6 +357,10 @@ document.addEventListener('click', e => {
         'blocked': [...document.querySelectorAll('#rules-container > div')]
           .map(tr => tr.dataset.hostname)
           .filter((s, i, l) => s && l.indexOf(s) === i),
+        'notes': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
+          p[c.dataset.hostname] = JSON.parse(c.dataset.note);
+          return p;
+        }, {}),
         'map': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
           const {hostname} = c.dataset;
           const mapped = c.querySelector('input[type=text]').value;

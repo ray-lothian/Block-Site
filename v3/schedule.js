@@ -60,9 +60,6 @@ const schedule = {
             end.setDate(end.getDate() + 7);
           }
 
-          // console.log(start, 'Start');
-          // console.log(end, 'End');
-
           if (start.getTime() >= end.getTime()) {
             notify(`Schedule time for "${day}" - "${rule}" rule is ignored!
 

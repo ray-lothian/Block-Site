@@ -6,6 +6,7 @@ const update = () => storage({
   'initialBlock': true,
   'initialBlockCurrent': true,
   'blocked': [],
+  'notes': {},
   'map': {},
   'reverse': false,
   'redirect': '' // use custom redirect page
@@ -90,10 +91,11 @@ Please merge them to keep the list less than ${prefs['max-number-of-rules']} ite
         });
       }
       else {
+        const date = prefs.notes[h]?.date;
         Object.assign(rule.action, {
           type: 'redirect',
           redirect: {
-            regexSubstitution: (prefs.redirect || chrome.runtime.getURL('/data/blocked/index.html')) + '?url=\\0'
+            regexSubstitution: (prefs.redirect || chrome.runtime.getURL('/data/blocked/index.html')) + '?date=' + date + '&url=\\0'
           }
         });
       }

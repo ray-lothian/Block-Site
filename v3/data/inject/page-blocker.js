@@ -1,7 +1,8 @@
 // make sure pages loaded from service worker are not in the blocked list
 
 const validate = () => chrome.storage.local.get({
-  blocked: []
+  blocked: [],
+  notes: {}
 }, prefs => {
   if (prefs.blocked.length) {
     chrome.runtime.sendMessage({
@@ -23,7 +24,8 @@ const validate = () => chrome.storage.local.get({
                 }
               }
               chrome.runtime.sendMessage({
-                method: 'block'
+                method: 'block',
+                date: prefs.notes[prefs.blocked[rules.indexOf(rule)]]?.date
               });
             });
           }

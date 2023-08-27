@@ -24,7 +24,18 @@ const post = (o, c = () => {}) => {
 const args = new URLSearchParams(location.search);
 const href = location.search.split('url=')[1];
 
-document.getElementById('date').textContent = (new Date()).toLocaleString();
+if (args.has('date')) {
+  try {
+    const d = new Date(parseInt(args.get('date')));
+    if (isNaN(d)) {
+      throw Error('Invalid Date');
+    }
+    document.getElementById('date').textContent = d.toLocaleString();
+  }
+  catch (e) {
+    document.getElementById('date').textContent = (new Date()).toLocaleString();
+  }
+}
 if (args.has('url')) {
   const o = new URL(href);
   o.domain = tld.getDomain(o.host);
@@ -126,7 +137,8 @@ Promise.all([
       if (prefs.reverse === false) {
         chrome.storage.local.get({
           reverse: false,
-          blocked: []
+          blocked: [],
+          notes: {}
         }, prefs => {
           if (prefs.reverse === false) {
             post({
@@ -137,6 +149,12 @@ Promise.all([
               prefs.blocked = [...prefs.blocked].filter((s, i) => {
                 try {
                   const r = new RegExp(resp[i], 'i');
+                  const b = r.test(url);
+
+                  if (b) {
+                    delete prefs.notes[s];
+                  }
+
                   return r.test(url) === false;
                 }
                 catch (e) {
@@ -158,9 +176,16 @@ Promise.all([
           hostnames.push('*.' + document.getElementById('domain').textContent);
         }
         document.title = `Added ${hostnames.length} new rule(s)`;
-        chrome.storage.local.set({
-          blocked: [...prefs.blocked, ...hostnames]
-        }, () => {
+        for (const hostname of hostnames) {
+          if (prefs.blocked.includes(hostname) === false) {
+            prefs.blocked.push(hostname);
+            prefs.notes[hostname] = {
+              date: Date.now()
+            };
+          }
+        }
+
+        chrome.storage.local.set(prefs, () => {
           setTimeout(() => url.click(), 1000);
         });
       }

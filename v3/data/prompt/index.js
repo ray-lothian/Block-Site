@@ -87,9 +87,17 @@ document.querySelector('form').addEventListener('submit', e => {
 
   if (args.get('command') === 'convert-to-domain') {
     chrome.storage.local.get({
-      blocked: []
+      blocked: [],
+      notes: {}
     }, prefs => {
-      prefs.blocked.push(...password.split(/\s*,\s*/));
+      for (const rule of password.split(/\s*,\s*/)) {
+        if (prefs.blocked.includes(rule) === false) {
+          prefs.blocked.push(rule);
+          prefs.notes[rule] = {
+            date: Date.now()
+          };
+        }
+      }
       chrome.storage.local.set(prefs, () => {
         if (extra.tabId) {
           chrome.tabs.reload(extra.tabId);

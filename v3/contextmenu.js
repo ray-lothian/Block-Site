@@ -48,8 +48,9 @@ const periods = () => chrome.storage.local.get({
 });
 chrome.storage.onChanged.addListener(ps => {
   if (ps['pause-periods']) {
+    const old = ps['pause-periods'].oldValue || [5, 10, 15, 30, 60, 360, 1440];
     Promise.all(
-      ps['pause-periods'].oldValue.map(s => new Promise(resolve => chrome.contextMenus.remove('pause-' + s, resolve)))
+      old.map(s => new Promise(resolve => chrome.contextMenus.remove('pause-' + s, resolve)))
     ).then(periods);
   }
 });

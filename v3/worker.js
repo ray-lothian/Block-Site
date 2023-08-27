@@ -117,6 +117,7 @@ const userAction = async (tabId, href, frameId) => {
 
   const prefs = await storage({
     'blocked': [],
+    'notes': {},
     'reverse': false,
     'no-password-on-add': false,
     'sha256': '', // sha256 hash code of the user password
@@ -129,8 +130,12 @@ const userAction = async (tabId, href, frameId) => {
     if (prefs.reverse) {
       prefs.blocked = prefs.blocked.filter(s => {
         const r = new RegExp(convert(s), 'i');
+        const b = r.test(href);
+        if (b) { // delete the note
+          delete prefs.notes[s];
+        }
 
-        return r.test(href) === false;
+        return b === false;
       });
       chrome.storage.local.set(prefs, reload());
     }
@@ -227,7 +232,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   }
   else if (request.method === 'block') {
     chrome.tabs.update(sender.tab.id, {
-      url: chrome.runtime.getURL('/data/blocked/index.html') + '?type=secondary&url=' + sender.tab.url
+      url: chrome.runtime.getURL('/data/blocked/index.html') + '?date=' + request.date + '&type=secondary&url=' + sender.tab.url
     });
   }
   else if (request.method === 'get-schedule-rules') {
