@@ -14,11 +14,17 @@
   "options_user_message": {
     "message": "Benutzernachricht:"
   },
+  "options_custom_css": {
+    "message": "Angepasstes CSS:"
+  },
   "options_resolve": {
     "message": "Den Titel der gesperrten Seiten aufrufen (deaktivieren Sie diese Option, um zu verhindern, dass gesperrte Server irgendwelche Anfragen erhalten)"
   },
   "options_startup": {
     "message": "Sperrung bestehender Seiten nach der Initialisierung durchführen"
+  },
+  "options_startup_current": {
+    "message": "Block the current matched page when a new rule is added"
   },
   "options_allow_access": {
     "message": "Erlaube den Zugriff auf den nicht gesperrten Rechnernamen für (in Sekunden)"
@@ -27,13 +33,19 @@
     "message": "Sperrung der Passwortprüfung bei mehrfacher Eingabe eines falschen Passwortes (in Minuten)"
   },
   "options_close_blocked": {
-    "message": "Schließen Sie nach:"
+    "message": "Schliesse nach (Sekunden):"
   },
   "options_close_msg_blocked": {
-    "message": "(verwenden Sie Null für kein automatisches Schließen)"
+    "message": "(verwenden Sie Null für manuelles Schließen)"
   },
   "options_times": {
     "message": "Zeit:"
+  },
+  "options_times_from": {
+    "message": "von"
+  },
+  "options_times_to": {
+    "message": "nach"
   },
   "options_days": {
     "message": "Tage:"
@@ -59,14 +71,20 @@
   "options_remove": {
     "message": "Entfernen"
   },
+  "options_rate": {
+    "message": "Bewerten Sie uns"
+  },
   "options_support": {
     "message": "Entwicklung unterstützen"
+  },
+  "options_preview": {
+    "message": "Verwendungsvorschau"
   },
   "options_unlock": {
     "message": "Optionen freischalten"
   },
   "options_save": {
-    "message": "Sichern"
+    "message": "Optionen sichern"
   },
   "options_block_header": {
     "message": "Regel hinzufügen"
@@ -90,7 +108,10 @@
     "message": "Importregeln (TXT-Datei)"
   },
   "options_schedule_header": {
-    "message": "Zeitgesteuerte Blockade"
+    "message": "Blockierung mit Zeitplänen"
+  },
+  "options_schedule_offset": {
+    "message": "Zeitplanabweichung in Minuten"
   },
   "options_import_header": {
     "message": "Sicherheitskopie und Wiederherstellung"
@@ -107,26 +128,80 @@
   "options_sup_2": {
     "message": "Dies ist eine benutzerdefinierte Meldung, die auf der gesperrten Seite angezeigt wird. Dies kann eine Anweisung sein, die gesperrte Seite oder den administrativen Kontakt zu öffnen"
   },
+  "options_sup_3": {
+    "message": "Inject custom CSS rules into the blocked interface. You can use this section to hide different elements or change the font properties of these elements"
+  },
   "options_sup_6": {
     "message": "Um Hostnamen zu blockieren, die ein Wort enthalten, verwenden Sie die Regel '*://*Wort*/*'. Um das gleiche Wort innerhalb des Pfadnamens zu blockieren, verwenden Sie die Regel '*://*/*word*'. Wenn Sie nur eine Seite mit einer Regel schließen wollen, verwenden Sie das Schlüsselwort \"close\" im Feld \"Weiterleiten nach\". Um eine Regel für einen regulären Ausdruck zu erstellen, stellen Sie der Regel das Schlüsselwort \"R:\" voran. Zum Beispiel blockiert 'R:ht{2}ps*://.*\\.go{2}gle\\.com' www.google.com sowohl bei HTTP- als auch bei HTTPS-Protokollen."
   },
   "options_sup_8": {
     "message": "Bereiten Sie eine Textdatei vor, die alle Sperrregeln im reinen Textformat enthält. Klicken Sie nach dem Importieren auf die Schaltfläche Sichern, um die Änderungen zu übernehmen. Um die importierten Regeln zu verwerfen, laden Sie diese Seite erneut, ohne zu sichern."
   },
-  "options_sup_9": {
-    "message": "Die exportierte JSON-Datei enthält Ihr Hauptpasswort. Geben Sie diese Datei nicht weiter."
-  },
   "options_sup_10": {
-    "message": "Beim Importieren von Einstellungen werden alle Ihre bestehenden Einstellungen überschrieben."
+    "message": "Beim Importieren von Einstellungen werden alle vorhandenen Einstellungen überschrieben. Um die verkleinerte Version zu exportieren, halten Sie die Umschalttaste gedrückt, während Sie auf die Schaltfläche Exportieren klicken."
   },
   "options_sup_11": {
     "message": "Durch Angabe einer Regel mit regulärem Ausdruck können Sie den aktuellen Zeitplan auf die entsprechenden Adressen beschränken. Wenn Sie mehrere Zeitpläne mit unterschiedlichen Regeln haben möchten, füllen Sie den Abschnitt für jede Regel aus und drücken Sie die Schaltfläche Sichern. Um eine gespeicherte Regel zu löschen, füllen Sie den Regelteil aus, warten Sie, bis die Erweiterung den Zeitplan geladen hat, und löschen Sie dann den Zeitabschnitt, ohne die Regel selbst zu löschen."
   },
   "options_sup_12": {
-    "message": "einen regulären Ausdruck zur Begrenzung der Gefährdung"
+    "message": "Beim Importieren von Einstellungen werden alle vorhandenen Einstellungen überschrieben. Um die verkleinerte Version zu exportieren, halten Sie die Umschalttaste gedrückt, während Sie auf die Schaltfläche Exportieren klicken."
   },
   "options_instruction": {
     "message": "Anweisungen"
+  },
+  "options_contextmenu_pause": {
+    "message": "Zeigt die Option \"Pause\" des Kontextmenüs im Kontext der Browseraktion"
+  },
+  "options_contextmenu_resume": {
+    "message": "Zeigt Fortsetzungs-Kontextmenü-Option im Kontext der Browseraktion"
+  },
+  "options_contextmenu_top": {
+    "message": "Zeigt \\\"(Un)Block this Page\\\" Kontextmenüoption im Seitenkontext"
+  },
+  "options_contextmenu_frame": {
+    "message": "Zeigt \\\"(Un)Block this Frame\\\" Kontextmenü-Option im Rahmen-Kontext"
+  },
+  "options_no_pass_on_add": {
+    "message": "Nicht nach dem Hauptasswort fragen, um einen neuen Hostnamen zu blockieren"
+  },
+  "options_theme": {
+    "message": "Wählt visuellen Modus für die gesperrte Seite"
+  },
+  "options_theme_top": {
+    "message": "Für Seite"
+  },
+  "options_theme_frame": {
+    "message": "Für Rahmen"
+  },
+  "options_complete": {
+    "message": "Vollständig"
+  },
+  "options_simple": {
+    "message": "Einfach"
+  },
+  "options_intro": {
+    "message": "Zum Speichern von Optionen oder Festlegen des Hauptpassworts nach unten fahren."
+  },
+  "options_sch_helper_1": {
+    "message": "Unblockierte Zeiten für die nachfolgenden Zeitdauern erstellen"
+  },
+  "options_sch_helper_2": {
+    "message": "Erstellen"
+  },
+  "options_sch_helper_3": {
+    "message": "Alles löschen"
+  },
+  "options_contextmenu_periods": {
+    "message": "Zeit anhalten (in Minuten)"
+  },
+  "options_incognito": {
+    "message": "Die Einstellungsseite ist im Inkognitokontext nicht verfügbar"
+  },
+  "options_remove_all": {
+    "message": "Alle bestehenden Regeln löschen"
+  },
+  "options_remove_all_confirm": {
+    "message": "Wollen Sie wirklich alle bestehenden Blockaderegeln entfernen?\n\nWenn Sie die bestehenden Regeln behalten möchten, können Sie diese Seite neu laden, ohne zu sichern. Dann bleibt alles wie bisher."
   },
   "blocked_restricted": {
     "message": "Eingeschränkter Zugang"
@@ -138,19 +213,19 @@
     "message": "Blockiert seit"
   },
   "blocked_master_password": {
-    "message": "Geben Sie das Hauptpasswort ein, um die Blockade zu lösen:"
+    "message": "Bitte Hauptpasswort eingeben und dann die Eingabetaste drücken, um die Blockade für eine Minute zu unterbrechen."
   },
   "blocked_options": {
     "message": "Einstellungen"
+  },
+  "blocked_rate": {
+    "message": "Bewerten Sie uns"
   },
   "blocked_remove_blocking": {
     "message": "Blockade entfernen"
   },
   "blocked_add_to_whitelist": {
     "message": "Zur Positivliste hinzufügen"
-  },
-  "blocked_no_action": {
-    "message": "Das Hauptpasswort ist nicht richtig. Bitte füllen Sie das Feld aus und probieren es noch einmal"
   },
   "bg_msg_1": {
     "message": "Dieser Reiter hat keine gültige Adresse"
@@ -170,22 +245,52 @@
   "bg_msg_6": {
     "message": "Blockade fortsetzen"
   },
-  "bg_msg_7": {
-    "message": "10 Minuten"
-  },
-  "bg_msg_8": {
-    "message": "30 Minuten"
-  },
-  "bg_msg_9": {
-    "message": "1 Stunde"
-  },
-  "bg_msg_10": {
-    "message": "6 Stunden"
-  },
-  "bg_msg_11": {
-    "message": "1 Tag"
-  },
   "bg_msg_12": {
     "message": "Bitte geben Sie das Hauptpasswort ein, um die Blockade zu unterbrechen"
+  },
+  "bg_msg_13": {
+    "message": "Entsperren Sie den Zugang zu \"##\". Wollen Sie das wirklich?"
+  },
+  "bg_msg_14": {
+    "message": "Der Zugang zu \"##\" wird mit den folgenden Regeln eingeschränkt. Sind Sie sicher?"
+  },
+  "bg_msg_17": {
+    "message": "Bitte Hauptpasswort eingeben, um weiterzufahren."
+  },
+  "bg_msg_18": {
+    "message": "Diesen Rahmen (nicht mehr) blockieren."
+  },
+  "bg_msg_19": {
+    "message": "Diese Seite (nicht mehr) blockieren."
+  },
+  "bg_msg_21": {
+    "message": "Höchstwahrscheinlich ist es nicht möglich, die Erweiterungen zu blockieren. Sie können es trotzdem probieren."
+  },
+  "bg_msg_22": {
+    "message": "Einstellungen"
+  },
+  "bg_msg_23": {
+    "message": "Minute"
+  },
+  "bg_msg_24": {
+    "message": "Minuten"
+  },
+  "bg_msg_25": {
+    "message": "Stunde"
+  },
+  "bg_msg_26": {
+    "message": "Stunden"
+  },
+  "bg_msg_27": {
+    "message": "Blockade ist pausiert"
+  },
+  "bg_msg_28": {
+    "message": "Blocking is resumed"
+  },
+  "bg_msg_29": {
+    "message": "Dies ist im Inkognitomodus nicht möglich."
+  },
+  "pp_msg_1": {
+    "message": "opened from '##'"
   }
 }
