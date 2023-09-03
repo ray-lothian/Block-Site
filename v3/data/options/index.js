@@ -60,7 +60,7 @@ const DEFAULTS = {
   'contextmenu-pause': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
-  'pause-periods': [5, 10, 15, 30, 60, 360, 1440]
+  'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1]
 };
 const prefs = {};
 
@@ -287,13 +287,14 @@ document.addEventListener('click', e => {
     target.closest('div').remove();
   }
   else if (cmd === 'save') {
-    const periods = document.getElementById('pause-periods').value
-      .split(/\s*,\s*/)
-      .map(Number)
-      .filter(n => isNaN(n) === false && n > 0)
-      .filter((n, i, l) => l.indexOf(n) == i);
+    const sp = document.getElementById('pause-periods').value.split(/\s*,\s*/);
 
+    const periods = sp.map(Number).filter(n => isNaN(n) === false && n > 0).filter((n, i, l) => l.indexOf(n) == i);
     periods.sort((a, b) => a - b);
+
+    if (sp.includes('-1')) {
+      periods.push(-1);
+    }
 
     grant(async () => {
       let schedule = {

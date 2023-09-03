@@ -9,8 +9,6 @@ const validate = () => chrome.storage.local.get({
       method: 'convert',
       hosts: prefs.blocked
     }, rules => {
-      console.log(rules);
-
       for (const rule of rules) {
         try {
           const r = new RegExp(rule, 'i');

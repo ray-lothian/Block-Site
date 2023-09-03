@@ -1,7 +1,11 @@
 /* global translate, notify, storage, sha256, userAction, isFF, once */
 
-const periods = () => chrome.storage.local.get({
-  'pause-periods': [5, 10, 15, 30, 60, 360, 1440]
+const buildContext = () => chrome.storage.local.get({
+  'contextmenu-pause': true,
+  'contextmenu-resume': true,
+  'contextmenu-frame': true,
+  'contextmenu-top': true,
+  'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1]
 }, prefs => {
   chrome.contextMenus.create({
     title: translate('bg_msg_5'),
@@ -9,7 +13,6 @@ const periods = () => chrome.storage.local.get({
     contexts: ['action'],
     visible: prefs['contextmenu-pause']
   }, () => chrome.runtime.lastError);
-
 
   const read = mm => {
     const minutes = mm % 60;
@@ -33,41 +36,18 @@ const periods = () => chrome.storage.local.get({
   };
   read.plural = new Intl.PluralRules(navigator.language);
 
-  if (prefs['pause-periods'].length === 0) {
-    prefs['pause-periods'].push(5, 10, 15, 30, 60, 360, 1440);
-  }
+  chrome.contextMenus.update('pause', {
+    enabled: prefs['pause-periods'].length !== 0
+  });
 
   for (const period of prefs['pause-periods']) {
     chrome.contextMenus.create({
-      title: read(period),
-      id: 'pause-' + period,
+      title: period === -1 ? translate('options_manual_pause') : read(period),
+      id: period === -1 ? 'pause-NaN' : 'pause-' + period,
       contexts: ['action'],
       parentId: 'pause'
     }, () => chrome.runtime.lastError);
   }
-  chrome.contextMenus.create({
-    title: translate('options_manual_pause'),
-    id: 'pause-NaN',
-    contexts: ['action'],
-    parentId: 'pause'
-  }, () => chrome.runtime.lastError);
-});
-chrome.storage.onChanged.addListener(ps => {
-  if (ps['pause-periods']) {
-    const old = ps['pause-periods'].oldValue || [5, 10, 15, 30, 60, 360, 1440];
-    Promise.all(
-      old.map(s => new Promise(resolve => chrome.contextMenus.remove('pause-' + s, resolve)))
-    ).then(periods);
-  }
-});
-
-once(() => chrome.storage.local.get({
-  'contextmenu-pause': true,
-  'contextmenu-resume': true,
-  'contextmenu-frame': true,
-  'contextmenu-top': true
-}, prefs => {
-  periods();
 
   chrome.contextMenus.create({
     title: translate('bg_msg_6'),
@@ -94,7 +74,9 @@ once(() => chrome.storage.local.get({
     contexts: ['frame'],
     visible: prefs['contextmenu-frame']
   }, () => chrome.runtime.lastError);
-}));
+});
+
+once(buildContext);
 
 chrome.storage.onChanged.addListener(ps => {
   if (ps['contextmenu-pause']) {
@@ -116,6 +98,9 @@ chrome.storage.onChanged.addListener(ps => {
     chrome.contextMenus.update('top', {
       visible: ps['contextmenu-top'].newValue
     });
+  }
+  if (ps['pause-periods']) {
+    chrome.contextMenus.removeAll(buildContext);
   }
 });
 
