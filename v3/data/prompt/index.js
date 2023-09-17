@@ -100,9 +100,6 @@ document.querySelector('form').addEventListener('submit', e => {
         }
       }
       chrome.storage.local.set(prefs, () => {
-        if (extra.tabId) {
-          chrome.tabs.reload(extra.tabId);
-        }
         next();
       });
     });

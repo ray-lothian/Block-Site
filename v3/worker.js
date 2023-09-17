@@ -4,13 +4,17 @@
   999: pause blocking
   1000-: schedules
 */
-/* global translate, notify, once, storage */
+/* global translate, notify, once, storage, browser */
 
 /* imports */
 self.importScripts('helper.js');
 self.importScripts('blocker.js');
 self.importScripts('schedule.js');
 self.importScripts('contextmenu.js');
+
+if (typeof browser === 'object' && browser.declarativeNetRequest) {
+  chrome.declarativeNetRequest = browser.declarativeNetRequest;
+}
 
 /* helper; check sw-blocker and block/index.js for compatibility checks */
 const convert = (h = '') => {
@@ -144,7 +148,7 @@ const userAction = async (tabId, href, frameId) => {
         method: 'get-referrer'
       }, (referrer = '') => {
         chrome.runtime.lastError;
-        prompt(translate('bg_msg_14'), href, false, 'convert-to-domain', {referrer, tabId});
+        prompt(translate('bg_msg_14'), href, false, 'convert-to-domain', {referrer});
       });
     }
   };
