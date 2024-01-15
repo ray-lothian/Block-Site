@@ -203,6 +203,9 @@
   "options_remove_all_confirm": {
     "message": "Wollen Sie wirklich alle bestehenden Blockaderegeln entfernen?\n\nWenn Sie die bestehenden Regeln behalten möchten, können Sie diese Seite neu laden, ohne zu sichern. Dann bleibt alles wie bisher."
   },
+  "options_manual_pause": {
+    "message": "Forever"
+  },
   "blocked_restricted": {
     "message": "Eingeschränkter Zugang"
   },
