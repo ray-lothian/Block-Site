@@ -96,7 +96,7 @@
     "message": "Existing Rules"
   },
   "options_page_header": {
-    "message": "Blocked Page"
+    "message": "עמוד חסום"
   },
   "options_tools_header": {
     "message": "כלים"
@@ -117,10 +117,10 @@
     "message": "גיבוי ושחזור"
   },
   "options_export_json": {
-    "message": "Export (JSON File)"
+    "message": "ייצוא (קובץ JSON)"
   },
   "options_import_json": {
-    "message": "Import (JSON File)"
+    "message": "ייבוא (קובץ JSON)"
   },
   "options_sup_1": {
     "message": "Optionally redirect blocked requests to this HTTP(S) URL"
@@ -201,31 +201,31 @@
     "message": "Remove all existing rules"
   },
   "options_remove_all_confirm": {
-    "message": "Are you sure you want to remove all existing blocking rules?\n\nYou can refresh the page without saving to restore the rules."
+    "message": "להסיר את כל כללי החסימה?\n\nאפשר לרענן את העמוד ללא שמירה ולשחזר את הכללים הקודמים."
   },
   "options_manual_pause": {
-    "message": "Forever"
+    "message": "לתמיד"
   },
   "blocked_restricted": {
-    "message": "Restricted Access"
+    "message": "גישה מוגבלת"
   },
   "blocked_title": {
-    "message": "Title"
+    "message": "כותרת"
   },
   "blocked_since": {
-    "message": "Blocked Since"
+    "message": "חסום מאז"
   },
   "blocked_master_password": {
     "message": "Enter the master password, then press enter to unblock for a minute"
   },
   "blocked_options": {
-    "message": "Options Page"
+    "message": "עמוד אפשרויות"
   },
   "blocked_rate": {
-    "message": "Rate Us"
+    "message": "דרגו אותנו"
   },
   "blocked_remove_blocking": {
-    "message": "Remove Blocking"
+    "message": "הסרת החסימה"
   },
   "blocked_add_to_whitelist": {
     "message": "הוספה לרשימה הלבנה"
@@ -243,16 +243,16 @@
     "message": "Too many wrong passwords. Please wait for ## minute(s) and retry."
   },
   "bg_msg_5": {
-    "message": "Pause Blocking"
+    "message": "השהיית החסימה"
   },
   "bg_msg_6": {
-    "message": "Resume Blocking"
+    "message": "חידוש החסימה"
   },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
   },
   "bg_msg_13": {
-    "message": "Unblock access to \"##\". Are you sure?"
+    "message": "תתבטל חסימת הגישה אל \"##\". להמשיך?"
   },
   "bg_msg_14": {
     "message": "Access to \"##\" will be restricted with the following rules. Are you sure?"
@@ -285,10 +285,10 @@
     "message": "שעות"
   },
   "bg_msg_27": {
-    "message": "Blocking is paused"
+    "message": "החסימה מושהית"
   },
   "bg_msg_28": {
-    "message": "Blocking is resumed"
+    "message": "החסימה חודשה"
   },
   "bg_msg_29": {
     "message": "This operation is not available on the incognito context"
