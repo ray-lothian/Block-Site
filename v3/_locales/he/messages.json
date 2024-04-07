@@ -1,0 +1,299 @@
+{
+  "app_description": {
+    "message": "A customizable, password-protected website blocker and redirector."
+  },
+  "options_master_password": {
+    "message": "סיסמה ראשית"
+  },
+  "options_master_password_comment": {
+    "message": "Enter a master password to protect your preferences"
+  },
+  "options_redirect": {
+    "message": "Redirect to:"
+  },
+  "options_user_message": {
+    "message": "User message:"
+  },
+  "options_custom_css": {
+    "message": "Custom CSS:"
+  },
+  "options_resolve": {
+    "message": "Resolve the title of blocked pages (uncheck this option to prevent blocked servers from receiving any request)"
+  },
+  "options_startup": {
+    "message": "Perform blocking on existing pages after initialization"
+  },
+  "options_startup_current": {
+    "message": "Block the current matched page when a new rule is added"
+  },
+  "options_allow_access": {
+    "message": "Allow access to the unblocked hostname for (in seconds)"
+  },
+  "options_block_period": {
+    "message": "Block password check when wrong password is entered multiple times (in minutes)"
+  },
+  "options_close_blocked": {
+    "message": "Close after (seconds):"
+  },
+  "options_close_msg_blocked": {
+    "message": "(use zero for no automatic closing)"
+  },
+  "options_times": {
+    "message": "Time:"
+  },
+  "options_times_from": {
+    "message": "from"
+  },
+  "options_times_to": {
+    "message": "to"
+  },
+  "options_days": {
+    "message": "ימים:"
+  },
+  "options_hostname": {
+    "message": "Rule:"
+  },
+  "options_reverse": {
+    "message": "Operate on reverse mode (only matching patterns are accessible)"
+  },
+  "options_new_hostname": {
+    "message": "Block a new hostname:"
+  },
+  "options_add": {
+    "message": "Add"
+  },
+  "options_matching": {
+    "message": "Matching Pattern"
+  },
+  "options_redirect_2": {
+    "message": "ניתוב מחדש אל"
+  },
+  "options_remove": {
+    "message": "הסרה"
+  },
+  "options_rate": {
+    "message": "דרגו אותנו"
+  },
+  "options_support": {
+    "message": "תמיכה בפיתוח"
+  },
+  "options_preview": {
+    "message": "Usage Preview"
+  },
+  "options_unlock": {
+    "message": "Unlock Options"
+  },
+  "options_save": {
+    "message": "Save Options"
+  },
+  "options_block_header": {
+    "message": "Add a Rule"
+  },
+  "options_blocing_options_header": {
+    "message": "Blocking Options"
+  },
+  "options_list_header": {
+    "message": "Existing Rules"
+  },
+  "options_page_header": {
+    "message": "עמוד חסום"
+  },
+  "options_tools_header": {
+    "message": "כלים"
+  },
+  "options_rules_header": {
+    "message": "Import Rules"
+  },
+  "options_import_txt": {
+    "message": "Import Rules (TXT File)"
+  },
+  "options_schedule_header": {
+    "message": "Schedule Unblocking"
+  },
+  "options_schedule_offset": {
+    "message": "Schedule offset in minutes"
+  },
+  "options_import_header": {
+    "message": "גיבוי ושחזור"
+  },
+  "options_export_json": {
+    "message": "ייצוא (קובץ JSON)"
+  },
+  "options_import_json": {
+    "message": "ייבוא (קובץ JSON)"
+  },
+  "options_sup_1": {
+    "message": "Optionally redirect blocked requests to this HTTP(S) URL"
+  },
+  "options_sup_2": {
+    "message": "This is a custom message that is shown on blocked page. Could be an instruction to open this blocked page or the administrative contact"
+  },
+  "options_sup_3": {
+    "message": "Inject custom CSS rules into the blocked interface. You can use this section to hide different elements or change the font properties of these elements"
+  },
+  "options_sup_6": {
+    "message": "To block hostnames containing a word use '*://*word*/*' rule. To block the same word inside the pathname part use '*://*/*word*' rule. If you just need to close a page with a rule, use the 'close' keyword in the 'Redirect To' box. To construct a regular expression rule, prepend the rule with 'R:' keyword. For instance, 'R:ht{2}ps*://.*\\.go{2}gle\\.com' blocks www.google.com on both HTTP and HTTPS protocols."
+  },
+  "options_sup_8": {
+    "message": "Prepare a text file containing all the blocking rules in plain text format. After importing, press the save button for the changes to take place. To disregard the imported rules, reload this page without saving."
+  },
+  "options_sup_10": {
+    "message": "When importing settings, all your existing settings will be overwritten. To export minified version, use Shift key while pressing the Export button"
+  },
+  "options_sup_11": {
+    "message": "By providing a regular expression rule, you can limit the current schedule to the matching URLs. To have multiple schedules with different rules, fill the section for each rule and press the save button. To delete a saved rule, fill the rule part and wait for the extension to load the schedule, then delete the timing section without removing the rule itself."
+  },
+  "options_sup_12": {
+    "message": "a regular expression to limit the exposure of the current schedule"
+  },
+  "options_instruction": {
+    "message": "Instruction"
+  },
+  "options_contextmenu_pause": {
+    "message": "Show pause context menu option on browser action's context"
+  },
+  "options_contextmenu_resume": {
+    "message": "Show resume context menu option on browser action's context"
+  },
+  "options_contextmenu_top": {
+    "message": "Show \"(Un)Block this Page\" context menu option on page context"
+  },
+  "options_contextmenu_frame": {
+    "message": "Show \"(Un)Block this Frame\" context menu option on frame context"
+  },
+  "options_no_pass_on_add": {
+    "message": "Do not ask for the master password to block a new hostname"
+  },
+  "options_theme": {
+    "message": "Select visual mode for the blocked page"
+  },
+  "options_theme_top": {
+    "message": "For Page"
+  },
+  "options_theme_frame": {
+    "message": "For Frame"
+  },
+  "options_complete": {
+    "message": "Complete"
+  },
+  "options_simple": {
+    "message": "Simple"
+  },
+  "options_intro": {
+    "message": "To save options or set master password scroll down"
+  },
+  "options_sch_helper_1": {
+    "message": "Generate unblocking periods for the following blocked hours"
+  },
+  "options_sch_helper_2": {
+    "message": "Generate"
+  },
+  "options_sch_helper_3": {
+    "message": "ניקוי הכול"
+  },
+  "options_contextmenu_periods": {
+    "message": "Pause Periods (in minutes)"
+  },
+  "options_incognito": {
+    "message": "Options page is not available on the incognito context"
+  },
+  "options_remove_all": {
+    "message": "Remove all existing rules"
+  },
+  "options_remove_all_confirm": {
+    "message": "להסיר את כל כללי החסימה?\n\nאפשר לרענן את העמוד ללא שמירה ולשחזר את הכללים הקודמים."
+  },
+  "options_manual_pause": {
+    "message": "לתמיד"
+  },
+  "blocked_restricted": {
+    "message": "גישה מוגבלת"
+  },
+  "blocked_title": {
+    "message": "כותרת"
+  },
+  "blocked_since": {
+    "message": "חסום מאז"
+  },
+  "blocked_master_password": {
+    "message": "Enter the master password, then press enter to unblock for a minute"
+  },
+  "blocked_options": {
+    "message": "עמוד אפשרויות"
+  },
+  "blocked_rate": {
+    "message": "דרגו אותנו"
+  },
+  "blocked_remove_blocking": {
+    "message": "הסרת החסימה"
+  },
+  "blocked_add_to_whitelist": {
+    "message": "הוספה לרשימה הלבנה"
+  },
+  "bg_msg_1": {
+    "message": "This tab doesn't have a valid URL"
+  },
+  "bg_msg_2": {
+    "message": "סיסמה שגויה! נא לנסות שוב!"
+  },
+  "bg_msg_3": {
+    "message": "Go to the options page and set a master password"
+  },
+  "bg_msg_4": {
+    "message": "Too many wrong passwords. Please wait for ## minute(s) and retry."
+  },
+  "bg_msg_5": {
+    "message": "השהיית החסימה"
+  },
+  "bg_msg_6": {
+    "message": "חידוש החסימה"
+  },
+  "bg_msg_12": {
+    "message": "Please enter the master password to pause blocking"
+  },
+  "bg_msg_13": {
+    "message": "תתבטל חסימת הגישה אל \"##\". להמשיך?"
+  },
+  "bg_msg_14": {
+    "message": "Access to \"##\" will be restricted with the following rules. Are you sure?"
+  },
+  "bg_msg_17": {
+    "message": "Please enter the master password to continue"
+  },
+  "bg_msg_18": {
+    "message": "(Un)Block this Frame"
+  },
+  "bg_msg_19": {
+    "message": "(Un)Block this Page"
+  },
+  "bg_msg_21": {
+    "message": "It is most likely not possible to block the Extension Gallery. You can try anyway!"
+  },
+  "bg_msg_22": {
+    "message": "אפשרויות"
+  },
+  "bg_msg_23": {
+    "message": "דקה"
+  },
+  "bg_msg_24": {
+    "message": "דקות"
+  },
+  "bg_msg_25": {
+    "message": "שעה"
+  },
+  "bg_msg_26": {
+    "message": "שעות"
+  },
+  "bg_msg_27": {
+    "message": "החסימה מושהית"
+  },
+  "bg_msg_28": {
+    "message": "החסימה חודשה"
+  },
+  "bg_msg_29": {
+    "message": "This operation is not available on the incognito context"
+  },
+  "pp_msg_1": {
+    "message": "opened from '##'"
+  }
+}
