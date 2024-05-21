@@ -216,14 +216,6 @@ a:visited {
     grid-template-columns: 1fr 1fr;
   }
 }
-#toast {
-  margin-top: 10px;
-  display: block;
-}
-#toast[data-type=error] {
-  font-weight: bold;
-  color: #ff2323;
-}
 
 #schedule > div {
   display: grid;

@@ -1,6 +1,9 @@
 /* global tld, getRelativeTime */
 'use strict';
 
+const toast = document.getElementById('toast');
+const password = document.querySelector('[type=password]');
+
 // localization
 [...document.querySelectorAll('[data-i18n]')].forEach(e => {
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
@@ -229,5 +232,29 @@ chrome.storage.onChanged.addListener(prefs => {
 
 // focus
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('input[type=password]').focus();
+  password.focus();
 });
+
+chrome.storage.local.get({
+  'disable-actions-page': true
+}, prefs => {
+  if (prefs['disable-actions-page']) {
+    // disable paste
+    password.onpaste = e => {
+      e.preventDefault();
+      toast.notify('Paste is not accepted. Type the password.');
+    };
+    password.ondrop = e => {
+      e.preventDefault();
+      toast.notify('Drop is not accepted. Type the password.');
+    };
+
+    // disable contextmenu
+    document.oncontextmenu = e => {
+      e.preventDefault();
+
+      toast.notify('Context menu is disabled', 'info');
+    };
+  }
+});
+

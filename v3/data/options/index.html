@@ -156,6 +156,14 @@
       <input type="checkbox" id="no-password-on-add">&nbsp;
       <label for="no-password-on-add"><span data-i18n="options_no_pass_on_add"></span></label>
     </div>
+    <div hbox class="space" align="center">
+      <input type="checkbox" id="disable-actions-options">&nbsp;
+      <label for="disable-actions-options"><span data-i18n="options_disable_actions_options"></span></label>
+    </div>
+    <div hbox class="space" align="center">
+      <input type="checkbox" id="disable-actions-page">&nbsp;
+      <label for="disable-actions-page"><span data-i18n="options_disable_actions_page"></span></label>
+    </div>
   </div>
   <div>
     <span data-i18n="options_theme" class="space"></span>
@@ -205,7 +213,6 @@
       <span data-i18n="options_close_msg_blocked"></span>
     </div>
   </div>
-  <div id="explore" data-cols="4"></div>
   <!-- rules -->
   <div class="header">
     <h1>
@@ -247,7 +254,6 @@
         <input type="submit" data-i18n-value="value" data-i18n="options_unlock" data-cmd="unlock">
       </form>
     </div>
-    <span id="toast"></span>
   </div>
   <!-- import -->
   <div class="header">
@@ -263,10 +269,11 @@
     <input type="button" data-i18n-value="value" data-i18n="options_export_json" data-cmd="export">
     <input type="button" data-i18n-value="value" data-i18n="options_import_json" data-cmd="import-json">
   </div>
+  <notification-view id="toast"></notification-view>
 
+  <script src="/data/components/notification-view/notification-view.js"></script>
   <script src="/utils.js"></script>
   <script src="index.js"></script>
   <script src="helper.js"></script>
-  <script async src="matched.js"></script>
 </body>
 </html>

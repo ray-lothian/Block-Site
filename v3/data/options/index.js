@@ -16,10 +16,7 @@ if (chrome.extension.inIncognitoContext) {
 
 const toast = (msg, period = 750, type = 'info') => {
   const e = document.getElementById('toast');
-  e.dataset.type = type;
-  clearTimeout(toast.id);
-  toast.id = setTimeout(() => e.textContent = '', period);
-  e.textContent = msg;
+  e.notify(msg, type, period);
 };
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -60,7 +57,9 @@ const DEFAULTS = {
   'contextmenu-pause': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
-  'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1]
+  'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
+  'disable-actions-options': true,
+  'disable-actions-page': true
 };
 const prefs = {};
 
@@ -215,6 +214,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
     prefs.blocked.filter(a => a).forEach(add);
   }
   document.getElementById('title').checked = prefs.title;
+  document.getElementById('disable-actions-options').checked = prefs['disable-actions-options'];
+  document.getElementById('disable-actions-page').checked = prefs['disable-actions-page'];
   document.getElementById('initialBlock').checked = prefs.initialBlock;
   document.getElementById('initialBlockCurrent').checked = prefs.initialBlockCurrent;
   document.getElementById('schedule-offset').value = prefs['schedule-offset'];
@@ -251,6 +252,13 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'complete'; // 'simple'
 
   document.getElementById('pause-periods').value = prefs['pause-periods'].join(', ');
+
+  // disable contextmenu
+  document.oncontextmenu = prefs['disable-actions-options'] ? e => {
+    e.preventDefault();
+
+    toast('Context menu is disabled');
+  } : undefined;
 });
 init();
 
@@ -361,6 +369,8 @@ document.addEventListener('click', e => {
         'title': document.getElementById('title').checked,
         'initialBlock': document.getElementById('initialBlock').checked,
         'initialBlockCurrent': document.getElementById('initialBlockCurrent').checked,
+        'disable-actions-options': document.getElementById('disable-actions-options').checked,
+        'disable-actions-page': document.getElementById('disable-actions-page').checked,
         'schedule-offset': Number(document.getElementById('schedule-offset').value),
         'reverse': document.getElementById('reverse').checked,
         'no-password-on-add': document.getElementById('no-password-on-add').checked,

@@ -169,3 +169,6 @@ html.simple footer {
   display: none !important;
 }
 
+#toast {
+  z-index: 1;
+}
