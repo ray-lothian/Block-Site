@@ -59,7 +59,8 @@ const DEFAULTS = {
   'contextmenu-top': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
   'disable-actions-options': true,
-  'disable-actions-page': true
+  'disable-actions-page': true,
+  'notification': true
 };
 const prefs = {};
 
@@ -216,6 +217,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('title').checked = prefs.title;
   document.getElementById('disable-actions-options').checked = prefs['disable-actions-options'];
   document.getElementById('disable-actions-page').checked = prefs['disable-actions-page'];
+  document.getElementById('notification').checked = prefs['notification'];
   document.getElementById('initialBlock').checked = prefs.initialBlock;
   document.getElementById('initialBlockCurrent').checked = prefs.initialBlockCurrent;
   document.getElementById('schedule-offset').value = prefs['schedule-offset'];
@@ -371,6 +373,7 @@ document.addEventListener('click', e => {
         'initialBlockCurrent': document.getElementById('initialBlockCurrent').checked,
         'disable-actions-options': document.getElementById('disable-actions-options').checked,
         'disable-actions-page': document.getElementById('disable-actions-page').checked,
+        'notification': document.getElementById('notification').checked,
         'schedule-offset': Number(document.getElementById('schedule-offset').value),
         'reverse': document.getElementById('reverse').checked,
         'no-password-on-add': document.getElementById('no-password-on-add').checked,

@@ -2,11 +2,20 @@
 const isFF = /Firefox/.test(navigator.userAgent);
 
 // eslint-disable-next-line no-unused-vars
-const notify = message => chrome.notifications.create(null, {
-  type: 'basic',
-  iconUrl: '/data/icons/48.png',
-  title: chrome.runtime.getManifest().name,
-  message
+const notify = message => chrome.storage.local.get({
+  notification: true
+}, prefs => {
+  if (prefs.notification) {
+    chrome.notifications.create(null, {
+      type: 'basic',
+      iconUrl: '/data/icons/48.png',
+      title: chrome.runtime.getManifest().name,
+      message
+    }, id => setTimeout(chrome.notifications.clear, 5000, id));
+  }
+  else {
+    console.info('[notification]', message);
+  }
 });
 
 // eslint-disable-next-line no-unused-vars

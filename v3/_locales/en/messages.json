@@ -170,6 +170,9 @@
   "options_disable_actions_page": {
     "message": "Block context menu and paste on blocked pages"
   },
+  "options_notification": {
+    "message": "Display desktop notifications (recommended)"
+  },
   "options_theme": {
     "message": "Select visual mode for the blocked page"
   },
