@@ -75,7 +75,8 @@ document.getElementById('options').addEventListener('click', e => {
   e.stopPropagation();
 
   if (chrome.extension.inIncognitoContext) {
-    return alert(chrome.i18n.getMessage('bg_msg_29'));
+    toast.notify(chrome.i18n.getMessage('bg_msg_29'));
+    return;
   }
 
   chrome.runtime.openOptionsPage();
@@ -130,7 +131,8 @@ Promise.all([
     e.stopPropagation();
 
     if (chrome.extension.inIncognitoContext) {
-      return alert(chrome.i18n.getMessage('bg_msg_29'));
+      toast.notify(chrome.i18n.getMessage('bg_msg_29'));
+      return;
     }
 
     const next = () => {
@@ -244,18 +246,18 @@ chrome.storage.local.get({
     // disable paste
     password.onpaste = e => {
       e.preventDefault();
-      toast.notify('Paste is not accepted. Type the password.');
+      toast.notify(chrome.i18n.getMessage('blocked_paste'));
     };
     password.ondrop = e => {
       e.preventDefault();
-      toast.notify('Drop is not accepted. Type the password.');
+      toast.notify(chrome.i18n.getMessage('blocked_drop'));
     };
 
     // disable contextmenu
     document.oncontextmenu = e => {
       e.preventDefault();
 
-      toast.notify('Context menu is disabled', 'info');
+      toast.notify(chrome.i18n.getMessage('blocked_context'));
     };
   }
 });

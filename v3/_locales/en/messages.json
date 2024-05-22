@@ -189,7 +189,7 @@
     "message": "Simple"
   },
   "options_intro": {
-    "message": "To save options or set master password scroll down"
+    "message": "To save options or set a master password, scroll down. If you're new, block new websites by visiting the page and clicking the action button (it's in the extensions menu after installation). No need to manually make new rules."
   },
   "options_sch_helper_1": {
     "message": "Generate unblocking periods for the following blocked hours"
@@ -231,13 +231,22 @@
     "message": "Options Page"
   },
   "blocked_rate": {
-    "message": "Rate Us"
+    "message": "Rate Me"
   },
   "blocked_remove_blocking": {
     "message": "Remove Blocking"
   },
   "blocked_add_to_whitelist": {
     "message": "Add to Whitelist"
+  },
+  "blocked_paste": {
+    "message": "Paste is not accepted. Type the password instead."
+  },
+  "blocked_context": {
+    "message": "Access to context menu is forbidden."
+  },
+  "blocked_drop": {
+    "message": "Drop is not accepted. Type the password instead."
   },
   "bg_msg_1": {
     "message": "This tab doesn't have a valid URL"
@@ -300,7 +309,7 @@
     "message": "Blocking is resumed"
   },
   "bg_msg_29": {
-    "message": "This operation is not available on the incognito context"
+    "message": "This operation cannot be performed in incognito mode. Please open the page in a regular browsing window and try again."
   },
   "pp_msg_1": {
     "message": "opened from '##'"

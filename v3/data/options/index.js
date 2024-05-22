@@ -14,7 +14,7 @@ if (chrome.extension.inIncognitoContext) {
   });
 }
 
-const toast = (msg, period = 750, type = 'info') => {
+const toast = (msg, period = 2000, type = 'info') => {
   const e = document.getElementById('toast');
   e.notify(msg, type, period);
 };
@@ -258,8 +258,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   // disable contextmenu
   document.oncontextmenu = prefs['disable-actions-options'] ? e => {
     e.preventDefault();
-
-    toast('Context menu is disabled');
+    toast(chrome.i18n.getMessage('blocked_context'));
   } : undefined;
 });
 init();
