@@ -251,7 +251,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
     document.getElementById('rules').appendChild(option);
   }
   document.getElementById('mode-top').value = localStorage.getItem('mode-top') || 'complete';
-  document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'complete'; // 'simple'
+  document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'simple'; // 'simple'
 
   document.getElementById('pause-periods').value = prefs['pause-periods'].join(', ');
 

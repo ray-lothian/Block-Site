@@ -230,10 +230,12 @@ chrome.storage.onChanged.addListener(prefs => {
   }
 });
 
-// focus
-document.addEventListener('DOMContentLoaded', () => {
-  password.focus();
-});
+// focus (prevent from scrolling on embedded blocking)
+if (window.top === window) {
+  document.addEventListener('DOMContentLoaded', () => {
+    password.focus();
+  });
+}
 
 chrome.storage.local.get({
   'disable-actions-page': true

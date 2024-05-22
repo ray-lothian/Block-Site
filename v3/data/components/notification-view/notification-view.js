@@ -140,7 +140,7 @@ class NotificationView extends HTMLElement {
     clone.querySelector('p').textContent = content;
 
     this.shadowRoot.getElementById('body').append(clone);
-    div.scrollIntoView();
+    // div.scrollIntoView();
 
     setTimeout(() => div.remove(), timeout);
   }
