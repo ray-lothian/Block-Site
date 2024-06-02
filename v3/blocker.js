@@ -196,3 +196,8 @@ chrome.tabs.onUpdated.addListener((tabId, info) => {
     }, () => chrome.runtime.lastError);
   }
 });
+
+// remove once rule on startup
+once(() => chrome.declarativeNetRequest.updateDynamicRules({
+  removeRuleIds: [998]
+}));

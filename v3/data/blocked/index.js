@@ -82,7 +82,9 @@ document.getElementById('options').addEventListener('click', e => {
   chrome.runtime.openOptionsPage();
 });
 
-const title = () => fetch(href).then(r => r.text()).then(content => {
+const title = () => fetch(href, {
+  credentials: 'omit'
+}).then(r => r.text()).then(content => {
   const dom = new DOMParser().parseFromString(content, 'text/html');
   document.getElementById('title').textContent = dom.title || 'Unknown';
 }).catch(() => document.getElementById('title').textContent = 'Unknown');

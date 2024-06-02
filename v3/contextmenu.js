@@ -132,6 +132,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
             when
           });
         }
+        const condition = {
+          'resourceTypes': ['main_frame', 'sub_frame']
+        };
+        if (isFF) {
+          condition.regexFilter = '.*';
+        }
         await chrome.declarativeNetRequest.updateDynamicRules({
           removeRuleIds: [999],
           addRules: [{
@@ -140,9 +146,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
             'action': {
               'type': 'allow'
             },
-            'condition': {
-              'resourceTypes': ['main_frame', 'sub_frame']
-            }
+            condition
           }]
         });
         chrome.action.setIcon({

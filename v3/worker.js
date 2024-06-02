@@ -1,3 +1,4 @@
+/* global isFF */
 /*
   1-998: blocking rules
   998: one-time browsing
@@ -195,6 +196,21 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     }).then(prefs => {
       const next = async () => {
         try {
+          const condition = {
+            'urlFilter': request.url,
+            'resourceTypes': ['main_frame', 'sub_frame']
+          };
+          if (isFF) {
+            try {
+              const {hostname} = new URL(request.url.replace('*', ''));
+              delete condition.urlFilter;
+              condition.regexFilter = 'https?:\\/\\/' + hostname.replace(/\./g, '\\.');
+            }
+            catch (e) {
+              console.info('Failed to convert rule for Firefox', e);
+            }
+          }
+
           await chrome.declarativeNetRequest.updateDynamicRules({
             removeRuleIds: [998],
             addRules: [{
@@ -203,10 +219,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
               'action': {
                 'type': 'allow'
               },
-              'condition': {
-                'urlFilter': request.url,
-                'resourceTypes': ['main_frame', 'sub_frame']
-              }
+              condition
             }]
           });
           chrome.alarms.create('release.open.once', {
