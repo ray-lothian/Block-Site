@@ -79,29 +79,12 @@ const once = (c, prop = {
   startup: true,
   installed: true
 }) => {
-  if (isFF) {
-    once.cache.add(c);
+  if (prop.startup) {
+    chrome.runtime.onStartup.addListener(c);
   }
-  else {
-    if (prop.startup) {
-      chrome.runtime.onStartup.addListener(c);
-    }
-    if (prop.installed) {
-      chrome.runtime.onInstalled.addListener(c);
-    }
+  if (prop.installed) {
+    chrome.runtime.onInstalled.addListener(c);
   }
 };
 once.cache = new Set();
 
-if (isFF) {
-  document.addEventListener('DOMContentLoaded', () => {
-    for (const c of once.cache) {
-      try {
-        c();
-      }
-      catch (e) {
-        console.warn(e);
-      }
-    }
-  });
-}

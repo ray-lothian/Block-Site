@@ -8,10 +8,12 @@
 /* global translate, notify, once, storage, browser */
 
 /* imports */
-self.importScripts('helper.js');
-self.importScripts('blocker.js');
-self.importScripts('schedule.js');
-self.importScripts('contextmenu.js');
+if (typeof importScripts !== 'undefined') {
+  self.importScripts('helper.js');
+  self.importScripts('blocker.js');
+  self.importScripts('schedule.js');
+  self.importScripts('contextmenu.js');
+}
 
 if (typeof browser === 'object' && browser.declarativeNetRequest) {
   chrome.declarativeNetRequest = browser.declarativeNetRequest;
@@ -19,9 +21,11 @@ if (typeof browser === 'object' && browser.declarativeNetRequest) {
 
 /* helper; check sw-blocker and block/index.js for compatibility checks */
 const convert = (h = '') => {
+  console.log(h);
   if (h.startsWith('R:') === false) {
     if (h.indexOf('://') === -1 && h.indexOf('*') === -1) {
-      return `^https*:\\/\\/([^/]+\\.)*` + convert.escape(h);
+      // Firefox needs the RegExp to include the full address to provide it on "\\0"
+      return `^https*:\\/\\/([^/]+\\.)*` + convert.escape(h) + '.*';
     }
     else {
       return '^' + h.split('*').map(convert.escape).join('.*');
@@ -30,6 +34,7 @@ const convert = (h = '') => {
   if (h.startsWith('R:^')) {
     return h.substr(2);
   }
+  console.log(h);
   return '^.*' + h.substr(2);
 };
 convert.escape = str => {

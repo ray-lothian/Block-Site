@@ -1,4 +1,4 @@
-/* global convert, storage, notify, once, isFF, translate */
+/* global convert, storage, notify, once, translate */
 
 /* update rules */
 const update = () => storage({
@@ -184,7 +184,7 @@ chrome.storage.onChanged.addListener(ps => {
     update();
   }
 });
-once(update, isFF ? undefined : {
+once(update, {
   installed: true
 });
 
