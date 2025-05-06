@@ -65,7 +65,13 @@ const update = () => storage({
 Please merge them to keep the list less than ${prefs['max-number-of-rules']} items.`);
   }
 
-  for (const h of hs.slice(0, prefs['max-number-of-rules'])) {
+  const hss = hs.slice(0, prefs['max-number-of-rules']);
+  let n = 0;
+  for (const h of hss) {
+    // visual indicator
+    n += 1;
+    chrome.action.setBadgeText({text: (n / hss.length * 100).toFixed(0) + '%'});
+
     // find a free id
     let id;
     for (let n = 1; ; n += 1) {
@@ -117,6 +123,7 @@ Please merge them to keep the list less than ${prefs['max-number-of-rules']} ite
     }
 
     try {
+      console.log(rule);
       await chrome.declarativeNetRequest.updateDynamicRules({
         addRules: [rule]
       });
@@ -128,6 +135,7 @@ Please merge them to keep the list less than ${prefs['max-number-of-rules']} ite
 Error: ` + e.message);
     }
   }
+  chrome.action.setBadgeText({text: ''});
   // get existing tabs
   const options = {
     url: '*://*/*'
@@ -172,6 +180,17 @@ Error: ` + e.message);
       }
     }
   }
+  // Evaluate the address on the active blocked page
+  chrome.tabs.query({
+    currentWindow: true,
+    active: true
+  }, tabs => {
+    for (const tab of tabs) {
+      chrome.tabs.sendMessage(tab.id, {
+        method: 'click-address'
+      }).catch(() => {});
+    }
+  });
 
   // do we have a manual pause
   if (rules.filter(r => r.id === 999).length) {

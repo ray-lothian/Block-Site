@@ -100,7 +100,8 @@ Promise.all([
     password: '',
     sha256: '',
     reverse: false,
-    blocked: []
+    blocked: [],
+    notes: {}
   }, prefs => {
     document.getElementById('css').textContent = prefs.css;
     document.getElementById('message').textContent = prefs.message;
@@ -168,9 +169,7 @@ Promise.all([
               });
               document.title = `Removed ${len - prefs.blocked.length} rule(s)`;
 
-              chrome.storage.local.set(prefs, () => {
-                setTimeout(() => url.click(), 1000);
-              });
+              chrome.storage.local.set(prefs);
             });
           }
         });
@@ -191,9 +190,7 @@ Promise.all([
           }
         }
 
-        chrome.storage.local.set(prefs, () => {
-          setTimeout(() => url.click(), 1000);
-        });
+        chrome.storage.local.set(prefs);
       }
     };
     const password = document.querySelector('[type=password]');
@@ -224,6 +221,9 @@ chrome.runtime.onMessage.addListener(request => {
     if (window.confirm(msg) || window.top !== window) {
       document.getElementById('exception').click();
     }
+  }
+  else if (request.method === 'click-address') {
+    document.getElementById('url').click();
   }
 });
 

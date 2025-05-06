@@ -145,7 +145,7 @@ const userAction = async (tabId, href, frameId) => {
 
         return b === false;
       });
-      chrome.storage.local.set(prefs, reload());
+      chrome.storage.local.set(prefs, reload);
     }
     else {
       chrome.tabs.sendMessage(tabId, {
