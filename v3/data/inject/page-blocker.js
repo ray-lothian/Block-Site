@@ -2,16 +2,19 @@
 
 const validate = () => chrome.storage.local.get({
   blocked: [],
+  map: {},
   notes: {}
 }, prefs => {
+  console.log(prefs);
   if (prefs.blocked.length) {
     chrome.runtime.sendMessage({
       method: 'convert',
       hosts: prefs.blocked
     }, rules => {
-      for (const rule of rules) {
+      for (const {expression, host} of rules) {
         try {
-          const r = new RegExp(rule, 'i');
+          const r = new RegExp(expression, 'i');
+          console.log(r, expression);
           if (r.test(location.href)) {
             // make sure the rule does not match schedule
             return chrome.runtime.sendMessage({
@@ -23,9 +26,19 @@ const validate = () => chrome.storage.local.get({
                   return;
                 }
               }
+              let redirect = prefs.map[host];
+              if (redirect) {
+                const matches = location.href.match(r);
+                if (matches) {
+                  matches.forEach((m, n) => {
+                    redirect = redirect.replace('\\' + n, m);
+                  });
+                }
+              }
               chrome.runtime.sendMessage({
                 method: 'block',
-                date: prefs.notes[prefs.blocked[rules.indexOf(rule)]]?.date
+                redirect,
+                date: prefs.notes[host]?.date
               });
             });
           }

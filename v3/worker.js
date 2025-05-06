@@ -21,7 +21,6 @@ if (typeof browser === 'object' && browser.declarativeNetRequest) {
 
 /* helper; check sw-blocker and block/index.js for compatibility checks */
 const convert = (h = '') => {
-  console.log(h);
   if (h.startsWith('R:') === false) {
     if (h.indexOf('://') === -1 && h.indexOf('*') === -1) {
       // Firefox needs the RegExp to include the full address to provide it on "\\0"
@@ -34,7 +33,6 @@ const convert = (h = '') => {
   if (h.startsWith('R:^')) {
     return h.substr(2);
   }
-  console.log(h);
   return '^.*' + h.substr(2);
 };
 convert.escape = str => {
@@ -176,7 +174,10 @@ chrome.action.onClicked.addListener(tab => {
 /* messaging */
 chrome.runtime.onMessage.addListener((request, sender, response) => {
   if (request.method === 'convert') {
-    response(request.hosts.map(convert));
+    response(request.hosts.map(host => ({
+      expression: convert(host),
+      host
+    })));
   }
   else if (request.method === 'check-password') {
     sha256.validate(request, () => response(true), msg => {
@@ -253,9 +254,20 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     return true;
   }
   else if (request.method === 'block') {
-    chrome.tabs.update(sender.tab.id, {
-      url: chrome.runtime.getURL('/data/blocked/index.html') + '?date=' + request.date + '&type=secondary&url=' + sender.tab.url
-    });
+    if (request.redirect) {
+      chrome.tabs.update(sender.tab.id, {
+        url: request.redirect
+      });
+    }
+    else {
+      const args = new URLSearchParams();
+      args.set('date', request.date);
+      args.set('type', 'secondary');
+      args.set('url', sender.tab.url);
+      chrome.tabs.update(sender.tab.id, {
+        url: chrome.runtime.getURL('/data/blocked/index.html') + '?' + args.toString()
+      });
+    }
   }
   else if (request.method === 'get-schedule-rules') {
     chrome.declarativeNetRequest.getDynamicRules().then(rules => {

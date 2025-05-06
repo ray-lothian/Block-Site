@@ -33,7 +33,7 @@
     <template>
       <div>
         <span title="Click to insert the rule" data-id="href">HTTP://</span>
-        <input type="text" flex="1" placeholder="Optional redirect URL or 'close' keyword">
+        <input type="text" flex="1" placeholder="Optional redirect URL or 'close' keyword." title="Backslash-escaped digits (\1 to \9) can be used to insert the corresponding capture groups. Adding capture groups to the generated URL might cause it to match the blocking rule again, potentially leading to multiple redirects. Use caution.">
         <span data-id="date">-</span>
         <input type="button" data-cmd="remove">
       </div>

@@ -99,7 +99,7 @@ function add(hostname) {
 
   const rd = node.querySelector('input');
   rd.value = prefs.map[hostname] || '';
-  rd.disabled = hostname.indexOf('*') !== -1;
+  // rd.disabled = hostname.indexOf('*') !== -1;
   node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
   document.getElementById('rules-container').appendChild(node);
   list.dataset.visible = true;

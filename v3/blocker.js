@@ -18,6 +18,27 @@ const update = () => storage({
   });
   const ids = [];
 
+  const genRedirect = (address, date) => {
+    if (address && /\\\d/.test(address)) {
+      return {
+        regexSubstitution: address
+      };
+    }
+    else if (address) {
+      return {
+        url: address
+      };
+    }
+    const args = new URLSearchParams();
+    if (date) {
+      args.set('date', date);
+    }
+    args.set('url', '\\0');
+    return {
+      regexSubstitution: chrome.runtime.getURL('/data/blocked/index.html') + '?' + args.toString()
+    };
+  };
+
   // add new rules
   if (prefs.reverse) {
     ids.push(1);
@@ -25,9 +46,7 @@ const update = () => storage({
       id: 1,
       action: {
         type: 'redirect',
-        redirect: {
-          regexSubstitution: (prefs.redirect || chrome.runtime.getURL('/data/blocked/index.html')) + '?url=\\0'
-        }
+        redirect: genRedirect(prefs.redirect)
       },
       condition: {
         regexFilter: '^http',
@@ -85,18 +104,14 @@ Please merge them to keep the list less than ${prefs['max-number-of-rules']} ite
         rule.priority = 2;
         Object.assign(rule.action, {
           type: 'redirect',
-          redirect: {
-            regexSubstitution: prefs.map[h]
-          }
+          redirect: genRedirect(prefs.map[h])
         });
       }
       else {
         const date = prefs.notes[h]?.date;
         Object.assign(rule.action, {
           type: 'redirect',
-          redirect: {
-            regexSubstitution: (prefs.redirect || chrome.runtime.getURL('/data/blocked/index.html')) + '?date=' + date + '&url=\\0'
-          }
+          redirect: genRedirect(prefs.redirect, date)
         });
       }
     }
