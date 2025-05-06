@@ -25,7 +25,7 @@ const post = (o, c = () => {}) => {
 };
 
 const args = new URLSearchParams(location.search);
-const href = location.search.split('url=')[1];
+const href = args.get('url');
 
 if (args.has('date')) {
   let d = new Date(parseInt(args.get('date')));

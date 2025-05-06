@@ -29,13 +29,13 @@ const update = () => storage({
         url: address
       };
     }
-    const args = new URLSearchParams();
+    const args = []; // do not use URLSearchParams
     if (date) {
-      args.set('date', date);
+      args.push('date=' + date);
     }
-    args.set('url', '\\0');
+    args.push('url=\\0');
     return {
-      regexSubstitution: chrome.runtime.getURL('/data/blocked/index.html') + '?' + args.toString()
+      regexSubstitution: chrome.runtime.getURL('/data/blocked/index.html') + '?' + args.join('&')
     };
   };
 
