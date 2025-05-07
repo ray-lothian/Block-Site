@@ -1,0 +1,2289 @@
+{
+  "blocked": [
+    "*.hotmail.com",
+    "*.leasticoulddo.com",
+    "*.codingame.com",
+    "*.thingiverse.com",
+    "*.starpirates.net",
+    "*.dangerzoneone.com",
+    "*.competencetool.se",
+    "*.smhi.se",
+    "*.lunarbaboon.com",
+    "*.thecomicseries.com",
+    "*.barbarianprincess.com",
+    "*.youtube.com",
+    "*.rsnv.se",
+    "*.flashback.org",
+    "*.gpf-comics.com",
+    "*.xkcd.com",
+    "*.skype.com",
+    "*.ebox.nu",
+    "*.wp.com",
+    "*.kommed.se",
+    "*.comicfury.com",
+    "*.wordpress.com",
+    "xkcd.com",
+    "barbarianprincess.com",
+    "leasticoulddo.com",
+    "dangerzoneone.com",
+    "mozilla.org",
+    "*.mozilla.org",
+    "*.live.net",
+    "*.list-manage.com",
+    "bredband2.com",
+    "*.bredband2.com",
+    "googleusercontent.com",
+    "*.googleusercontent.com",
+    "google.se",
+    "*.google.se",
+    "microsoft.com",
+    "*.microsoft.com",
+    "learnwarecenter.se",
+    "kickstarter.com",
+    "*.kickstarter.com",
+    "humorbibeln.se",
+    "*.humorbibeln.se",
+    "dropbox.com",
+    "*.dropbox.com",
+    "*.dropboxusercontent.com",
+    "energiforetagen.se",
+    "*.energiforetagen.se",
+    "vibilagare.se",
+    "*.vibilagare.se",
+    "fbsbx.com",
+    "*.fbsbx.com",
+    "bahnhof.se",
+    "kjell.com",
+    "*.kjell.com",
+    "svetsochtillbehor.se",
+    "*.svetsochtillbehor.se",
+    "youtu.be",
+    "nwt.se",
+    "*.nwt.se",
+    "nyteknik.se",
+    "*.nyteknik.se",
+    "expressen.se",
+    "*.expressen.se",
+    "dn.se",
+    "*.dn.se",
+    "illvet.se",
+    "sverigesradio.se",
+    "sagro.se",
+    "*.sagro.se",
+    "forms.gle",
+    "sverigesnatur.org",
+    "*.sverigesnatur.org",
+    "svt.se",
+    "*.svt.se",
+    "dt.se",
+    "*.dt.se",
+    "zergnet.com",
+    "*.zergnet.com",
+    "looper.com",
+    "*.looper.com",
+    "rottentomatoes.com",
+    "*.rottentomatoes.com",
+    "reddit.com",
+    "*.reddit.com",
+    "globalpetrolprices.com",
+    "*.globalpetrolprices.com",
+    "atl.nu",
+    "*.atl.nu",
+    "intercom-mail.com",
+    "*.intercom-mail.com",
+    "tibber.com",
+    "*.tibber.com",
+    "regeringen.se",
+    "*.regeringen.se",
+    "wikipedia.org",
+    "*.wikipedia.org",
+    "markrydenglobal.com",
+    "fz.se",
+    "*.fz.se",
+    "itch.io",
+    "*.itch.io",
+    "hwcdn.net",
+    "*.hwcdn.net",
+    "feber.se",
+    "elbutik.se",
+    "*.elbutik.se",
+    "hennesvag.se",
+    "amuse.io",
+    "*.amuse.io",
+    "spotify.com",
+    "*.spotify.com",
+    "klippan.se",
+    "*.klippan.se",
+    "netpublicator.com",
+    "*.netpublicator.com",
+    "mynewsdesk.com",
+    "*.mynewsdesk.com",
+    "etc.se",
+    "*.etc.se",
+    "rawbike.se",
+    "*.rawbike.se",
+    "ladbible.com",
+    "*.ladbible.com",
+    "hd.se",
+    "*.hd.se",
+    "noip.com",
+    "*.noip.com",
+    "transportstyrelsen.se",
+    "*.transportstyrelsen.se",
+    "klarnacdn.net",
+    "*.klarnacdn.net",
+    "klimatkollen.se",
+    "aftonbladet.se",
+    "*.aftonbladet.se",
+    "sciencealert.com",
+    "*.sciencealert.com",
+    "djurbibeln.se",
+    "*.djurbibeln.se",
+    "stauppforgallok.se",
+    "*.stauppforgallok.se",
+    "travelerdreams.com",
+    "zoom.us",
+    "*.zoom.us",
+    "bilsport.se",
+    "*.bilsport.se",
+    "altinget.se",
+    "*.altinget.se",
+    "cinemis.se",
+    "*.cinemis.se",
+    "2k.com",
+    "*.2k.com",
+    "ka.se",
+    "dlvr.it",
+    "teslaclubsweden.se",
+    "scout.se",
+    "*.scout.se",
+    "scouterna.net",
+    "*.scouterna.net",
+    "affarsvarlden.se",
+    "*.affarsvarlden.se",
+    "elinstallatoren.se",
+    "*.elinstallatoren.se",
+    "thangs.com",
+    "riksdagen.se",
+    "*.riksdagen.se",
+    "hamnen.se",
+    "*.hamnen.se",
+    "mittskifte.org",
+    "*.mittskifte.org",
+    "bit.ly",
+    "krisinformation.se",
+    "*.krisinformation.se",
+    "pol.se",
+    "*.pol.se",
+    "spr.ly",
+    "tv4.se",
+    "*.tv4.se",
+    "one-lnk.com",
+    "kraftringen.se",
+    "*.kraftringen.se",
+    "alltomelbil.se",
+    "greenely.com",
+    "vasterhagen.nu",
+    "*.vasterhagen.nu",
+    "fof.se",
+    "ferroamp.com",
+    "*.ferroamp.com",
+    "sendgrid.net",
+    "*.sendgrid.net",
+    "typeform.com",
+    "*.typeform.com",
+    "youtube.com",
+    "birthday.se",
+    "*.birthday.se",
+    "hotmail.com",
+    "fastcompany.com",
+    "*.fastcompany.com",
+    "ow.ly",
+    "bytbil.com",
+    "*.bytbil.com",
+    "voteit.se",
+    "*.voteit.se",
+    "warpnews.se",
+    "*.warpnews.se",
+    "localhost",
+    "blizzard.com",
+    "*.blizzard.com",
+    "sakerhetskollen.se",
+    "sk7dd.se",
+    "*.sk7dd.se",
+    "batteriexperten.com",
+    "*.batteriexperten.com",
+    "backerkit.com",
+    "*.backerkit.com",
+    "byggmax.se",
+    "*.byggmax.se",
+    "papperoannat.se",
+    "*.papperoannat.se",
+    "klimatsans.com",
+    "klimatupplysningen.se",
+    "cornwallalliance.org",
+    "wiley.com",
+    "*.wiley.com",
+    "kvinnatillkvinna.se",
+    "upright.se",
+    "*.upright.se",
+    "thingiverse.com",
+    "hbl.fi",
+    "*.hbl.fi",
+    "vattenfall.se",
+    "*.vattenfall.se",
+    "email-ford.com",
+    "*.email-ford.com",
+    "ford.com",
+    "*.ford.com",
+    "ford.se",
+    "*.ford.se",
+    "forbes.com",
+    "*.forbes.com",
+    "add0n.com",
+    "trustarc.com",
+    "*.trustarc.com",
+    "maritime-executive.com",
+    "*.maritime-executive.com",
+    "offshorewind.biz",
+    "*.offshorewind.biz",
+    "teemill.com",
+    "*.teemill.com",
+    "addnorth.com",
+    "svensksolenergi.se",
+    "cdon.se",
+    "cdon.com",
+    "*.cdon.com",
+    "pledgebox.com",
+    "*.pledgebox.com",
+    "stellamove.com",
+    "*.stellamove.com",
+    "actionnetwork.org",
+    "*.actionnetwork.org",
+    "instagram.com",
+    "*.instagram.com",
+    "vimla.se",
+    "sanghafte.se",
+    "*.sanghafte.se",
+    "naturskyddsforeningen.se",
+    "*.naturskyddsforeningen.se",
+    "buff.ly",
+    "lifesavvy.com",
+    "*.lifesavvy.com",
+    "howtogeek.com",
+    "*.howtogeek.com",
+    "takbox.se",
+    "*.takbox.se",
+    "flickr.com",
+    "*.flickr.com",
+    "crowdox.com",
+    "*.crowdox.com",
+    "skojig.com",
+    "polisen.se",
+    "nih.gov",
+    "*.nih.gov",
+    "greenpeace.org",
+    "*.greenpeace.org",
+    "mediachomp.com",
+    "scoutnet.se",
+    "*.scoutnet.se",
+    "unionen.se",
+    "*.unionen.se",
+    "rechargeinfra.com",
+    "demoskop.se",
+    "swedbank.se",
+    "*.swedbank.se",
+    "swishstarter.se",
+    "svd.se",
+    "*.svd.se",
+    "scouterna.se",
+    "*.scouterna.se",
+    "eclub.se",
+    "*.live.com",
+    "*.google.com",
+    "*.mp.se",
+    "mp.se",
+    "*.eclub.se",
+    "jula.se",
+    "*.jula.se",
+    "amightygirl.com",
+    "*.amightygirl.com",
+    "3dprima.com",
+    "*.3dprima.com",
+    "raspberrypi.com",
+    "*.raspberrypi.com",
+    "sizable.se",
+    "grabbhumor.com",
+    "facebook.com",
+    "*.facebook.com",
+    "hemkop.se",
+    "*.hemkop.se",
+    "live.com",
+    "newbodyfamily.com",
+    "*.newbodyfamily.com",
+    "electrokit.com",
+    "*.electrokit.com",
+    "paypal.com",
+    "*.paypal.com",
+    "kakservice.se",
+    "*.kakservice.se",
+    "steampowered.com",
+    "*.steampowered.com",
+    "ups.com",
+    "*.ups.com",
+    "limmared.nu",
+    "*.limmared.nu",
+    "battle.net",
+    "google.com",
+    "electricitymaps.com",
+    "*.electricitymaps.com",
+    "snapmaker.com",
+    "*.snapmaker.com",
+    "elektronisksignering.se",
+    "zeijersborger.se",
+    "ws120",
+    "matsmart.se",
+    "*.matsmart.se",
+    "postnord.com",
+    "*.postnord.com",
+    "mcnostril.com",
+    "forsakringskassan.se",
+    "*.forsakringskassan.se",
+    "lantmateriet.se",
+    "*.lantmateriet.se",
+    "toomics.com",
+    "frivilligaresursgruppen.se",
+    "openai.com",
+    "zendesk.com",
+    "*.zendesk.com",
+    "skatteverket.se",
+    "*.skatteverket.se",
+    "skanetrafiken.se",
+    "*.skanetrafiken.se",
+    "github.com",
+    "ssa.se",
+    "*.ssa.se",
+    "girlgeniusonline.com",
+    "*.girlgeniusonline.com",
+    "rsnv.se",
+    "sj.se",
+    "makerbot.com",
+    "*.makerbot.com",
+    "blocket.se",
+    "*.blocket.se",
+    "caritaboronska.com",
+    "*.caritaboronska.com",
+    "thetonetailor.com",
+    "*.thetonetailor.com",
+    "jenniferlawrence.com",
+    "*.jenniferlawrence.com",
+    "jennifer-lawrence.com",
+    "*.jennifer-lawrence.com",
+    "qsplan.ddns.net",
+    "filalab.shop",
+    "dhl.com",
+    "*.dhl.com",
+    "3djake.se",
+    "*.3djake.se",
+    "fedex.com",
+    "*.fedex.com",
+    "fb.watch",
+    "elementsofai.com",
+    "*.elementsofai.com",
+    "geeksaresexy.net",
+    "*.geeksaresexy.net",
+    "printables.com",
+    "*.printables.com",
+    "reco.se",
+    "*.reco.se",
+    "skekraft.se",
+    "*.skekraft.se",
+    "arcmember.net",
+    "*.arcmember.net",
+    "forsvarsutbildarna.se",
+    "*.forsvarsutbildarna.se",
+    "forsvarsmakten.se",
+    "*.forsvarsmakten.se",
+    "masterspool.se",
+    "krisskydd.nu",
+    "klarna.com",
+    "*.klarna.com",
+    "sebkort.com",
+    "*.sebkort.com",
+    "checkout.com",
+    "*.checkout.com",
+    "dhl.de",
+    "*.dhl.de",
+    "generalprepper.se",
+    "webcomic.ws",
+    "*.webcomic.ws",
+    "substack.com",
+    "*.substack.com",
+    "klimatgranskaren.se",
+    "etsy.com",
+    "*.etsy.com",
+    "formcrafts.com",
+    "*.formcrafts.com",
+    "bredband2.se",
+    "192.168.1.1",
+    "asus.com",
+    "*.asus.com",
+    "recaptcha.net",
+    "*.recaptcha.net",
+    "3do.eu",
+    "aprogrammerlife.com",
+    "hjartsakratgrannskap.se",
+    "*.hjartsakratgrannskap.se",
+    "dibspayment.eu",
+    "*.dibspayment.eu",
+    "ljungbyhedsbio.se",
+    "sharepoint.com",
+    "*.sharepoint.com",
+    "kivra.se",
+    "kivra.com",
+    "*.kivra.com",
+    "192.168.1.48:9000",
+    "192.168.1.48",
+    "chatgpt.com",
+    "sinfest.xyz",
+    "*://*.webtoons.com/*",
+    "*.farozon.se"
+  ],
+  "close": 0,
+  "contextmenu-frame": true,
+  "contextmenu-pause": true,
+  "contextmenu-resume": true,
+  "contextmenu-top": true,
+  "crate": 5,
+  "css": "",
+  "disable-actions-options": true,
+  "disable-actions-page": true,
+  "initialBlock": true,
+  "initialBlockCurrent": true,
+  "last-update": 1716878305130,
+  "map": {},
+  "message": "",
+  "no-password-on-add": true,
+  "notes": {
+    "*.hotmail.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.leasticoulddo.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.codingame.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.thingiverse.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.starpirates.net": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.dangerzoneone.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.competencetool.se": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.smhi.se": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.lunarbaboon.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.thecomicseries.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.barbarianprincess.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.youtube.com": {
+      "date": 1718369910685,
+      "origin": "options"
+    },
+    "*.rsnv.se": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.flashback.org": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.gpf-comics.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.xkcd.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.skype.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.ebox.nu": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.wp.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.kommed.se": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.comicfury.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.wordpress.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "xkcd.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "barbarianprincess.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "leasticoulddo.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "dangerzoneone.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "mozilla.org": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.mozilla.org": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.live.net": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.list-manage.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "bredband2.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.bredband2.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "googleusercontent.com": {
+      "date": 1718369910686,
+      "origin": "options"
+    },
+    "*.googleusercontent.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "google.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.google.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "microsoft.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.microsoft.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "learnwarecenter.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "kickstarter.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.kickstarter.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "humorbibeln.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.humorbibeln.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "dropbox.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.dropbox.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.dropboxusercontent.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "energiforetagen.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.energiforetagen.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "vibilagare.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.vibilagare.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "fbsbx.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.fbsbx.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "bahnhof.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "kjell.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.kjell.com": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "svetsochtillbehor.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.svetsochtillbehor.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "youtu.be": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "nwt.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.nwt.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "nyteknik.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.nyteknik.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "expressen.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.expressen.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "dn.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.dn.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "illvet.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "sverigesradio.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "sagro.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.sagro.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "forms.gle": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "sverigesnatur.org": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.sverigesnatur.org": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "svt.se": {
+      "date": 1718369910687,
+      "origin": "options"
+    },
+    "*.svt.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "dt.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.dt.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "zergnet.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.zergnet.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "looper.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.looper.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "rottentomatoes.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.rottentomatoes.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "reddit.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.reddit.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "globalpetrolprices.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.globalpetrolprices.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "atl.nu": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.atl.nu": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "intercom-mail.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.intercom-mail.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "tibber.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.tibber.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "regeringen.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.regeringen.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "wikipedia.org": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.wikipedia.org": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "markrydenglobal.com": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "fz.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.fz.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "itch.io": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.itch.io": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "hwcdn.net": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.hwcdn.net": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "feber.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "elbutik.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.elbutik.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "hennesvag.se": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "amuse.io": {
+      "date": 1718369910688,
+      "origin": "options"
+    },
+    "*.amuse.io": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "spotify.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.spotify.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "klippan.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.klippan.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "netpublicator.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.netpublicator.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "mynewsdesk.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.mynewsdesk.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "etc.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.etc.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "rawbike.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.rawbike.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "ladbible.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.ladbible.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "hd.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.hd.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "noip.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.noip.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "transportstyrelsen.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.transportstyrelsen.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "klarnacdn.net": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.klarnacdn.net": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "klimatkollen.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "aftonbladet.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.aftonbladet.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "sciencealert.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.sciencealert.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "djurbibeln.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.djurbibeln.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "stauppforgallok.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.stauppforgallok.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "travelerdreams.com": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "zoom.us": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.zoom.us": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "bilsport.se": {
+      "date": 1718369910689,
+      "origin": "options"
+    },
+    "*.bilsport.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "altinget.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.altinget.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "cinemis.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.cinemis.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "2k.com": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.2k.com": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "ka.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "dlvr.it": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "teslaclubsweden.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "scout.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.scout.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "scouterna.net": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.scouterna.net": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "affarsvarlden.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.affarsvarlden.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "elinstallatoren.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.elinstallatoren.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "thangs.com": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "riksdagen.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.riksdagen.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "hamnen.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.hamnen.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "mittskifte.org": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.mittskifte.org": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "bit.ly": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "krisinformation.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.krisinformation.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "pol.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "*.pol.se": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "spr.ly": {
+      "date": 1718369910690,
+      "origin": "options"
+    },
+    "tv4.se": {
+      "date": 1718369910691,
+      "origin": "options"
+    },
+    "*.tv4.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "one-lnk.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "kraftringen.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.kraftringen.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "alltomelbil.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "greenely.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "vasterhagen.nu": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.vasterhagen.nu": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "fof.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "ferroamp.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.ferroamp.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "sendgrid.net": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.sendgrid.net": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "typeform.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.typeform.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "youtube.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "birthday.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.birthday.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "hotmail.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "fastcompany.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.fastcompany.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "ow.ly": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "bytbil.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.bytbil.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "voteit.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.voteit.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "warpnews.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.warpnews.se": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "localhost": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "blizzard.com": {
+      "date": 1718369910692,
+      "origin": "options"
+    },
+    "*.blizzard.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "sakerhetskollen.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "sk7dd.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.sk7dd.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "batteriexperten.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.batteriexperten.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "backerkit.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.backerkit.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "byggmax.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.byggmax.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "papperoannat.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.papperoannat.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "klimatsans.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "klimatupplysningen.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "cornwallalliance.org": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "wiley.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.wiley.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "kvinnatillkvinna.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "upright.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.upright.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "thingiverse.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "hbl.fi": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.hbl.fi": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "vattenfall.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.vattenfall.se": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "email-ford.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.email-ford.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "ford.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "*.ford.com": {
+      "date": 1718369910693,
+      "origin": "options"
+    },
+    "ford.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.ford.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "forbes.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.forbes.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "add0n.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "trustarc.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.trustarc.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "maritime-executive.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.maritime-executive.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "offshorewind.biz": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.offshorewind.biz": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "teemill.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.teemill.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "addnorth.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "svensksolenergi.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "cdon.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "cdon.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.cdon.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "pledgebox.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.pledgebox.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "stellamove.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.stellamove.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "actionnetwork.org": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.actionnetwork.org": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "instagram.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.instagram.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "vimla.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "sanghafte.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.sanghafte.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "naturskyddsforeningen.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.naturskyddsforeningen.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "buff.ly": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "lifesavvy.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.lifesavvy.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "howtogeek.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.howtogeek.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "takbox.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.takbox.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "flickr.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.flickr.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "crowdox.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.crowdox.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "skojig.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "polisen.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "nih.gov": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.nih.gov": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "greenpeace.org": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.greenpeace.org": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "mediachomp.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "scoutnet.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.scoutnet.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "unionen.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.unionen.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "rechargeinfra.com": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "demoskop.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "swedbank.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.swedbank.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "swishstarter.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "svd.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.svd.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "scouterna.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.scouterna.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "eclub.se": {
+      "date": 1718369910694,
+      "origin": "options"
+    },
+    "*.live.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.google.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.mp.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "mp.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.eclub.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "jula.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.jula.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "amightygirl.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.amightygirl.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "3dprima.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.3dprima.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "raspberrypi.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.raspberrypi.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "sizable.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "grabbhumor.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "facebook.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.facebook.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "hemkop.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.hemkop.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "live.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "newbodyfamily.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.newbodyfamily.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "electrokit.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.electrokit.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "paypal.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.paypal.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "kakservice.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.kakservice.se": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "steampowered.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.steampowered.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "ups.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.ups.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "limmared.nu": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.limmared.nu": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "battle.net": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "google.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "electricitymaps.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "*.electricitymaps.com": {
+      "date": 1718369910695,
+      "origin": "options"
+    },
+    "snapmaker.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.snapmaker.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "elektronisksignering.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "zeijersborger.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "ws120": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "matsmart.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.matsmart.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "postnord.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.postnord.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "mcnostril.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "forsakringskassan.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.forsakringskassan.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "lantmateriet.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.lantmateriet.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "toomics.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "frivilligaresursgruppen.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "openai.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "zendesk.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.zendesk.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "skatteverket.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.skatteverket.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "skanetrafiken.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.skanetrafiken.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "github.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "ssa.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.ssa.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "girlgeniusonline.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.girlgeniusonline.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "rsnv.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "sj.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "makerbot.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.makerbot.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "blocket.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.blocket.se": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "caritaboronska.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.caritaboronska.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "thetonetailor.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.thetonetailor.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "jenniferlawrence.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.jenniferlawrence.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "jennifer-lawrence.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "*.jennifer-lawrence.com": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "qsplan.ddns.net": {
+      "date": 1718369910696,
+      "origin": "options"
+    },
+    "filalab.shop": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "dhl.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.dhl.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "3djake.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.3djake.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "fedex.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.fedex.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "fb.watch": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "elementsofai.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.elementsofai.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "geeksaresexy.net": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.geeksaresexy.net": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "printables.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.printables.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "reco.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.reco.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "skekraft.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.skekraft.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "arcmember.net": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.arcmember.net": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "forsvarsutbildarna.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.forsvarsutbildarna.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "forsvarsmakten.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.forsvarsmakten.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "masterspool.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "krisskydd.nu": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "klarna.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.klarna.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "sebkort.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.sebkort.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "checkout.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.checkout.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "dhl.de": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.dhl.de": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "generalprepper.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "webcomic.ws": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.webcomic.ws": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "substack.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.substack.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "klimatgranskaren.se": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "etsy.com": {
+      "date": 1718369910697,
+      "origin": "options"
+    },
+    "*.etsy.com": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "formcrafts.com": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "*.formcrafts.com": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "bredband2.se": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "192.168.1.1": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "asus.com": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "*.asus.com": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "recaptcha.net": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "*.recaptcha.net": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "3do.eu": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "aprogrammerlife.com": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "hjartsakratgrannskap.se": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "*.hjartsakratgrannskap.se": {
+      "date": 1718369910698,
+      "origin": "options"
+    },
+    "dibspayment.eu": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "*.dibspayment.eu": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "ljungbyhedsbio.se": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "sharepoint.com": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "*.sharepoint.com": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "kivra.se": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "kivra.com": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "*.kivra.com": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "192.168.1.48:9000": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "192.168.1.48": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "chatgpt.com": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "sinfest.xyz": {
+      "date": 1718369910699,
+      "origin": "options"
+    },
+    "*://*.webtoons.com/*": {
+      "date": 1718370035515,
+      "origin": "options"
+    },
+    "*.farozon.se": {
+      "date": 1718369910686,
+      "origin": "options"
+    }
+  },
+  "notification": true,
+  "pause-periods": [
+    5,
+    10,
+    15,
+    30,
+    60,
+    360,
+    1440,
+    -1
+  ],
+  "redirect": "",
+  "retries": {
+    "count": 0,
+    "first": 0
+  },
+  "reverse": true,
+  "schedule": {
+    "times": {}
+  },
+  "schedule-offset": 0,
+  "schedules": {},
+  "sha256": "",
+  "timeout": 600,
+  "title": false,
+  "wrong": 1,
+  "managed.storage.overwrite.on.start": false,
+  "guid": "ee20c900-7c66-4f82-aca8-137d3cd117d8"
+}
