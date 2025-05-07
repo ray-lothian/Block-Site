@@ -1,4 +1,6 @@
-/* global translate, notify, storage, sha256, userAction, isFF, once */
+/* global translate, notify, storage, sha256, userAction, once */
+
+const isFF = /Firefox/.test(navigator.userAgent);
 
 const buildContext = () => chrome.storage.local.get({
   'contextmenu-pause': true,

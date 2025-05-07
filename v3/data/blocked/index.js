@@ -167,8 +167,7 @@ Promise.all([
                   return true;
                 }
               });
-              document.title = `Removed ${len - prefs.blocked.length} rule(s)`;
-
+              document.title = `[Processing...] Removed ${len - prefs.blocked.length} rule(s)`;
               chrome.storage.local.set(prefs);
             });
           }
@@ -179,7 +178,7 @@ Promise.all([
         if (document.getElementById('sub-domain').textContent) {
           hostnames.push('*.' + document.getElementById('domain').textContent);
         }
-        document.title = `Added ${hostnames.length} new rule(s)`;
+        document.title = `[Processing...] Added ${hostnames.length} new rule(s)`;
         for (const hostname of hostnames) {
           if (prefs.blocked.includes(hostname) === false) {
             prefs.blocked.push(hostname);

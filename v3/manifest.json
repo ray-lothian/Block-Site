@@ -9,6 +9,7 @@
       "blocker.js",
       "schedule.js",
       "contextmenu.js",
+      "idle.js",
       "worker.js"
     ]
   },
@@ -20,7 +21,8 @@
     "notifications",
     "alarms",
     "contextMenus",
-    "declarativeNetRequestWithHostAccess"
+    "declarativeNetRequestWithHostAccess",
+    "idle"
   ],
   "host_permissions": [
     "<all_urls>"

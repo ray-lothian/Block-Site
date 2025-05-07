@@ -1,7 +1,4 @@
 // eslint-disable-next-line no-unused-vars
-const isFF = /Firefox/.test(navigator.userAgent);
-
-// eslint-disable-next-line no-unused-vars
 const notify = message => chrome.storage.local.get({
   notification: true
 }, prefs => {

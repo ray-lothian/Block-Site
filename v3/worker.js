@@ -1,4 +1,3 @@
-/* global isFF */
 /*
   1-998: blocking rules
   998: one-time browsing
@@ -13,6 +12,7 @@ if (typeof importScripts !== 'undefined') {
   self.importScripts('blocker.js');
   self.importScripts('schedule.js');
   self.importScripts('contextmenu.js');
+  self.importScripts('idle.js');
 }
 
 if (typeof browser === 'object' && browser.declarativeNetRequest) {
@@ -145,6 +145,7 @@ const userAction = async (tabId, href, frameId) => {
 
         return b === false;
       });
+      prefs.changed = Math.random(); // make sure the blocker gets reloaded even if prefs.blocked is not changed
       chrome.storage.local.set(prefs, reload);
     }
     else {
@@ -206,16 +207,6 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
             'urlFilter': request.url,
             'resourceTypes': ['main_frame', 'sub_frame']
           };
-          if (isFF) {
-            try {
-              const {hostname} = new URL(request.url.replace('*', ''));
-              delete condition.urlFilter;
-              condition.regexFilter = 'https?:\\/\\/' + hostname.replace(/\./g, '\\.');
-            }
-            catch (e) {
-              console.info('Failed to convert rule for Firefox', e);
-            }
-          }
 
           await chrome.declarativeNetRequest.updateDynamicRules({
             removeRuleIds: [998],

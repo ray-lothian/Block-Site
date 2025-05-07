@@ -116,7 +116,7 @@ chrome.alarms.onAlarm.addListener(async o => {
             },
             'condition': {
               'isUrlFilterCaseSensitive': false,
-              'regexFilter': rule === 'global' ? '^http' : rule,
+              'regexFilter': rule === 'global' ? '^http.*' : rule,
               'resourceTypes': ['main_frame', 'sub_frame']
             }
           }]
@@ -132,7 +132,7 @@ Error: ${e.message}`));
   else {
     const removeRuleIds = rules.filter(r => r.id > 999).filter(r => {
       if (rule === 'global') {
-        return r.condition.regexFilter === '^http';
+        return r.condition.regexFilter === '^http.*';
       }
       else {
         return r.condition.regexFilter === rule;
