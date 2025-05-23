@@ -5,7 +5,6 @@ const validate = () => chrome.storage.local.get({
   map: {},
   notes: {}
 }, prefs => {
-  console.log(prefs);
   if (prefs.blocked.length) {
     chrome.runtime.sendMessage({
       method: 'convert',
@@ -14,7 +13,7 @@ const validate = () => chrome.storage.local.get({
       for (const {expression, host} of rules) {
         try {
           const r = new RegExp(expression, 'i');
-          console.log(r, expression);
+
           if (r.test(location.href)) {
             // make sure the rule does not match schedule
             return chrome.runtime.sendMessage({
