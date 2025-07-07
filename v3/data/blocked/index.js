@@ -25,7 +25,8 @@ const post = (o, c = () => {}) => {
 };
 
 const args = new URLSearchParams(location.search);
-const href = args.get('url');
+// do not use args.get('url'). It fails if the URL includes "&"
+const href = location.search.split('&url=')[1];
 
 if (args.has('date')) {
   let d = new Date(parseInt(args.get('date')));
@@ -92,7 +93,7 @@ const title = () => fetch(href, {
 // storage
 Promise.all([
   new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve)),
-  new Promise(resolve => chrome.storage.local.get({
+  chrome.storage.local.get({
     title: true,
     close: 0,
     message: '',
@@ -102,15 +103,30 @@ Promise.all([
     reverse: false,
     blocked: [],
     notes: {}
-  }, prefs => {
+  }).then(prefs => {
     document.getElementById('css').textContent = prefs.css;
     document.getElementById('message').textContent = prefs.message;
 
-    resolve(prefs);
-  }))
+    return prefs;
+  })
 ]).then(a => a[1]).then(prefs => {
   if (prefs.title && href) {
     title();
+  }
+  if (args.has('host')) {
+    const h = args.get('host');
+    const o = prefs.notes[h] || {};
+    const count = (o.count || 0) + 1;
+    document.getElementById('counter').textContent = count;
+    chrome.storage.local.set({
+      notes: {
+        ...prefs.notes,
+        [h]: {
+          ...o,
+          count
+        }
+      }
+    });
   }
   // https://github.com/ray-lothian/Block-Site/issues/6
   if (prefs.close && window.top === window) {
@@ -139,7 +155,7 @@ Promise.all([
     }
 
     const next = () => {
-      const url = document.getElementById('url');
+      const url = document.getElementById('url').href;
       if (prefs.reverse === false) {
         chrome.storage.local.get({
           reverse: false,
@@ -154,7 +170,7 @@ Promise.all([
               const len = prefs.blocked.length;
               prefs.blocked = [...prefs.blocked].filter((s, i) => {
                 try {
-                  const r = new RegExp(resp[i], 'i');
+                  const r = new RegExp(resp[i].expression, 'i');
                   const b = r.test(url);
 
                   if (b) {
@@ -168,6 +184,7 @@ Promise.all([
                 }
               });
               document.title = `[Processing...] Removed ${len - prefs.blocked.length} rule(s)`;
+
               chrome.storage.local.set(prefs);
             });
           }
@@ -184,7 +201,8 @@ Promise.all([
             prefs.blocked.push(hostname);
             prefs.notes[hostname] = {
               date: Date.now(),
-              origin: 'blocked'
+              origin: 'blocked',
+              count: 0
             };
           }
         }

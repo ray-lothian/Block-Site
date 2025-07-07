@@ -37,6 +37,7 @@ const validate = () => chrome.storage.local.get({
               chrome.runtime.sendMessage({
                 method: 'block',
                 redirect,
+                host,
                 date: prefs.notes[host]?.date
               });
             });

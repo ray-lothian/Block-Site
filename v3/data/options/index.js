@@ -90,7 +90,8 @@ function add(hostname) {
   div.dataset.hostname = hostname;
   div.dataset.note = JSON.stringify(prefs.notes[hostname] || {
     date: Date.now(),
-    origin: 'options'
+    origin: 'options',
+    count: 0
   });
   const d = new Date(prefs.notes[hostname]?.date);
   if (isNaN(d) === false) {

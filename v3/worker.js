@@ -253,7 +253,8 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
     else {
       const args = new URLSearchParams();
       args.set('date', request.date);
-      args.set('type', 'secondary');
+      args.set('host', request.host);
+      args.set('type', 'ipb'); // inline page blocker
       args.set('url', sender.tab.url);
       chrome.tabs.update(sender.tab.id, {
         url: chrome.runtime.getURL('/data/blocked/index.html') + '?' + args.toString()

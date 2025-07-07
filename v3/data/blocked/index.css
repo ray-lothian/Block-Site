@@ -44,13 +44,13 @@ header h1 {
   text-align: center;
   font-weight: normal;
 }
-header table {
-  table-layout: fixed;
+header > div {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-gap: 10px 30px;
 }
-header td:last-of-type {
+header > div > span:nth-child(odd) {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 header,
 footer,
@@ -112,6 +112,8 @@ a {
 #url {
   display: flex;
   align-items: end;
+  flex-wrap: wrap;
+  overflow: hidden;
 }
 #domain {
   font-weight: bold;

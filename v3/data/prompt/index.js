@@ -95,7 +95,8 @@ document.querySelector('form').addEventListener('submit', e => {
           prefs.blocked.push(rule);
           prefs.notes[rule] = {
             date: Date.now(),
-            origin: 'prompt'
+            origin: 'prompt',
+            count: 0
           };
         }
       }

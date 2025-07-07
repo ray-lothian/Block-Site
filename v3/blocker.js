@@ -38,7 +38,7 @@ const update = async () => {
     });
     const ids = [];
 
-    const genRedirect = (address, date) => {
+    const genRedirect = (address, date, host) => {
       if (address && /\\\d/.test(address)) {
         return {
           regexSubstitution: address
@@ -53,6 +53,10 @@ const update = async () => {
       if (date) {
         args.push('date=' + date);
       }
+      if (host) {
+        args.push('host=' + encodeURIComponent(host));
+      }
+      args.push('type=dnr'); // declarative net request
       args.push('url=\\0');
       return {
         regexSubstitution: chrome.runtime.getURL('/data/blocked/index.html') + '?' + args.join('&')
@@ -130,14 +134,14 @@ const update = async () => {
           rule.priority = 2;
           Object.assign(rule.action, {
             type: 'redirect',
-            redirect: genRedirect(prefs.map[h])
+            redirect: genRedirect(prefs.map[h], undefined, h)
           });
         }
         else {
           const date = prefs.notes[h]?.date;
           Object.assign(rule.action, {
             type: 'redirect',
-            redirect: genRedirect(prefs.redirect, date)
+            redirect: genRedirect(prefs.redirect, date, h)
           });
         }
       }

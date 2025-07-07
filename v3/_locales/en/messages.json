@@ -224,6 +224,9 @@
   "blocked_since": {
     "message": "Blocked Since"
   },
+  "blocked_counter": {
+    "message": "Blocked Count"
+  },
   "blocked_master_password": {
     "message": "Enter the master password, then press enter to unblock for a minute"
   },

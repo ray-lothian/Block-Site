@@ -12,31 +12,21 @@
 <body>
   <header vbox>
     <h1 flex="1" data-i18n="blocked_restricted"></h1>
-    <table width="100%">
-      <colgroup>
-        <col width="130px">
-        <col>
-      </colgroup>
-      <tbody>
-        <tr>
-          <td data-i18n="blocked_title"></td>
-          <td id="title">...</td>
-        </tr>
-        <tr>
-          <td style="padding-top: 15px; padding-bottom: 15px;">URL</td>
-          <td style="padding-top: 15px; padding-bottom: 15px;"><a id="url" href="">
-            <span id="sub-domain"></span>
-            <span id="domain">...</span>
-            <span id="pathname"></span>
-            <span id="search"></span>
-          </a></td>
-        </tr>
-        <tr>
-          <td data-i18n="blocked_since"></td>
-          <td id="date">...</td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <span data-i18n="blocked_title"></span>
+      <span id="title">...</span>
+      <span>URL</span>
+      <a id="url" href="">
+        <span id="sub-domain"></span>
+        <span id="domain">...</span>
+        <span id="pathname"></span>
+        <span id="search"></span>
+      </a>
+      <span data-i18n="blocked_since"></span>
+      <span id="date"></span>
+      <span data-i18n="blocked_counter"></span>
+      <span id="counter"></span>
+    </div>
   </header>
   <p id="message"></p>
   <div flex="1"></div>
