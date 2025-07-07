@@ -1,6 +1,6 @@
 {
   "name": "Block Site",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "manifest_version": 3,
   "background": {
     "service_worker": "worker.js",
