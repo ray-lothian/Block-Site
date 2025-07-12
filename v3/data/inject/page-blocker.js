@@ -5,7 +5,6 @@ const validate = () => chrome.storage.local.get({
   map: {},
   notes: {}
 }, async prefs => {
-  console.log(prefs);
   if (prefs.blocked.length) {
     const rules = await chrome.runtime.sendMessage({
       method: 'convert',
@@ -20,12 +19,8 @@ const validate = () => chrome.storage.local.get({
         const {schedules, once} = await chrome.runtime.sendMessage({
           method: 'get-rules'
         });
-
-        console.log(schedules, once);
-
         // make sure the rule is not excluded by open-once
         if (once && once.condition.urlFilter.startsWith(location.href)) {
-          console.info('Ignore Blocking', 'Open Once');
           continue;
         }
         // make sure the rule does not match schedule
@@ -52,9 +47,7 @@ const validate = () => chrome.storage.local.get({
           date: prefs.notes[host]?.date
         });
       }
-      catch (e) {
-        console.log(e);
-      }
+      catch (e) {}
     }
   }
 });
