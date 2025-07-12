@@ -261,9 +261,12 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       });
     }
   }
-  else if (request.method === 'get-schedule-rules') {
+  else if (request.method === 'get-rules') {
     chrome.declarativeNetRequest.getDynamicRules().then(rules => {
-      response(rules.filter(r => r.action?.type === 'allow'));
+      response({
+        schedules: rules.filter(r => r.action?.type === 'allow'),
+        once: rules.filter(r => r.id === 998).shift()
+      });
     });
 
     return true;

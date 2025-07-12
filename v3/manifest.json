@@ -3,7 +3,15 @@
   "version": "0.5.4",
   "manifest_version": 3,
   "background": {
-    "service_worker": "worker.js"
+    "service_worker": "worker.js",
+    "scripts": [
+      "helper.js",
+      "blocker.js",
+      "schedule.js",
+      "contextmenu.js",
+      "idle.js",
+      "worker.js"
+    ]
   },
   "description": "__MSG_app_description__",
   "default_locale": "en",

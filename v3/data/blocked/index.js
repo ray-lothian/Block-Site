@@ -28,7 +28,6 @@ const args = new URLSearchParams(location.search);
 // do not use args.get('url'). It fails if the URL includes "&"
 // "type=ipb" sends URIEncoded
 const href = /&url=\w+:\/\//.test(location.search) ? location.search.split('&url=')[1] : args.get('url');
-console.log(href);
 
 if (args.has('date')) {
   let d = new Date(parseInt(args.get('date')));

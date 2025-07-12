@@ -4,57 +4,72 @@ const validate = () => chrome.storage.local.get({
   blocked: [],
   map: {},
   notes: {}
-}, prefs => {
+}, async prefs => {
+  console.log(prefs);
   if (prefs.blocked.length) {
-    chrome.runtime.sendMessage({
+    const rules = await chrome.runtime.sendMessage({
       method: 'convert',
       hosts: prefs.blocked
-    }, rules => {
-      for (const {expression, host} of rules) {
-        try {
-          const r = new RegExp(expression, 'i');
+    });
+    for (const {expression, host} of rules) {
+      try {
+        const r = new RegExp(expression, 'i');
+        if (r.test(location.href) === false) {
+          continue;
+        }
+        const {schedules, once} = await chrome.runtime.sendMessage({
+          method: 'get-rules'
+        });
 
+        console.log(schedules, once);
+
+        // make sure the rule is not excluded by open-once
+        if (once && once.condition.urlFilter.startsWith(location.href)) {
+          console.info('Ignore Blocking', 'Open Once');
+          continue;
+        }
+        // make sure the rule does not match schedule
+        for (const schedule of schedules) {
+          const r = new RegExp(schedule.condition.regexFilter, 'i');
           if (r.test(location.href)) {
-            // make sure the rule does not match schedule
-            return chrome.runtime.sendMessage({
-              method: 'get-schedule-rules'
-            }, schedules => {
-              for (const schedule of schedules) {
-                const r = new RegExp(schedule.condition.regexFilter, 'i');
-                if (r.test(location.href)) {
-                  return;
-                }
-              }
-              let redirect = prefs.map[host];
-              if (redirect) {
-                const matches = location.href.match(r);
-                if (matches) {
-                  matches.forEach((m, n) => {
-                    redirect = redirect.replace('\\' + n, m);
-                  });
-                }
-              }
-              chrome.runtime.sendMessage({
-                method: 'block',
-                redirect,
-                host,
-                date: prefs.notes[host]?.date
-              });
+            return;
+          }
+        }
+        // Block or Redirect
+        let redirect = prefs.map[host];
+        if (redirect) {
+          const matches = location.href.match(r);
+          if (matches) {
+            matches.forEach((m, n) => {
+              redirect = redirect.replace('\\' + n, m);
             });
           }
         }
-        catch (e) {}
+        chrome.runtime.sendMessage({
+          method: 'block',
+          redirect,
+          host,
+          date: prefs.notes[host]?.date
+        });
       }
-    });
+      catch (e) {
+        console.log(e);
+      }
+    }
   }
 });
 
 // https://github.com/ray-lothian/Block-Site/issues/85
-navigator?.serviceWorker?.getRegistrations()?.then(registrations => {
-  if (registrations.length) {
-    validate();
-  }
-});
+if ('serviceWorker' in navigator && typeof navigator.serviceWorker.getRegistrations === 'function') {
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    if (registrations.length) {
+      validate();
+    }
+  });
+}
+else {
+  validate();
+}
 
 // https://github.com/ray-lothian/Block-Site/issues/111
 if (navigator.userAgent.includes('OPR/')) {
