@@ -20,8 +20,11 @@ const validate = () => chrome.storage.local.get({
           method: 'get-rules'
         });
         // make sure the rule is not excluded by open-once
-        if (once && once.condition.urlFilter.startsWith(location.href)) {
-          continue;
+        if (once) {
+          const s = once.condition.urlFilter.slice(0, -1); // remove '*'
+          if (location.href.startsWith(s)) {
+            continue;
+          }
         }
         // make sure the rule does not match schedule
         for (const schedule of schedules) {
@@ -60,9 +63,9 @@ if ('serviceWorker' in navigator && typeof navigator.serviceWorker.getRegistrati
     }
   });
 }
-else {
-  validate();
-}
+// else {
+//   validate();
+// }
 
 // https://github.com/ray-lothian/Block-Site/issues/111
 if (navigator.userAgent.includes('OPR/')) {
