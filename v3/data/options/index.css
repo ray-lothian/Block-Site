@@ -246,7 +246,6 @@ a:visited {
   grid-template-columns: min-content min-content;
   align-items: center;
   white-space: nowrap;
-  margin-left: 10px;
 }
 .twidth {
   display: grid;

@@ -173,6 +173,15 @@
   "options_notification": {
     "message": "Display desktop notifications (recommended)"
   },
+  "options_contexts": {
+    "message": "Choose where blocking applies"
+  },
+  "options_contexts_both": {
+    "message": "Blocking applies to both Pages and Frames"
+  },
+  "options_contexts_page": {
+    "message": "Blocking applies to Pages only"
+  },
   "options_theme": {
     "message": "Select visual mode for the blocked page"
   },

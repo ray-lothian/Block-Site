@@ -60,7 +60,8 @@ const DEFAULTS = {
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
   'disable-actions-options': true,
   'disable-actions-page': true,
-  'notification': true
+  'notification': true,
+  'contexts': ['main_frame', 'sub_frame']
 };
 const prefs = {};
 
@@ -231,6 +232,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('message').value = prefs.message;
   document.getElementById('css').value = prefs.css;
   document.getElementById('redirect').value = prefs.redirect;
+  document.getElementById('contexts').value = prefs.contexts.includes('sub_frame') ? 'both' : 'page';
 
   fs(prefs.schedule);
   document.querySelector('#schedule [name=hostname]').value = '';
@@ -405,7 +407,9 @@ document.addEventListener('click', e => {
         'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
         'contextmenu-top': document.getElementById('contextmenu-top').checked,
 
-        'pause-periods': periods
+        'pause-periods': periods,
+
+        'contexts': document.getElementById('contexts').value === 'both' ? ['main_frame', 'sub_frame'] : ['main_frame']
       }, () => {
         toast('Options saved');
         window.removeEventListener('beforeunload', warning);

@@ -1,0 +1,320 @@
+{
+  "app_description": {
+    "message": "Özelleştirilebilir, parola korumalı bir web sitesi engelleyici ve yönlendirici."
+  },
+  "options_master_password": {
+    "message": "Ana Şifre"
+  },
+  "options_master_password_comment": {
+    "message": "Tercihlerinizi korumak için bir ana parola girin"
+  },
+  "options_redirect": {
+    "message": "Şuraya yönlendir:"
+  },
+  "options_user_message": {
+    "message": "Kullanıcı mesajı:"
+  },
+  "options_custom_css": {
+    "message": "Özel CSS:"
+  },
+  "options_resolve": {
+    "message": "Engellenen sayfaların başlığını çözün (engellenen sunucuların herhangi bir istek almasını önlemek için bu seçeneğin işaretini kaldırın)"
+  },
+  "options_startup": {
+    "message": "Başlatma işleminden sonra mevcut sayfalarda engelleme gerçekleştir"
+  },
+  "options_startup_current": {
+    "message": "Yeni bir kural eklendiğinde eşleşen sayfayı engelle"
+  },
+  "options_allow_access": {
+    "message": "Engellenmemiş ana bilgisayar adına erişime izin ver (saniye cinsinden)"
+  },
+  "options_block_period": {
+    "message": "Yanlış şifre birden fazla girildiğinde şifre kontrolünü engelle (dakika cinsinde)"
+  },
+  "options_close_blocked": {
+    "message": "Sonra kapat (saniye):"
+  },
+  "options_close_msg_blocked": {
+    "message": "(otomatik kapanma olmaması için sıfır yaz)"
+  },
+  "options_times": {
+    "message": "Zaman:"
+  },
+  "options_times_from": {
+    "message": "itibaren"
+  },
+  "options_times_to": {
+    "message": "ile"
+  },
+  "options_days": {
+    "message": "Günler:"
+  },
+  "options_hostname": {
+    "message": "Kural:"
+  },
+  "options_reverse": {
+    "message": "Ters modda çalıştırın (sadece eşleşen desenlere erişilebilir)"
+  },
+  "options_new_hostname": {
+    "message": "Yeni bir ana bilgisayar adını engelle:"
+  },
+  "options_add": {
+    "message": "Ekle"
+  },
+  "options_matching": {
+    "message": "Eşleşen Desen"
+  },
+  "options_redirect_2": {
+    "message": "Yönlendir"
+  },
+  "options_remove": {
+    "message": "Kaldır"
+  },
+  "options_rate": {
+    "message": "Beni Derecelendir"
+  },
+  "options_support": {
+    "message": "Gelişimi Destekleyin"
+  },
+  "options_preview": {
+    "message": "Kullanım Önizlemesi"
+  },
+  "options_unlock": {
+    "message": "Seçenekleri aç"
+  },
+  "options_save": {
+    "message": "Seçenekleri kaydet"
+  },
+  "options_block_header": {
+    "message": "Bir Kural Ekle"
+  },
+  "options_blocing_options_header": {
+    "message": "Engelleme Seçenekleri"
+  },
+  "options_list_header": {
+    "message": "Mevcut Kurallar"
+  },
+  "options_page_header": {
+    "message": "Engellenen Sayfa"
+  },
+  "options_tools_header": {
+    "message": "Aletler"
+  },
+  "options_rules_header": {
+    "message": "Kuralları içe aktar"
+  },
+  "options_import_txt": {
+    "message": "Kuralları içe aktar (TXT Dosyası)"
+  },
+  "options_schedule_header": {
+    "message": "Engellemeyi kaldırmayı zamanla"
+  },
+  "options_schedule_offset": {
+    "message": "Dakika cinsinden zamanlama kayması"
+  },
+  "options_import_header": {
+    "message": "Yedekle ve Geri Yükle"
+  },
+  "options_export_json": {
+    "message": "Dışa Aktar (JSON Dosyası)"
+  },
+  "options_import_json": {
+    "message": "İçe Aktar (JSON Dosyası)"
+  },
+  "options_sup_1": {
+    "message": "İsteğe bağlı olarak engellenen istekleri bu HTTP(S) URL'sine yönlendirin"
+  },
+  "options_sup_2": {
+    "message": "Bu, engellenen sayfada gösterilen özel bir mesajdır. Bu engellenen sayfayı açmak için bir talimat veya yönetim iletişimi olabilir"
+  },
+  "options_sup_3": {
+    "message": "Engellenen arayüze özel CSS kuralları ekleyin. Bu bölümü farklı öğeleri gizlemek veya bu öğelerin yazı tipi özelliklerini değiştirmek için kullanabilirsiniz"
+  },
+  "options_sup_6": {
+    "message": "Bir kelime içeren ana bilgisayar adlarını engellemek için '*://*word*/*' kuralını kullanın. Aynı kelimeyi yol adı bölümünde engellemek için '*://*/*word*' kuralını kullanın. Sadece bir kural içeren bir sayfayı kapatmanız gerekiyorsa, 'Redirect To' kutusunda 'close' anahtar kelimesini kullanın. Düzenli ifade kuralı oluşturmak için, kuralın başına 'R:' anahtar kelimesini ekleyin. Örneğin, 'R:ht{2}ps*://.*\\.go{2}gle\\.com' hem HTTP hem de HTTPS protokollerinde www.google.com'u engeller."
+  },
+  "options_sup_8": {
+    "message": "Tüm engelleme kurallarını düz metin biçiminde içeren bir metin dosyası hazırlayın. İçe aktardıktan sonra, değişikliklerin gerçekleşmesi için kaydet düğmesine basın. İçe aktarılan kuralları göz ardı etmek için, kaydetmeden bu sayfayı yeniden yükleyin."
+  },
+  "options_sup_10": {
+    "message": "Ayarları içe aktarırken, mevcut tüm ayarlarınız üzerine yazılacaktır. Küçültülmüş sürümü dışa aktarmak için, Dışa Aktar düğmesine basarken Shift tuşunu kullanın"
+  },
+  "options_sup_11": {
+    "message": "Düzenli ifade kuralı sağlayarak, geçerli zamanlamayı eşleşen URL'lerle sınırlayabilirsiniz. Farklı kurallara sahip birden fazla zamanlamaya sahip olmak için, her kural için bölümü doldurun ve kaydet düğmesine basın. Kaydedilmiş bir kuralı silmek için, kural bölümünü doldurun ve uzantının zamanlamayı yüklemesini bekleyin, ardından kuralın kendisini kaldırmadan zamanlama bölümünü silin."
+  },
+  "options_sup_12": {
+    "message": "geçerli programın görünürlüğünü sınırlamak için düzenli bir ifade"
+  },
+  "options_instruction": {
+    "message": "Talimatlar"
+  },
+  "options_contextmenu_pause": {
+    "message": "Tarayıcı eyleminin bağlamında duraklatma bağlam menüsü seçeneğini göster"
+  },
+  "options_contextmenu_resume": {
+    "message": "Tarayıcı eyleminin bağlamında özgeçmiş bağlam menüsü seçeneğini göster"
+  },
+  "options_contextmenu_top": {
+    "message": "Sayfa bağlamında \"Bu Sayfayı Engelle/Engelleme\" bağlam menüsü seçeneğini göster"
+  },
+  "options_contextmenu_frame": {
+    "message": "Çerçeve bağlamında \"Bu Çerçeveyi Engelle/Engelleme\" bağlam menüsü seçeneğini göster"
+  },
+  "options_no_pass_on_add": {
+    "message": "Yeni bir ana bilgisayar adını engellemek için ana parolayı sorma"
+  },
+  "options_disable_actions_options": {
+    "message": "Bu sayfadaki bağlam menüsünü engelle"
+  },
+  "options_disable_actions_page": {
+    "message": "Bağlam menüsünü engelle ve engellenen sayfalara yapıştır"
+  },
+  "options_notification": {
+    "message": "Masaüstü bildirimlerini görüntüle (önerilir)"
+  },
+  "options_theme": {
+    "message": "Engellenen sayfa için görsel modu seçin"
+  },
+  "options_theme_top": {
+    "message": "Sayfa için"
+  },
+  "options_theme_frame": {
+    "message": "Çerçeve İçin"
+  },
+  "options_complete": {
+    "message": "Tamamla"
+  },
+  "options_simple": {
+    "message": "Basit"
+  },
+  "options_intro": {
+    "message": "Seçenekleri kaydetmek veya bir ana parola belirlemek için aşağı kaydırın. Yeniyseniz, sayfayı ziyaret edip eylem düğmesine tıklayarak yeni web sitelerini engelleyin (kurulumdan sonra uzantılar menüsündedir). Manuel olarak yeni kurallar oluşturmanıza gerek yok."
+  },
+  "options_sch_helper_1": {
+    "message": "Aşağıdaki engellenen saatler için engellemeyi kaldırma dönemleri oluşturun"
+  },
+  "options_sch_helper_2": {
+    "message": "Oluştur"
+  },
+  "options_sch_helper_3": {
+    "message": "Tümünü Temizle"
+  },
+  "options_contextmenu_periods": {
+    "message": "Duraklama Süreleri (dakika cinsinden)"
+  },
+  "options_incognito": {
+    "message": "Seçenekler sayfası gizli sekmede kullanılamaz"
+  },
+  "options_remove_all": {
+    "message": "Mevcut tüm kuralları kaldır"
+  },
+  "options_remove_all_confirm": {
+    "message": "Mevcut tüm engelleme kurallarını kaldırmak istediğinizden emin misiniz?\n\n\nKuralları geri yüklemek için kaydetmeden sayfayı yenileyebilirsiniz."
+  },
+  "options_manual_pause": {
+    "message": "Sonsuza kadar"
+  },
+  "blocked_restricted": {
+    "message": "Sınırlı Erişim"
+  },
+  "blocked_title": {
+    "message": "Başlık"
+  },
+  "blocked_since": {
+    "message": "Bu zamandan beri engellendi"
+  },
+  "blocked_counter": {
+    "message": "Engellenen İçerik"
+  },
+  "blocked_master_password": {
+    "message": "Ana parolayı girin, ardından bir dakikalığına engellemeyi kaldırmak için enter'a basın"
+  },
+  "blocked_options": {
+    "message": "Seçenekler Sayfası"
+  },
+  "blocked_rate": {
+    "message": "Beni derecelendir"
+  },
+  "blocked_remove_blocking": {
+    "message": "Engellemeyi Kaldır"
+  },
+  "blocked_add_to_whitelist": {
+    "message": "Beyaz Listeye Ekle"
+  },
+  "blocked_paste": {
+    "message": "Yapıştırma kabul edilmiyor. Bunun yerine şifreyi yazın."
+  },
+  "blocked_context": {
+    "message": "İçerik menüsüne erişim yasaktır."
+  },
+  "blocked_drop": {
+    "message": "Sürükleme kabul edilmiyor. Bunun yerine şifreyi yazın."
+  },
+  "bg_msg_1": {
+    "message": "Bu sekmenin geçerli bir URL'si yok"
+  },
+  "bg_msg_2": {
+    "message": "Yanlış şifre! Lütfen tekrar deneyin!"
+  },
+  "bg_msg_3": {
+    "message": "Seçenekler sayfasına gidin ve bir ana parola belirleyin"
+  },
+  "bg_msg_4": {
+    "message": "Çok fazla yanlış şifre. Lütfen ## dakika bekleyin ve tekrar deneyin."
+  },
+  "bg_msg_5": {
+    "message": "Engellemeyi durdur"
+  },
+  "bg_msg_6": {
+    "message": "Engellemeyi devam ettir"
+  },
+  "bg_msg_12": {
+    "message": "Lütfen engellemeyi durdurmak için ana parolayı girin"
+  },
+  "bg_msg_13": {
+    "message": "\"##\" erişimine izin ver. Emin misin?"
+  },
+  "bg_msg_14": {
+    "message": "\"##\"'a erişim aşağıdaki kurallarla kısıtlanacaktır. Emin misiniz?"
+  },
+  "bg_msg_17": {
+    "message": "Devam etmek için lütfen ana şifreyi girin"
+  },
+  "bg_msg_18": {
+    "message": "Bu Çerçeveyi Engelle/Engelleme"
+  },
+  "bg_msg_19": {
+    "message": "Bu Sayfayı Engelle/Engelleme"
+  },
+  "bg_msg_21": {
+    "message": "Eklenti Galerisi'ni engellemek büyük ihtimalle mümkün değildir. Yine de deneyebilirsiniz!"
+  },
+  "bg_msg_22": {
+    "message": "Seçenekler"
+  },
+  "bg_msg_23": {
+    "message": "dakika"
+  },
+  "bg_msg_24": {
+    "message": "dakikalar"
+  },
+  "bg_msg_25": {
+    "message": "saat"
+  },
+  "bg_msg_26": {
+    "message": "saatler"
+  },
+  "bg_msg_27": {
+    "message": "Engelleme duraklatıldı"
+  },
+  "bg_msg_28": {
+    "message": "Engelleme devam ediyor"
+  },
+  "bg_msg_29": {
+    "message": "Bu işlem gizli modda gerçekleştirilemez. Lütfen sayfayı normal bir pencerede açın ve tekrar deneyin."
+  },
+  "pp_msg_1": {
+    "message": "'##' adresinden açıldı"
+  }
+}

@@ -29,7 +29,8 @@ const update = async () => {
       'notes': {},
       'map': {},
       'reverse': false,
-      'redirect': '' // use custom redirect page
+      'redirect': '', // use custom redirect page
+      'contexts': ['main_frame', 'sub_frame']
     });
     // remove old rules
     const rules = await chrome.declarativeNetRequest.getDynamicRules();
@@ -74,7 +75,7 @@ const update = async () => {
         },
         condition: {
           regexFilter: '^http.*',
-          resourceTypes: ['main_frame', 'sub_frame'],
+          resourceTypes: prefs.contexts,
           isUrlFilterCaseSensitive: false
         }
       };
@@ -110,7 +111,7 @@ const update = async () => {
         id,
         action: {},
         condition: {
-          resourceTypes: ['main_frame', 'sub_frame'],
+          resourceTypes: prefs.contexts,
           isUrlFilterCaseSensitive: false,
           regexFilter: convert(h)
         }
@@ -245,7 +246,7 @@ const update = async () => {
 update.caches = new Set();
 
 chrome.storage.onChanged.addListener(ps => {
-  if (ps.blocked || ps.reverse || ps.map || ps.redirect || ps.changed) {
+  if (ps.blocked || ps.reverse || ps.map || ps.redirect || ps.changed || ps.contexts) {
     update().catch(e => console.error('[error]', e));
   }
 });
