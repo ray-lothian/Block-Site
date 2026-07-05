@@ -30,7 +30,7 @@ const buildContext = () => chrome.storage.local.get({
     if (minutes) {
       s.push(
         minutes + ' ' +
-        translate(read.plural.select(hours) === 'one' ? 'bg_msg_23' : 'bg_msg_24')
+        translate(read.plural.select(minutes) === 'one' ? 'bg_msg_23' : 'bg_msg_24')
       );
     }
 
@@ -149,7 +149,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
           chrome.alarms.create('release.pause', {
             when
           });
-          console.log(when);
           // this is useful to know after a restart if we should remove the pause state or not
           chrome.storage.local.set({'pause-until': when});
         }
