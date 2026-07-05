@@ -1,4 +1,4 @@
-/* global tld, getRelativeTime */
+/* global tld, getRelativeTime, humanDuration */
 'use strict';
 
 const toast = document.getElementById('toast');
@@ -55,12 +55,68 @@ if (args.has('url')) {
   document.getElementById('search').textContent = o.search;
 }
 
+// populate the "unlock duration" chooser (https://github.com/ray-lothian/Block-Site/issues/162)
+{
+  const sel = document.getElementById('duration');
+  chrome.storage.local.get({
+    'unlock-periods': [1, 5, 15, 60], // minutes
+    'unlock-default': 1, // minutes | 'tab' | 'session'
+    'timeout': 60 // seconds (legacy fallback)
+  }, prefs => {
+    const add = (value, label) => {
+      const o = document.createElement('option');
+      o.value = value;
+      o.textContent = label;
+      sel.appendChild(o);
+    };
+    const periods = [...prefs['unlock-periods']].filter(n => Number.isFinite(n) && n > 0);
+    if (typeof prefs['unlock-default'] === 'number' && periods.includes(prefs['unlock-default']) === false) {
+      periods.push(prefs['unlock-default']);
+    }
+    [...new Set(periods)].sort((a, b) => a - b).forEach(min => add('for:' + (min * 60), humanDuration(min)));
+    add('tab', chrome.i18n.getMessage('blocked_unlock_tab'));
+    add('session', chrome.i18n.getMessage('blocked_unlock_session'));
+    add('permanent', chrome.i18n.getMessage('blocked_unlock_permanent'));
+
+    const def = prefs['unlock-default'];
+    sel.value = (def === 'tab' || def === 'session') ? def : 'for:' + (Number(def) * 60);
+    if (sel.selectedIndex < 0) {
+      sel.value = 'for:' + prefs.timeout;
+    }
+    if (sel.selectedIndex < 0 && sel.options.length) {
+      sel.selectedIndex = 0;
+    }
+  });
+}
+
+// the site (registrable domain, subdomains included) an unlock applies to
+let unlockHost = '';
+try {
+  const u = new URL(href);
+  unlockHost = tld.getDomain(u.hostname) || u.hostname;
+}
+catch (e) {}
+
 document.addEventListener('submit', e => {
   e.preventDefault();
+  const choice = document.getElementById('duration').value;
+  // "permanent" reuses the existing remove-blocking / add-to-whitelist logic
+  if (choice === 'permanent') {
+    document.getElementById('exception').click();
+    return;
+  }
+  let mode;
+  if (choice === 'tab' || choice === 'session') {
+    mode = {type: choice};
+  }
+  else {
+    mode = {type: 'for', seconds: parseInt(choice.split(':')[1], 10)};
+  }
   post({
     method: 'open-once',
-    url: href.split('?')[0] + '*',
-    password: e.target.querySelector('[type=password]').value
+    host: unlockHost,
+    mode,
+    password: e.target.querySelector('[type=password]')?.value || ''
   }, b => {
     if (b) {
       document.getElementById('url').click();
@@ -101,6 +157,7 @@ Promise.all([
     css: '',
     password: '',
     sha256: '',
+    'no-password-on-unlock': false,
     reverse: false,
     blocked: [],
     notes: {}
@@ -114,9 +171,73 @@ Promise.all([
   if (prefs.title && href) {
     title();
   }
+  // the master password is optional (https://github.com/ray-lothian/Block-Site/issues/42).
+  const hasPassword = prefs.password || prefs.sha256;
+  const unlockNeedsPassword = hasPassword && !prefs['no-password-on-unlock'];
+  // don't force a password on the unlock form when it isn't required...
+  if (!unlockNeedsPassword) {
+    password.required = false;
+  }
+  // ...but only fully hide the field when there is no password at all. If a
+  // password exists it is still needed by the "remove blocking" button below,
+  // so keep it visible even when unlocking itself is password-free.
+  if (!hasPassword) {
+    password.hidden = true;
+  }
   if (args.has('host')) {
     const h = args.get('host');
     const o = prefs.notes[h] || {};
+    // the rule that caught this page is editable here, so the block can be
+    // narrowed to this URL or widened to the whole site. The note follows it.
+    let ruleKey = h;
+    const ruleEl = document.getElementById('rule');
+    ruleEl.hidden = false;
+    document.getElementById('rule-label').hidden = false;
+    ruleEl.value = h;
+    ruleEl.addEventListener('change', () => {
+      const next = ruleEl.value.trim();
+      if (!next || next === ruleKey) {
+        return;
+      }
+      chrome.storage.local.get({blocked: [], notes: {}}, p => {
+        const blocked = p.blocked.filter(x => x !== ruleKey);
+        if (blocked.includes(next) === false) {
+          blocked.push(next);
+        }
+        const notes = {...p.notes};
+        if (notes[ruleKey]) {
+          notes[next] = notes[ruleKey];
+          delete notes[ruleKey];
+        }
+        ruleKey = next;
+        chrome.storage.local.set({blocked, notes, changed: Math.random()});
+      });
+    });
+
+    // editable per-site note (https://github.com/ray-lothian/Block-Site/issues/64):
+    // shown here and writable straight from the blocked page
+    const note = document.getElementById('note');
+    note.hidden = false;
+    document.getElementById('note-label').hidden = false;
+    note.value = o.note || '';
+    const saveNote = () => chrome.storage.local.get({notes: {}}, p => {
+      const entry = {...(p.notes[ruleKey] || o)};
+      const text = note.value.trim();
+      if (text) {
+        entry.note = text;
+      }
+      else {
+        delete entry.note;
+      }
+      chrome.storage.local.set({notes: {...p.notes, [ruleKey]: entry}});
+    });
+    let timer;
+    note.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(saveNote, 500);
+    });
+    note.addEventListener('change', saveNote);
+
     const count = (o.count || 0) + 1;
     document.getElementById('counter').textContent = count;
     chrome.storage.local.set({

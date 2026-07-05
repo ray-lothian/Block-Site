@@ -22,17 +22,23 @@
         <span id="pathname"></span>
         <span id="search"></span>
       </a>
+      <span data-i18n="blocked_rule" id="rule-label" hidden></span>
+      <input type="text" id="rule" data-i18n="blocked_rule_ph" data-i18n-value="placeholder" hidden>
       <span data-i18n="blocked_since"></span>
       <span id="date"></span>
       <span data-i18n="blocked_counter"></span>
       <span id="counter"></span>
+      <span data-i18n="blocked_note" id="note-label" hidden></span>
+      <textarea id="note" rows="2" data-i18n="blocked_note_ph" data-i18n-value="placeholder" hidden></textarea>
     </div>
   </header>
   <p id="message"></p>
   <div flex="1"></div>
   <footer>
-    <form flex="1" hbox>
+    <form flex="1" hbox align=center>
+      <select id="duration" data-i18n="blocked_unlock_duration" data-i18n-value="title"></select>
       <input type="password" required="true" data-i18n="blocked_master_password" data-i18n-value="placeholder">
+      <input type="submit" id="unlock" data-i18n="blocked_unlock" data-i18n-value="value">
     </form>
     <div>
       <a href="#" id="rate" data-i18n="blocked_rate" data-hide=true>-</a>

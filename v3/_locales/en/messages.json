@@ -12,7 +12,7 @@
     "message": "Redirect to:"
   },
   "options_user_message": {
-    "message": "User message:"
+    "message": "User message (shown on every blocked page — for a per-site reminder use the note instead):"
   },
   "options_custom_css": {
     "message": "Custom CSS:"
@@ -27,7 +27,13 @@
     "message": "Block the current matched page when a new rule is added"
   },
   "options_allow_access": {
-    "message": "Allow access to the unblocked hostname for (in seconds)"
+    "message": "Default access time for the unblocked hostname (in seconds)"
+  },
+  "options_unlock_periods": {
+    "message": "Unlock durations offered on the blocked page (in minutes)"
+  },
+  "options_unlock_default": {
+    "message": "Preselected unlock duration on the blocked page"
   },
   "options_block_period": {
     "message": "Block password check when wrong password is entered multiple times (in minutes)"
@@ -70,6 +76,9 @@
   },
   "options_remove": {
     "message": "Remove"
+  },
+  "options_note": {
+    "message": "Note shown on the blocked page (optional)"
   },
   "options_rate": {
     "message": "Rate Me"
@@ -164,6 +173,9 @@
   "options_no_pass_on_add": {
     "message": "Do not ask for the master password to block a new hostname"
   },
+  "options_no_pass_on_unlock": {
+    "message": "Do not ask for the master password to temporarily unlock a blocked page"
+  },
   "options_disable_actions_options": {
     "message": "Block context menu on this page"
   },
@@ -172,6 +184,9 @@
   },
   "options_notification": {
     "message": "Display desktop notifications (recommended)"
+  },
+  "options_popup": {
+    "message": "Show an overview of blocked sites when clicking the toolbar icon (otherwise a click blocks the current site)"
   },
   "options_contexts": {
     "message": "Choose where blocking applies"
@@ -224,6 +239,36 @@
   "options_manual_pause": {
     "message": "Forever"
   },
+  "popup_options": {
+    "message": "Options"
+  },
+  "popup_filter": {
+    "message": "Filter blocked sites…"
+  },
+  "popup_empty": {
+    "message": "No blocked sites yet."
+  },
+  "popup_remove": {
+    "message": "Remove this rule"
+  },
+  "popup_no_site": {
+    "message": "No blockable site"
+  },
+  "popup_block": {
+    "message": "Block this URL"
+  },
+  "popup_unblock": {
+    "message": "Unblock this URL"
+  },
+  "popup_toggle": {
+    "message": "(Un)block this site"
+  },
+  "popup_reverse_hint": {
+    "message": "Blocked by default in reverse mode. Open the site and use \"Add to Whitelist\" to allow it."
+  },
+  "popup_blocked_count": {
+    "message": "blocked ##×"
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },
@@ -236,8 +281,35 @@
   "blocked_counter": {
     "message": "Blocked Count"
   },
+  "blocked_note": {
+    "message": "Note"
+  },
+  "blocked_note_ph": {
+    "message": "Add a note for this site…"
+  },
+  "blocked_rule": {
+    "message": "Rule"
+  },
+  "blocked_rule_ph": {
+    "message": "Blocking rule (edit to change the scope)"
+  },
   "blocked_master_password": {
-    "message": "Enter the master password, then press enter to unblock for a minute"
+    "message": "Enter the master password, then press enter to unblock"
+  },
+  "blocked_unlock": {
+    "message": "Unlock"
+  },
+  "blocked_unlock_duration": {
+    "message": "Choose how long to unlock this site"
+  },
+  "blocked_unlock_tab": {
+    "message": "While tabs of this site are open"
+  },
+  "blocked_unlock_session": {
+    "message": "For this browser session"
+  },
+  "blocked_unlock_permanent": {
+    "message": "Permanently (remove the rule)"
   },
   "blocked_options": {
     "message": "Options Page"

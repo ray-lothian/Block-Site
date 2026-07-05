@@ -1,5 +1,18 @@
 /* global convert, notify, translate, resume */
 
+// a plausible URL that a block pattern would match, used to tell whether a
+// temporary "open once" allow rule still shadows a currently-blocked site
+const sampleUrl = host => {
+  if (!host || host.startsWith('R:')) {
+    return null; // regex rules: cannot derive a sample safely
+  }
+  let h = host.replace(/^\*:\/\//, 'https://').replace(/\*/g, '');
+  if (h.indexOf('://') === -1) {
+    h = 'https://' + h;
+  }
+  return h;
+};
+
 /* update rules */
 const update = async () => {
   if (update.busy) {
@@ -162,6 +175,31 @@ const update = async () => {
       }
     }
     chrome.action.setBadgeText({text: ''});
+
+    // drop temporary "open once" unlocks that no longer shadow any blocked
+    // site, so that permanently removing a block (and later re-adding it) is
+    // not silently overridden by a stale session allow rule (priority 5)
+    if (prefs.reverse === false && hss.some(h => h.startsWith('R:')) === false) {
+      const allows = (await chrome.declarativeNetRequest.getSessionRules())
+        .filter(r => r.action?.type === 'allow');
+      if (allows.length) {
+        const samples = hss.map(sampleUrl).filter(Boolean);
+        const stale = allows.filter(rule => {
+          let re;
+          try {
+            re = new RegExp(rule.condition.regexFilter, 'i');
+          }
+          catch (e) {
+            return false;
+          }
+          return samples.some(u => re.test(u)) === false;
+        }).map(r => r.id);
+        if (stale.length) {
+          await chrome.declarativeNetRequest.updateSessionRules({removeRuleIds: stale});
+        }
+      }
+    }
+
     // get existing tabs
     const options = {
       url: '*://*/*'

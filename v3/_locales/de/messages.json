@@ -12,7 +12,7 @@
     "message": "Weiterleiten nach:"
   },
   "options_user_message": {
-    "message": "Benutzernachricht:"
+    "message": "Benutzernachricht (wird auf jeder Sperrseite angezeigt – für einen Hinweis pro Seite die Notiz verwenden):"
   },
   "options_custom_css": {
     "message": "Angepasstes CSS:"
@@ -27,7 +27,13 @@
     "message": "Block the current matched page when a new rule is added"
   },
   "options_allow_access": {
-    "message": "Erlaube den Zugriff auf den nicht gesperrten Rechnernamen für (in Sekunden)"
+    "message": "Standard-Zugriffsdauer für den freigegebenen Rechnernamen (in Sekunden)"
+  },
+  "options_unlock_periods": {
+    "message": "Freigabe-Dauern, die auf der Sperrseite angeboten werden (in Minuten)"
+  },
+  "options_unlock_default": {
+    "message": "Vorausgewählte Freigabe-Dauer auf der Sperrseite"
   },
   "options_block_period": {
     "message": "Sperrung der Passwortprüfung bei mehrfacher Eingabe eines falschen Passwortes (in Minuten)"
@@ -70,6 +76,9 @@
   },
   "options_remove": {
     "message": "Entfernen"
+  },
+  "options_note": {
+    "message": "Notiz für die Sperrseite (optional)"
   },
   "options_rate": {
     "message": "Bewerten Sie uns"
@@ -164,6 +173,27 @@
   "options_no_pass_on_add": {
     "message": "Nicht nach dem Hauptasswort fragen, um einen neuen Hostnamen zu blockieren"
   },
+  "options_no_pass_on_unlock": {
+    "message": "Nicht nach dem Hauptpasswort fragen, um eine gesperrte Seite vorübergehend freizugeben"
+  },
+  "options_disable_actions_options": {
+    "message": "Kontextmenü auf dieser Seite blockieren"
+  },
+  "options_disable_actions_page": {
+    "message": "Kontextmenü und Einfügen auf Sperrseiten blockieren"
+  },
+  "options_notification": {
+    "message": "Desktop-Benachrichtigungen anzeigen (empfohlen)"
+  },
+  "options_contexts": {
+    "message": "Wählen Sie, wo die Blockierung gilt"
+  },
+  "options_contexts_both": {
+    "message": "Blockierung gilt für Seiten und Frames"
+  },
+  "options_contexts_page": {
+    "message": "Blockierung gilt nur für Seiten"
+  },
   "options_theme": {
     "message": "Wählt visuellen Modus für die gesperrte Seite"
   },
@@ -194,6 +224,39 @@
   "options_contextmenu_periods": {
     "message": "Zeit anhalten (in Minuten)"
   },
+  "options_popup": {
+    "message": "Beim Klick auf das Symbol in der Symbolleiste eine Übersicht der gesperrten Seiten anzeigen (sonst sperrt ein Klick die aktuelle Seite)"
+  },
+  "popup_options": {
+    "message": "Einstellungen"
+  },
+  "popup_filter": {
+    "message": "Gesperrte Seiten filtern…"
+  },
+  "popup_empty": {
+    "message": "Noch keine gesperrten Seiten."
+  },
+  "popup_remove": {
+    "message": "Diese Regel entfernen"
+  },
+  "popup_no_site": {
+    "message": "Keine sperrbare Seite"
+  },
+  "popup_block": {
+    "message": "Diese URL sperren"
+  },
+  "popup_unblock": {
+    "message": "Diese URL freigeben"
+  },
+  "popup_toggle": {
+    "message": "Diese Seite (nicht mehr) sperren"
+  },
+  "popup_reverse_hint": {
+    "message": "Im Rückwärtsmodus standardmäßig gesperrt. Öffnen Sie die Seite und nutzen Sie „Zur Positivliste hinzufügen“, um sie freizugeben."
+  },
+  "popup_blocked_count": {
+    "message": "## × gesperrt"
+  },
   "options_incognito": {
     "message": "Die Einstellungsseite ist im Inkognitokontext nicht verfügbar"
   },
@@ -215,8 +278,35 @@
   "blocked_since": {
     "message": "Blockiert seit"
   },
+  "blocked_note": {
+    "message": "Notiz"
+  },
+  "blocked_note_ph": {
+    "message": "Notiz für diese Seite hinzufügen …"
+  },
+  "blocked_rule": {
+    "message": "Regel"
+  },
+  "blocked_rule_ph": {
+    "message": "Sperr-Regel (bearbeiten, um den Umfang zu ändern)"
+  },
   "blocked_master_password": {
-    "message": "Bitte Hauptpasswort eingeben und dann die Eingabetaste drücken, um die Blockade für eine Minute zu unterbrechen."
+    "message": "Bitte Hauptpasswort eingeben und dann die Eingabetaste drücken, um die Blockade zu unterbrechen."
+  },
+  "blocked_unlock": {
+    "message": "Freigeben"
+  },
+  "blocked_unlock_duration": {
+    "message": "Wählen Sie, wie lange diese Seite freigegeben wird"
+  },
+  "blocked_unlock_tab": {
+    "message": "Solange Tabs dieser Seite geöffnet sind"
+  },
+  "blocked_unlock_session": {
+    "message": "Für diese Browser-Sitzung"
+  },
+  "blocked_unlock_permanent": {
+    "message": "Dauerhaft (Regel entfernen)"
   },
   "blocked_options": {
     "message": "Einstellungen"
@@ -229,6 +319,18 @@
   },
   "blocked_add_to_whitelist": {
     "message": "Zur Positivliste hinzufügen"
+  },
+  "blocked_counter": {
+    "message": "Anzahl Blockierungen"
+  },
+  "blocked_paste": {
+    "message": "Einfügen ist nicht erlaubt. Bitte tippen Sie das Passwort ein."
+  },
+  "blocked_context": {
+    "message": "Der Zugriff auf das Kontextmenü ist nicht erlaubt."
+  },
+  "blocked_drop": {
+    "message": "Ablegen ist nicht erlaubt. Bitte tippen Sie das Passwort ein."
   },
   "bg_msg_1": {
     "message": "Dieser Reiter hat keine gültige Adresse"

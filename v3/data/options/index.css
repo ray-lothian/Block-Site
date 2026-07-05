@@ -153,6 +153,15 @@ a:visited {
 #rules-container > div {
   display: contents;
 }
+#rules-container [data-id="note"] {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+  opacity: 0.85;
+  font-size: 90%;
+}
+#rules-container [data-id="note"]:focus {
+  opacity: 1;
+}
 
 @media screen and (max-width: 550px) {
   #rules-container > div {

@@ -33,9 +33,10 @@
     <template>
       <div>
         <span title="Click to insert the rule" data-id="href">HTTP://</span>
-        <input type="text" flex="1" placeholder="Optional redirect URL or 'close' keyword." title="Backslash-escaped digits (\1 to \9) can be used to insert the corresponding capture groups. Adding capture groups to the generated URL might cause it to match the blocking rule again, potentially leading to multiple redirects. Use caution.">
+        <input type="text" data-id="redirect" flex="1" placeholder="Optional redirect URL or 'close' keyword." title="Backslash-escaped digits (\1 to \9) can be used to insert the corresponding capture groups. Adding capture groups to the generated URL might cause it to match the blocking rule again, potentially leading to multiple redirects. Use caution.">
         <span data-id="date">-</span>
         <input type="button" data-cmd="remove">
+        <input type="text" data-id="note" class="note" data-i18n="options_note" data-i18n-value="placeholder">
       </div>
     </template>
     <div id="rules-container"></div>
@@ -157,6 +158,10 @@
       <label for="no-password-on-add"><span data-i18n="options_no_pass_on_add"></span></label>
     </div>
     <div hbox class="space" align="center">
+      <input type="checkbox" id="no-password-on-unlock">&nbsp;
+      <label for="no-password-on-unlock"><span data-i18n="options_no_pass_on_unlock"></span></label>
+    </div>
+    <div hbox class="space" align="center">
       <input type="checkbox" id="disable-actions-options">&nbsp;
       <label for="disable-actions-options"><span data-i18n="options_disable_actions_options"></span></label>
     </div>
@@ -167,6 +172,10 @@
     <div hbox class="space" align="center">
       <input type="checkbox" id="notification">&nbsp;
       <label for="notification"><span data-i18n="options_notification"></span></label>
+    </div>
+    <div hbox class="space" align="center">
+      <input type="checkbox" id="popup">&nbsp;
+      <label for="popup"><span data-i18n="options_popup"></span></label>
     </div>
   </div>
   <div class="space view">
@@ -194,6 +203,14 @@
   <div class="space">
     <span data-i18n="options_allow_access" class="space"></span>
     <input type="number" min="1" id="timeout" required>
+  </div>
+  <div hbox align="center" class="space gap">
+    <span data-i18n="options_unlock_periods"></span>
+    <input type="text" id="unlock-periods" flex="1" placeholder="1, 5, 15, 60">
+  </div>
+  <div class="view space">
+    <span data-i18n="options_unlock_default"></span>
+    <select id="unlock-default"></select>
   </div>
   <div>
     <span data-i18n="options_block_period" class="space"></span>
