@@ -492,12 +492,24 @@ document.addEventListener('click', e => {
           const reader = new FileReader();
           reader.onloadend = event => {
             input.remove();
-            const json = JSON.parse(event.target.result);
-            chrome.storage.local.clear(() => chrome.storage.local.set(json, () => {
-              window.removeEventListener('beforeunload', warning);
-              chrome.runtime.reload();
-              window.close();
-            }));
+            // validate before wiping the current preferences
+            try {
+              const json = JSON.parse(event.target.result);
+              if (!json || typeof json !== 'object' || Array.isArray(json)) {
+                throw Error('This file does not contain a preferences object');
+              }
+              if (Object.keys(json).some(key => key in DEFAULTS) === false) {
+                throw Error('No known preferences found in this file');
+              }
+              chrome.storage.local.clear(() => chrome.storage.local.set(json, () => {
+                window.removeEventListener('beforeunload', warning);
+                chrome.runtime.reload();
+                window.close();
+              }));
+            }
+            catch (e) {
+              toast('Import failed: ' + e.message, 4000, 'error');
+            }
           };
           reader.readAsText(file, 'utf-8');
         }
