@@ -3,13 +3,25 @@
 /* update rules */
 const update = async () => {
   if (update.busy) {
+    update.dirty = true;
     return new Promise((resolve, reject) => update.caches.add({resolve, reject}));
   }
   update.busy = true;
 
   const cc = e => {
     update.busy = false;
-    for (const {resolve, reject} of update.caches) {
+    const waiters = [...update.caches];
+    update.caches.clear();
+    // preferences changed while this run was in progress; re-run with fresh values
+    if (update.dirty) {
+      update.dirty = false;
+      update().then(
+        () => waiters.forEach(({resolve}) => resolve()),
+        e => waiters.forEach(({reject}) => reject(e))
+      );
+      return;
+    }
+    for (const {resolve, reject} of waiters) {
       if (e) {
         reject(e);
       }
@@ -17,7 +29,6 @@ const update = async () => {
         resolve();
       }
     }
-    update.caches.clear();
   };
 
   try {
@@ -34,12 +45,7 @@ const update = async () => {
       'pause-until': ''
     });
 
-    // remove old rules
     const rules = await chrome.declarativeNetRequest.getDynamicRules();
-    await chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: rules.filter(r => r.id < 998).map(r => r.id)
-    });
-    const ids = [];
 
     const genRedirect = (address, date, host) => {
       if (address && /\\\d/.test(address)) {
@@ -66,48 +72,36 @@ const update = async () => {
       };
     };
 
-    // add new rules
+    // build the new rule set
+    const entries = []; // {host, rule}
     if (prefs.reverse) {
-      ids.push(1);
-      const rule = {
-        id: 1,
-        action: {
-          type: 'redirect',
-          redirect: genRedirect(prefs.redirect)
-        },
-        condition: {
-          regexFilter: '^http.*',
-          resourceTypes: prefs.contexts,
-          isUrlFilterCaseSensitive: false
+      entries.push({
+        host: '',
+        rule: {
+          id: 1,
+          action: {
+            type: 'redirect',
+            redirect: genRedirect(prefs.redirect)
+          },
+          condition: {
+            regexFilter: '^http.*',
+            resourceTypes: prefs.contexts,
+            isUrlFilterCaseSensitive: false
+          }
         }
-      };
-      await chrome.declarativeNetRequest.updateDynamicRules({
-        addRules: [rule]
       });
     }
     const hs = prefs.blocked.filter((s, i, l) => s && l.indexOf(s) === i);
     if (hs.length > prefs['max-number-of-rules']) {
-      notify(`You have too many blocking rules! Only the first 500 rules are applied.
+      notify(`You have too many blocking rules! Only the first ${prefs['max-number-of-rules']} rules are applied.
 
   Please merge them to keep the list less than ${prefs['max-number-of-rules']} items.`);
     }
 
     const hss = hs.slice(0, prefs['max-number-of-rules']);
-    let n = 0;
+    let id = prefs.reverse ? 1 : 0;
     for (const h of hss) {
-      // visual indicator
-      n += 1;
-      chrome.action.setBadgeText({text: (n / hss.length * 100).toFixed(0) + '%'});
-
-      // find a free id
-      let id;
-      for (let n = 1; ; n += 1) {
-        if (ids.indexOf(n) === -1) {
-          id = n;
-          ids.push(id);
-          break;
-        }
-      }
+      id += 1;
       // construct rule
       const rule = {
         id,
@@ -148,17 +142,52 @@ const update = async () => {
           });
         }
       }
+      entries.push({host: h, rule});
+    }
 
-      try {
-        await chrome.declarativeNetRequest.updateDynamicRules({
-          addRules: [rule]
-        });
+    // drop rules the engine cannot handle (e.g. invalid or too-complex regex)
+    if (chrome.declarativeNetRequest.isRegexSupported) {
+      const checks = await Promise.all(entries.map(({rule}) => chrome.declarativeNetRequest.isRegexSupported({
+        regex: rule.condition.regexFilter,
+        isCaseSensitive: false
+      })));
+      for (let n = entries.length - 1; n >= 0; n -= 1) {
+        if (checks[n].isSupported === false) {
+          console.warn('unsupported rule', entries[n].host, checks[n].reason);
+          notify(`cannot add rule "${entries[n].host}"
+
+  Error: ` + checks[n].reason);
+          entries.splice(n, 1);
+        }
       }
-      catch (e) {
-        console.warn(e);
-        notify(`cannot add rule "${h}"
+    }
+
+    // replace old rules with the new set in one atomic call so that there is
+    // no window where nothing is blocked and no partial set on failure
+    const removeRuleIds = rules.filter(r => r.id < 998).map(r => r.id);
+    try {
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds,
+        addRules: entries.map(o => o.rule)
+      });
+    }
+    catch (e) {
+      // e.g. the global regex memory limit; retry rule by rule so that one
+      // oversized rule does not take down the entire list
+      console.warn('batch rule update failed; retrying rule by rule', e);
+      await chrome.declarativeNetRequest.updateDynamicRules({removeRuleIds});
+      for (const {host, rule} of entries) {
+        try {
+          await chrome.declarativeNetRequest.updateDynamicRules({
+            addRules: [rule]
+          });
+        }
+        catch (e) {
+          console.warn(e);
+          notify(`cannot add rule "${host}"
 
   Error: ` + e.message);
+        }
       }
     }
     chrome.action.setBadgeText({text: ''});
@@ -173,12 +202,13 @@ const update = async () => {
     const tabs = prefs.initialBlock === false && prefs.initialBlockCurrent === false ?
       [] : await chrome.tabs.query(options);
 
+    const current = await chrome.declarativeNetRequest.getDynamicRules();
     // get schedule rules
-    const scheduleRegExp = (await chrome.declarativeNetRequest.getDynamicRules())
+    const scheduleRegExps = current
       .filter(r => r.id > 999)
       .map(r => new RegExp(r.condition.regexFilter, 'i'));
 
-    const regExps = (await chrome.declarativeNetRequest.getDynamicRules()).filter(r => {
+    const regExps = current.filter(r => {
       if (prefs.reverse && r.id === 1) {
         return false;
       }
@@ -186,24 +216,20 @@ const update = async () => {
     }).map(r => new RegExp(r.condition.regexFilter, 'i'));
 
     for (const tab of tabs) {
-      if (tab.url) {
-        for (const r of scheduleRegExp) {
-          if (r.test(tab.url)) {
-            continue;
-          }
+      if (!tab.url) {
+        continue;
+      }
+      // the tab is currently allowed by an active schedule rule
+      if (scheduleRegExps.some(r => r.test(tab.url))) {
+        continue;
+      }
+      if (prefs.reverse) {
+        if (regExps.some(r => r.test(tab.url)) === false) {
+          chrome.tabs.reload(tab.id);
         }
-        if (prefs.reverse) {
-          if (regExps.some(r => r.test(tab.url)) === false) {
-            chrome.tabs.reload(tab.id);
-          }
-        }
-        else {
-          for (const r of regExps) {
-            if (r.test(tab.url)) {
-              chrome.tabs.reload(tab.id);
-            }
-          }
-        }
+      }
+      else if (regExps.some(r => r.test(tab.url))) {
+        chrome.tabs.reload(tab.id);
       }
     }
     // Evaluate the address on the active blocked page
