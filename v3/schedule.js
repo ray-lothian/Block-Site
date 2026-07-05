@@ -54,6 +54,11 @@ const schedule = {
           end.setSeconds(0);
           end.setMinutes(Number(em));
           end.setHours(Number(eh));
+          // "23:59" is the highest value the time input accepts; treat it as
+          // end-of-day so the last minute of the day is not left out
+          if (Number(eh) === 23 && Number(em) === 59) {
+            end.setHours(24, 0, 0);
+          }
 
           if (start.getTime() < now && end.getTime() < now) {
             start.setDate(start.getDate() + 7);
