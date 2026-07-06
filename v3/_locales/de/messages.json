@@ -164,6 +164,24 @@
   "options_no_pass_on_add": {
     "message": "Nicht nach dem Hauptasswort fragen, um einen neuen Hostnamen zu blockieren"
   },
+  "options_disable_actions_options": {
+    "message": "Kontextmenü auf dieser Seite blockieren"
+  },
+  "options_disable_actions_page": {
+    "message": "Kontextmenü und Einfügen auf Sperrseiten blockieren"
+  },
+  "options_notification": {
+    "message": "Desktop-Benachrichtigungen anzeigen (empfohlen)"
+  },
+  "options_contexts": {
+    "message": "Wählen Sie, wo die Blockierung gilt"
+  },
+  "options_contexts_both": {
+    "message": "Blockierung gilt für Seiten und Frames"
+  },
+  "options_contexts_page": {
+    "message": "Blockierung gilt nur für Seiten"
+  },
   "options_theme": {
     "message": "Wählt visuellen Modus für die gesperrte Seite"
   },
@@ -215,6 +233,9 @@
   "blocked_since": {
     "message": "Blockiert seit"
   },
+  "blocked_counter": {
+    "message": "Anzahl Blockierungen"
+  },
   "blocked_master_password": {
     "message": "Bitte Hauptpasswort eingeben und dann die Eingabetaste drücken, um die Blockade für eine Minute zu unterbrechen."
   },
@@ -229,6 +250,15 @@
   },
   "blocked_add_to_whitelist": {
     "message": "Zur Positivliste hinzufügen"
+  },
+  "blocked_paste": {
+    "message": "Einfügen ist nicht erlaubt. Bitte tippen Sie das Passwort ein."
+  },
+  "blocked_context": {
+    "message": "Der Zugriff auf das Kontextmenü ist nicht erlaubt."
+  },
+  "blocked_drop": {
+    "message": "Ablegen ist nicht erlaubt. Bitte tippen Sie das Passwort ein."
   },
   "bg_msg_1": {
     "message": "Dieser Reiter hat keine gültige Adresse"
