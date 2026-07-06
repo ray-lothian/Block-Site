@@ -88,6 +88,9 @@ const title = () => fetch(href, {
   credentials: 'omit'
 }).then(r => r.text()).then(content => {
   const dom = new DOMParser().parseFromString(content, 'text/html');
+
+  console.log(dom, dom.title);
+
   document.getElementById('title').textContent = dom.title || 'Unknown';
 }).catch(() => document.getElementById('title').textContent = 'Unknown');
 

@@ -176,8 +176,11 @@ const update = async () => {
       // oversized rule does not take down the entire list
       console.warn('batch rule update failed; retrying rule by rule', e);
       await chrome.declarativeNetRequest.updateDynamicRules({removeRuleIds});
-      for (const {host, rule} of entries) {
+      for (let n = 0; n < entries.length; n += 1) {
+        const {host, rule} = entries[n];
         try {
+          chrome.action.setBadgeText({text: (n / entries.length * 100).toFixed(0) + '%'});
+
           await chrome.declarativeNetRequest.updateDynamicRules({
             addRules: [rule]
           });

@@ -1,19 +1,22 @@
 // eslint-disable-next-line no-unused-vars
-const notify = message => chrome.storage.local.get({
-  notification: true
-}, prefs => {
+const notify = async message => {
+  const prefs = await chrome.storage.local.get({
+    notification: true
+  });
+
   if (prefs.notification) {
-    chrome.notifications.create(null, {
+    const id = await chrome.notifications.create(null, {
       type: 'basic',
       iconUrl: '/data/icons/48.png',
       title: chrome.runtime.getManifest().name,
       message
-    }, id => setTimeout(chrome.notifications.clear, 5000, id));
+    });
+    setTimeout(chrome.notifications.clear, 5000, id);
   }
   else {
     console.info('[notification]', message);
   }
-});
+};
 
 // eslint-disable-next-line no-unused-vars
 const translate = id => chrome.i18n.getMessage(id) || id;
@@ -24,7 +27,7 @@ chrome.runtime.onConnect.addListener(port => {
     const o = prompt.instances[port.sender.tab.windowId];
     if (o) {
       o.resolve('');
-      chrome.windows.remove(port.sender.tab.windowId);
+      chrome.windows.remove(port.sender.tab.windowId).catch(() => {});
       delete prompt.instances[port.sender.tab.windowId];
     }
   });
@@ -39,7 +42,7 @@ chrome.runtime.onConnect.addListener(port => {
     else if (request.method === 'bring-to-front') {
       chrome.windows.update(port.sender.tab.windowId, {
         focused: true
-      });
+      }).catch(() => {});
     }
   });
 });
