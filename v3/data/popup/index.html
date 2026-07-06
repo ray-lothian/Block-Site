@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="index.css">
+  <title>Block Site</title>
+</head>
+<body>
+  <div id="current">
+    <span id="host">…</span>
+    <input type="button" id="toggle" value="">
+    <a href="#" id="options" data-i18n="popup_options" data-i18n-value="title">⚙</a>
+  </div>
+  <input type="search" id="filter" data-i18n="popup_filter" data-i18n-value="placeholder">
+  <div id="list"></div>
+  <div id="empty" data-i18n="popup_empty" hidden></div>
+  <template id="row">
+    <div class="row">
+      <div class="info">
+        <span class="host"></span>
+        <span class="note"></span>
+        <span class="meta"></span>
+      </div>
+      <input type="button" class="remove" value="✕" data-i18n="popup_remove" data-i18n-value="title">
+    </div>
+  </template>
+  <script src="/utils.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
