@@ -1,16 +1,29 @@
 /* make sure timers are synced */
 
+/* global schedule */
+
 {
   const validate = async () => {
     const now = Date.now();
+    let reschedule = false;
     for (const o of await chrome.alarms.getAll()) {
       if (o.scheduledTime < now) {
         console.info('outdated timer', o);
-        chrome.alarms.create(o.name, {
-          when: now + Math.round(Math.random() * 1000),
-          periodInMinutes: o.periodInMinutes
-        });
+        // recreating a periodic "schedule.*" alarm with "when: now" permanently
+        // shifts its weekly phase to the wake-up time; recompute them instead
+        if (o.name.startsWith('schedule.')) {
+          reschedule = true;
+        }
+        else {
+          chrome.alarms.create(o.name, {
+            when: now + Math.round(Math.random() * 1000),
+            periodInMinutes: o.periodInMinutes
+          });
+        }
       }
+    }
+    if (reschedule) {
+      schedule.update();
     }
   };
 
