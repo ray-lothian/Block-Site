@@ -30,9 +30,6 @@ body {
   height: 100%;
 }
 
-html.dark body {
-  background-blend-mode: luminosity;
-}
 
 @media screen and (max-height: 400px) {
   html.complete body {
