@@ -160,6 +160,7 @@ Promise.all([
     css: '',
     password: '',
     sha256: '',
+    'no-password-on-unlock': false,
     reverse: false,
     blocked: [],
     notes: {}
@@ -172,6 +173,19 @@ Promise.all([
 ]).then(a => a[1]).then(prefs => {
   if (prefs.title && href) {
     title();
+  }
+  // the master password is optional (https://github.com/ray-lothian/Block-Site/issues/42).
+  const hasPassword = prefs.password || prefs.sha256;
+  const unlockNeedsPassword = hasPassword && !prefs['no-password-on-unlock'];
+  // don't force a password on the unlock form when it isn't required...
+  if (!unlockNeedsPassword) {
+    password.required = false;
+  }
+  // ...but only fully hide the field when there is no password at all. If a
+  // password exists it is still needed by the "remove blocking" button below,
+  // so keep it visible even when unlocking itself is password-free.
+  if (!hasPassword) {
+    password.hidden = true;
   }
   if (args.has('host')) {
     const h = args.get('host');

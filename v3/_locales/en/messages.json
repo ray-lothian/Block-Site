@@ -170,6 +170,9 @@
   "options_no_pass_on_add": {
     "message": "Do not ask for the master password to block a new hostname"
   },
+  "options_no_pass_on_unlock": {
+    "message": "Do not ask for the master password to temporarily unlock a blocked page"
+  },
   "options_disable_actions_options": {
     "message": "Block context menu on this page"
   },
