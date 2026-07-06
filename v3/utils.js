@@ -7,7 +7,7 @@ function getRelativeTime(date) {
   const timeDifferenceInMonths = Math.floor(timeDifferenceInDays / 30);
   const timeDifferenceInYears = Math.floor(timeDifferenceInMonths / 12);
 
-  const rtf = new Intl.RelativeTimeFormat(navigator.locale, {numeric: 'auto'});
+  const rtf = new Intl.RelativeTimeFormat(navigator.language, {numeric: 'auto'});
 
   if (timeDifferenceInSeconds < 60) {
     return rtf.format(-timeDifferenceInSeconds, 'second');
