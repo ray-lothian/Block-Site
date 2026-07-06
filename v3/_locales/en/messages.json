@@ -12,7 +12,7 @@
     "message": "Redirect to:"
   },
   "options_user_message": {
-    "message": "User message:"
+    "message": "User message (shown on every blocked page — for a per-site reminder use the note instead):"
   },
   "options_custom_css": {
     "message": "Custom CSS:"
@@ -76,6 +76,9 @@
   },
   "options_remove": {
     "message": "Remove"
+  },
+  "options_note": {
+    "message": "Note shown on the blocked page (optional)"
   },
   "options_rate": {
     "message": "Rate Me"
@@ -280,6 +283,12 @@
   },
   "blocked_rule_ph": {
     "message": "Blocking rule (edit to change the scope)"
+  },
+  "blocked_note": {
+    "message": "Note"
+  },
+  "blocked_note_ph": {
+    "message": "Add a note for this site…"
   },
   "blocked_master_password": {
     "message": "Enter the master password, then press enter to unblock"

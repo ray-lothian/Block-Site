@@ -205,6 +205,31 @@ Promise.all([
       });
     });
 
+    // editable per-site note (https://github.com/ray-lothian/Block-Site/issues/64):
+    // shown here and writable straight from the blocked page. It is keyed by
+    // the rule, so it follows a rename through "ruleKey"
+    const note = document.getElementById('note');
+    note.hidden = false;
+    document.getElementById('note-label').hidden = false;
+    note.value = o.note || '';
+    const saveNote = () => chrome.storage.local.get({notes: {}}, p => {
+      const entry = {...(p.notes[ruleKey] || o)};
+      const text = note.value.trim();
+      if (text) {
+        entry.note = text;
+      }
+      else {
+        delete entry.note;
+      }
+      chrome.storage.local.set({notes: {...p.notes, [ruleKey]: entry}});
+    });
+    let timer;
+    note.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(saveNote, 500);
+    });
+    note.addEventListener('change', saveNote);
+
     const count = (o.count || 0) + 1;
     document.getElementById('counter').textContent = count;
     chrome.storage.local.set({
