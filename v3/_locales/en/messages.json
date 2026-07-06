@@ -27,7 +27,13 @@
     "message": "Block the current matched page when a new rule is added"
   },
   "options_allow_access": {
-    "message": "Allow access to the unblocked hostname for (in seconds)"
+    "message": "Default access time for the unblocked hostname (in seconds)"
+  },
+  "options_unlock_periods": {
+    "message": "Unlock durations offered on the blocked page (in minutes)"
+  },
+  "options_unlock_default": {
+    "message": "Preselected unlock duration on the blocked page"
   },
   "options_block_period": {
     "message": "Block password check when wrong password is entered multiple times (in minutes)"
@@ -237,7 +243,22 @@
     "message": "Blocked Count"
   },
   "blocked_master_password": {
-    "message": "Enter the master password, then press enter to unblock for a minute"
+    "message": "Enter the master password, then press enter to unblock"
+  },
+  "blocked_unlock": {
+    "message": "Unlock"
+  },
+  "blocked_unlock_duration": {
+    "message": "Choose how long to unlock this site"
+  },
+  "blocked_unlock_tab": {
+    "message": "While tabs of this site are open"
+  },
+  "blocked_unlock_session": {
+    "message": "For this browser session"
+  },
+  "blocked_unlock_permanent": {
+    "message": "Permanently (remove the rule)"
   },
   "blocked_options": {
     "message": "Options Page"

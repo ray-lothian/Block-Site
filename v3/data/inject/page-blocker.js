@@ -19,12 +19,16 @@ const validate = () => chrome.storage.local.get({
         const {schedules, once} = await chrome.runtime.sendMessage({
           method: 'get-rules'
         });
-        // make sure the rule is not excluded by open-once
-        if (once) {
-          const s = once.condition.urlFilter.slice(0, -1); // remove '*'
-          if (location.href.startsWith(s)) {
-            continue;
+        // make sure the rule is not excluded by a temporary "open once" unlock
+        if (once && once.some(o => {
+          try {
+            return new RegExp(o.condition.regexFilter, 'i').test(location.href);
           }
+          catch (e) {
+            return false;
+          }
+        })) {
+          continue;
         }
         // make sure the rule does not match schedule
         for (const schedule of schedules) {
