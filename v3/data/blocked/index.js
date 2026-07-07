@@ -176,6 +176,35 @@ Promise.all([
   if (args.has('host')) {
     const h = args.get('host');
     const o = prefs.notes[h] || {};
+
+    // the rule that caught this page is editable here, so the block can be
+    // narrowed to this URL or widened to the whole site. Its metadata
+    // (date, blocked count) follows the renamed rule.
+    let ruleKey = h;
+    const ruleEl = document.getElementById('rule');
+    ruleEl.hidden = false;
+    document.getElementById('rule-label').hidden = false;
+    ruleEl.value = h;
+    ruleEl.addEventListener('change', () => {
+      const next = ruleEl.value.trim();
+      if (!next || next === ruleKey) {
+        return;
+      }
+      chrome.storage.local.get({blocked: [], notes: {}}, p => {
+        const blocked = p.blocked.filter(x => x !== ruleKey);
+        if (blocked.includes(next) === false) {
+          blocked.push(next);
+        }
+        const notes = {...p.notes};
+        if (notes[ruleKey]) {
+          notes[next] = notes[ruleKey];
+          delete notes[ruleKey];
+        }
+        ruleKey = next;
+        chrome.storage.local.set({blocked, notes, changed: Math.random()});
+      });
+    });
+
     const count = (o.count || 0) + 1;
     document.getElementById('counter').textContent = count;
     chrome.storage.local.set({

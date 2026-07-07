@@ -218,6 +218,39 @@
   "options_contextmenu_periods": {
     "message": "Zeit anhalten (in Minuten)"
   },
+  "options_popup": {
+    "message": "Beim Klick auf das Symbol in der Symbolleiste eine Übersicht der gesperrten Seiten anzeigen (sonst sperrt ein Klick die aktuelle Seite)"
+  },
+  "popup_options": {
+    "message": "Einstellungen"
+  },
+  "popup_filter": {
+    "message": "Gesperrte Seiten filtern…"
+  },
+  "popup_empty": {
+    "message": "Noch keine gesperrten Seiten."
+  },
+  "popup_remove": {
+    "message": "Diese Regel entfernen"
+  },
+  "popup_no_site": {
+    "message": "Keine sperrbare Seite"
+  },
+  "popup_block": {
+    "message": "Diese URL sperren"
+  },
+  "popup_unblock": {
+    "message": "Diese URL freigeben"
+  },
+  "popup_toggle": {
+    "message": "Diese Seite (nicht mehr) sperren"
+  },
+  "popup_reverse_hint": {
+    "message": "Im Rückwärtsmodus standardmäßig gesperrt. Öffnen Sie die Seite und nutzen Sie „Zur Positivliste hinzufügen“, um sie freizugeben."
+  },
+  "popup_blocked_count": {
+    "message": "## × gesperrt"
+  },
   "options_incognito": {
     "message": "Die Einstellungsseite ist im Inkognitokontext nicht verfügbar"
   },
@@ -238,6 +271,12 @@
   },
   "blocked_since": {
     "message": "Blockiert seit"
+  },
+  "blocked_rule": {
+    "message": "Regel"
+  },
+  "blocked_rule_ph": {
+    "message": "Sperr-Regel (bearbeiten, um den Umfang zu ändern)"
   },
   "blocked_counter": {
     "message": "Anzahl Blockierungen"

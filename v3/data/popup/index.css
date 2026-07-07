@@ -1,0 +1,134 @@
+:root {
+  color-scheme: light dark;
+  
+  --bg: light-dark(#fff, #202124);
+  --fg: light-dark(#333, #d0d0d0);
+  --muted: light-dark(#888, #8a8a8a);
+  --border: light-dark(#ddd, #3a3d42);
+  --hover: light-dark(#f2f6f9, #2a2f3a);
+  --link: light-dark(#07c, #6bb3e0);
+  --input-bg: light-dark(#fff, #17181a);
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  width: 360px;
+  max-height: 560px;
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+#current {
+  display: grid;
+  grid-template-columns: 1fr min-content min-content;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: solid 1px var(--border);
+}
+#host {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#toggle {
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border: solid 1px var(--border);
+  background: var(--input-bg);
+  color: var(--fg);
+  border-radius: 3px;
+}
+/* blocking is the "destructive" direction: make it stand out in red */
+#toggle.block {
+  color: #d81a1a;
+  border-color: #d81a1a;
+}
+#toggle:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#options {
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--link);
+  padding: 2px 4px;
+}
+
+#filter {
+  margin: 8px 10px 4px;
+  padding: 6px 8px;
+  border: solid 1px var(--border);
+  border-radius: 3px;
+  background: var(--input-bg);
+  color: var(--fg);
+  outline: none;
+}
+
+#list {
+  overflow-y: auto;
+  padding: 0 4px 6px;
+}
+.row {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  gap: 8px;
+  align-items: center;
+  padding: 6px;
+  border-radius: 4px;
+}
+.row:hover {
+  background: var(--hover);
+}
+.info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.info .host {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.info .note {
+  color: var(--muted);
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.info .meta {
+  color: var(--muted);
+  font-size: 10px;
+}
+.remove {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 3px;
+}
+.remove:hover {
+  color: #c00;
+  background: var(--hover);
+}
+
+#empty {
+  padding: 20px 10px;
+  text-align: center;
+  color: var(--muted);
+}

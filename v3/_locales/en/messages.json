@@ -179,6 +179,9 @@
   "options_notification": {
     "message": "Display desktop notifications (recommended)"
   },
+  "options_popup": {
+    "message": "Show an overview of blocked sites when clicking the toolbar icon (otherwise a click blocks the current site)"
+  },
   "options_contexts": {
     "message": "Choose where blocking applies"
   },
@@ -230,6 +233,36 @@
   "options_manual_pause": {
     "message": "Forever"
   },
+  "popup_options": {
+    "message": "Options"
+  },
+  "popup_filter": {
+    "message": "Filter blocked sites…"
+  },
+  "popup_empty": {
+    "message": "No blocked sites yet."
+  },
+  "popup_remove": {
+    "message": "Remove this rule"
+  },
+  "popup_no_site": {
+    "message": "No blockable site"
+  },
+  "popup_block": {
+    "message": "Block this URL"
+  },
+  "popup_unblock": {
+    "message": "Unblock this URL"
+  },
+  "popup_toggle": {
+    "message": "(Un)block this site"
+  },
+  "popup_reverse_hint": {
+    "message": "Blocked by default in reverse mode. Open the site and use \"Add to Whitelist\" to allow it."
+  },
+  "popup_blocked_count": {
+    "message": "blocked ##×"
+  },
   "blocked_restricted": {
     "message": "Restricted Access"
   },
@@ -241,6 +274,12 @@
   },
   "blocked_counter": {
     "message": "Blocked Count"
+  },
+  "blocked_rule": {
+    "message": "Rule"
+  },
+  "blocked_rule_ph": {
+    "message": "Blocking rule (edit to change the scope)"
   },
   "blocked_master_password": {
     "message": "Enter the master password, then press enter to unblock"

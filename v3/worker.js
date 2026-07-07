@@ -385,6 +385,95 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
 
     return true;
   }
+  else if (request.method === 'block-host') {
+    // block a site straight from the popup: add it and let update() reload the
+    // tab onto the blocked page immediately (no domain-confirmation prompt),
+    // honoring the master password unless the user opted out
+    chrome.storage.local.get({
+      'blocked': [],
+      'notes': {},
+      'no-password-on-add': false,
+      'sha256': '',
+      'password': ''
+    }).then(prefs => {
+      const host = (request.host || '').trim();
+      if (!host) {
+        response(false);
+        return;
+      }
+      const doAdd = () => {
+        if (prefs.blocked.includes(host) === false) {
+          prefs.blocked.push(host);
+          prefs.notes[host] = {date: Date.now(), origin: 'popup', count: 0};
+        }
+        chrome.storage.local.set({
+          blocked: prefs.blocked,
+          notes: prefs.notes,
+          changed: Math.random() // make sure the blocker reloads matching tabs
+        }, () => response(true));
+      };
+      if ((prefs.password || prefs.sha256) && prefs['no-password-on-add'] === false) {
+        prompt(translate('bg_msg_17')).then(password => {
+          if (password) {
+            sha256.validate({password}, doAdd, msg => {
+              response(false);
+              notify(msg || translate('bg_msg_2'));
+            });
+          }
+          else {
+            response(false);
+          }
+        });
+      }
+      else {
+        doAdd();
+      }
+    });
+
+    return true;
+  }
+  else if (request.method === 'remove-hosts') {
+    // remove one or more blocked hostnames from the popup, honoring the
+    // master password unless the user opted out for adding/removing rules
+    chrome.storage.local.get({
+      'blocked': [],
+      'notes': {},
+      'no-password-on-add': false,
+      'sha256': '',
+      'password': ''
+    }).then(prefs => {
+      const doRemove = () => {
+        const drop = new Set(request.hosts);
+        const blocked = prefs.blocked.filter(h => drop.has(h) === false);
+        for (const h of request.hosts) {
+          delete prefs.notes[h];
+        }
+        chrome.storage.local.set({
+          blocked,
+          notes: prefs.notes,
+          changed: Math.random() // make sure the blocker reloads
+        }, () => response(true));
+      };
+      if ((prefs.password || prefs.sha256) && prefs['no-password-on-add'] === false) {
+        prompt(translate('bg_msg_17')).then(password => {
+          if (password) {
+            sha256.validate({password}, doRemove, msg => {
+              response(false);
+              notify(msg || translate('bg_msg_2'));
+            });
+          }
+          else {
+            response(false);
+          }
+        });
+      }
+      else {
+        doRemove();
+      }
+    });
+
+    return true;
+  }
   else if (request.method === 'close-page') {
     if (sender.frameId === 0) {
       chrome.tabs.remove(sender.tab.id);
@@ -404,6 +493,30 @@ chrome.alarms.onAlarm.addListener(async alarm => {
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: [998]
     });
+  }
+});
+
+/* toolbar popup: show the blocked-sites overview, or fall back to the
+   one-click "block current site" action when the popup is disabled */
+const applyPopup = () => chrome.storage.local.get({popup: true}, prefs => {
+  chrome.action.setPopup({
+    popup: prefs.popup ? '/data/popup/index.html' : ''
+  });
+});
+{
+  const once = () => {
+    if (once.done) {
+      return;
+    }
+    once.done = true;
+    applyPopup();
+  };
+  chrome.runtime.onStartup.addListener(once);
+  chrome.runtime.onInstalled.addListener(once);
+}
+chrome.storage.onChanged.addListener(ps => {
+  if (ps.popup) {
+    applyPopup();
   }
 });
 

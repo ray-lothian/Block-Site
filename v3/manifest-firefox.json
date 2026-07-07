@@ -37,7 +37,9 @@
     "256": "data/icons/256.png"
   },
   "homepage_url": "https://webextension.org/listing/block-site.html",
-  "action": {},
+  "action": {
+    "default_popup": "data/popup/index.html"
+  },
   "options_ui": {
     "page": "data/options/index.html",
     "open_in_tab": true
