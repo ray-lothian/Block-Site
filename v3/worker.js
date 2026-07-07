@@ -503,8 +503,17 @@ const applyPopup = () => chrome.storage.local.get({popup: true}, prefs => {
     popup: prefs.popup ? '/data/popup/index.html' : ''
   });
 });
-chrome.runtime.onStartup.addListener(applyPopup);
-chrome.runtime.onInstalled.addListener(applyPopup);
+{
+  const once = () => {
+    if (once.done) {
+      return;
+    }
+    once.done = true;
+    applyPopup();
+  };
+  chrome.runtime.onStartup.addListener(once);
+  chrome.runtime.onInstalled.addListener(once);
+}
 chrome.storage.onChanged.addListener(ps => {
   if (ps.popup) {
     applyPopup();
