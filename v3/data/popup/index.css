@@ -48,10 +48,8 @@ body {
   color: var(--fg);
   border-radius: 3px;
 }
-/* blocking is the "destructive" direction: make it stand out in red */
 #toggle.block {
-  color: #d81a1a;
-  border-color: #d81a1a;
+  font-weight: bold;
 }
 #toggle:disabled {
   opacity: 0.4;
@@ -59,10 +57,16 @@ body {
 }
 #options {
   text-decoration: none;
-  font-size: 18px;
-  line-height: 1;
   color: var(--link);
-  padding: 2px 4px;
+  width: 24px;
+  aspect-ratio: 1 / 1;
+  background-image: url("images/settings.svg");
+  filter: invert(1);
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 #filter {

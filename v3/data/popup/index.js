@@ -1,8 +1,6 @@
 /* global getRelativeTime */
 'use strict';
 
-const $ = id => document.getElementById(id);
-
 // localization
 [...document.querySelectorAll('[data-i18n]')].forEach(e => {
   e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
@@ -89,7 +87,7 @@ const removeHosts = async hosts => {
 };
 
 const updateToggle = prefs => {
-  const btn = $('toggle');
+  const btn = document.getElementById('toggle');
   const {url} = effective();
   const usable = /^https?:/.test(url || '');
   let host = null;
@@ -98,7 +96,7 @@ const updateToggle = prefs => {
   }
   catch (e) {}
 
-  $('host').textContent = host || chrome.i18n.getMessage('popup_no_site');
+  document.getElementById('host').textContent = host || chrome.i18n.getMessage('popup_no_site');
   btn.disabled = !usable;
   btn.title = '';
   btn.classList.remove('block');
@@ -139,16 +137,16 @@ const render = async () => {
   currentMatches = await computeMatches(prefs.blocked, effective().url);
   updateToggle(prefs);
 
-  const filter = $('filter').value.trim().toLowerCase();
+  const filter = document.getElementById('filter').value.trim().toLowerCase();
   const hosts = prefs.blocked
     .filter(h => h)
     .filter(h => !filter || h.toLowerCase().includes(filter) ||
       (prefs.notes[h]?.note || '').toLowerCase().includes(filter))
     .sort((a, b) => (prefs.notes[b]?.date || 0) - (prefs.notes[a]?.date || 0));
 
-  const list = $('list');
+  const list = document.getElementById('list');
   list.textContent = '';
-  const tmpl = $('row');
+  const tmpl = document.getElementById('row');
   for (const h of hosts) {
     const node = document.importNode(tmpl.content, true);
     node.querySelector('.host').textContent = h;
@@ -172,16 +170,16 @@ const render = async () => {
     if (date) {
       parts.push(getRelativeTime(new Date(date)));
     }
-    node.querySelector('.meta').textContent = parts.join(' · ');
+    node.querySelector('.meta').textContent = parts.join(' - ');
 
     node.querySelector('.remove').addEventListener('click', () => removeHosts([h]));
     list.appendChild(node);
   }
-  $('empty').hidden = hosts.length > 0;
+  document.getElementById('empty').hidden = hosts.length > 0;
 };
 
-$('filter').addEventListener('input', render);
-$('options').addEventListener('click', e => {
+document.getElementById('filter').addEventListener('input', render);
+document.getElementById('options').addEventListener('click', e => {
   e.preventDefault();
   chrome.runtime.openOptionsPage();
   window.close();

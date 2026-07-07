@@ -261,7 +261,7 @@
     "message": "Blocked by default in reverse mode. Open the site and use \"Add to Whitelist\" to allow it."
   },
   "popup_blocked_count": {
-    "message": "blocked ##×"
+    "message": "blocked ## times"
   },
   "blocked_restricted": {
     "message": "Restricted Access"
