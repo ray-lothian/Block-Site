@@ -1,4 +1,4 @@
-/* global getRelativeTime */
+/* global getRelativeTime, humanDuration */
 'use strict';
 
 // localization
@@ -27,7 +27,9 @@ const warning = e => {
 };
 
 const DEFAULTS = {
-  'timeout': 60, // seconds
+  'timeout': 60, // seconds; default unlock duration
+  'unlock-periods': [1, 5, 15, 60], // minutes offered on the blocked page
+  'unlock-default': 1, // minutes | 'tab' | 'session'
   'close': 0, // seconds
   'message': '',
   'css': '',
@@ -200,6 +202,34 @@ const grant = callback => chrome.storage.local.get({
   }
 });
 
+// rebuild the "default unlock duration" dropdown from the periods list;
+// keeps the current (or a requested) selection when possible
+const rebuildUnlockDefault = desired => {
+  const sel = document.getElementById('unlock-default');
+  const keep = desired ?? sel.value;
+  const mins = document.getElementById('unlock-periods').value.split(/\s*,\s*/)
+    .map(Number).filter(n => Number.isFinite(n) && n > 0);
+  const uniq = [...new Set(mins)].sort((a, b) => a - b);
+  sel.textContent = '';
+  for (const m of uniq) {
+    const o = document.createElement('option');
+    o.value = String(m);
+    o.textContent = humanDuration(m);
+    sel.appendChild(o);
+  }
+  for (const [value, key] of [['tab', 'blocked_unlock_tab'], ['session', 'blocked_unlock_session']]) {
+    const o = document.createElement('option');
+    o.value = value;
+    o.textContent = chrome.i18n.getMessage(key);
+    sel.appendChild(o);
+  }
+  sel.value = keep;
+  if (sel.selectedIndex < 0) {
+    sel.value = uniq.length ? String(uniq[0]) : 'tab';
+  }
+};
+document.getElementById('unlock-periods').addEventListener('input', () => rebuildUnlockDefault());
+
 const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   Object.assign(prefs, ps);
 
@@ -227,6 +257,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('reverse').checked = prefs.reverse;
   document.getElementById('no-password-on-add').checked = prefs['no-password-on-add'];
   document.getElementById('timeout').value = prefs.timeout;
+  document.getElementById('unlock-periods').value = prefs['unlock-periods'].join(', ');
+  rebuildUnlockDefault(String(prefs['unlock-default']));
   document.getElementById('close').value = prefs.close;
   document.getElementById('wrong').value = prefs.wrong;
   document.getElementById('message').value = prefs.message;
@@ -308,6 +340,14 @@ document.addEventListener('click', e => {
       periods.push(-1);
     }
 
+    const unlockPeriods = [...new Set(document.getElementById('unlock-periods').value.split(/\s*,\s*/)
+      .map(Number).filter(n => Number.isFinite(n) && n > 0))].sort((a, b) => a - b);
+    if (unlockPeriods.length === 0) {
+      unlockPeriods.push(1, 5, 15, 60);
+    }
+    const udv = document.getElementById('unlock-default').value;
+    const unlockDefault = (udv === 'tab' || udv === 'session') ? udv : Math.max(Number(udv) || 1, 1);
+
     grant(async () => {
       let schedule = {
         times: days.reduce((p, c) => {
@@ -383,6 +423,8 @@ document.addEventListener('click', e => {
         'message': document.getElementById('message').value,
         'css': document.getElementById('css').value,
         'timeout': Math.max(Number(document.getElementById('timeout').value), 1),
+        'unlock-periods': unlockPeriods,
+        'unlock-default': unlockDefault,
         'close': Math.max(Number(document.getElementById('close').value), 0),
         'wrong': Math.max(Number(document.getElementById('wrong').value), 1),
         schedule,

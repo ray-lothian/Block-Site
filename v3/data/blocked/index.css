@@ -57,10 +57,13 @@ footer,
 p {
   padding: 10px;
 }
-#rate::after,
-#options::before {
+#rate::after {
   content: '•';
   padding: 0 5px;
+}
+/* the "remove blocking" link is replaced by the "Permanent" unlock option */
+#exception {
+  display: none;
 }
 #rate[data-hide=true] {
   display: none;
@@ -102,6 +105,26 @@ input[type=password] {
 footer input[type=password] {
   width: 100%;
   box-sizing: border-box;
+}
+
+footer form {
+  gap: 8px;
+}
+footer form input[type=password] {
+  flex: 1;
+  width: auto;
+  min-width: 100px;
+}
+footer #duration,
+footer input[type=submit] {
+  color: var(--input-fg);
+  background-color: var(--input-bg);
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+footer input[type=submit] {
+  cursor: pointer;
 }
 
 a {
