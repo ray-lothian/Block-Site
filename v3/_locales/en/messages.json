@@ -180,7 +180,7 @@
     "message": "Display desktop notifications (recommended)"
   },
   "options_popup": {
-    "message": "Show an overview of blocked sites when clicking the toolbar icon (otherwise a click blocks the current site)"
+    "message": "Show an overview of blocked sites when clicking the toolbar icon (otherwise a click blocks or unblocks the current site)"
   },
   "options_contexts": {
     "message": "Choose where blocking applies"

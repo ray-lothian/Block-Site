@@ -61,11 +61,16 @@ body {
   width: 24px;
   aspect-ratio: 1 / 1;
   background-image: url("images/settings.svg");
-  filter: invert(1);
   opacity: 0.6;
 
   &:hover {
     opacity: 1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      filter: invert(1);
+    }
   }
 }
 
