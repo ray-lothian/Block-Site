@@ -195,9 +195,17 @@
       </select>
     </div>
   </div>
-  <div class="space">
-    <span data-i18n="options_allow_access" class="space"></span>
+  <div hbox align="center" class="space gap">
+    <span data-i18n="options_allow_access"></span>
     <input type="number" min="1" id="timeout" required>
+  </div>
+  <div hbox align="center" class="space gap">
+    <span data-i18n="options_unlock_periods"></span>
+    <input type="text" id="unlock-periods" flex="1" placeholder="1, 5, 15, 60">
+  </div>
+  <div class="view space">
+    <span data-i18n="options_unlock_default"></span>
+    <select id="unlock-default"></select>
   </div>
   <div>
     <span data-i18n="options_block_period" class="space"></span>

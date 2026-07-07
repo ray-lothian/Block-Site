@@ -28,9 +28,6 @@
   "host_permissions": [
     "<all_urls>"
   ],
-  "storage": {
-    "managed_schema": "schema.json"
-  },
   "icons": {
     "16": "data/icons/16.png",
     "32": "data/icons/32.png",

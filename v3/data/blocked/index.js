@@ -1,4 +1,4 @@
-/* global tld, getRelativeTime */
+/* global tld, getRelativeTime, humanDuration */
 'use strict';
 
 const toast = document.getElementById('toast');
@@ -55,12 +55,68 @@ if (args.has('url')) {
   document.getElementById('search').textContent = o.search;
 }
 
+// populate the "unlock duration" chooser
+{
+  const sel = document.getElementById('duration');
+  chrome.storage.local.get({
+    'unlock-periods': [1, 5, 15, 60], // minutes
+    'unlock-default': 1, // minutes | 'tab' | 'session'
+    'timeout': 60 // seconds (legacy fallback)
+  }, prefs => {
+    const add = (value, label) => {
+      const o = document.createElement('option');
+      o.value = value;
+      o.textContent = label;
+      sel.appendChild(o);
+    };
+    const periods = [...prefs['unlock-periods']].filter(n => Number.isFinite(n) && n > 0);
+    if (typeof prefs['unlock-default'] === 'number' && periods.includes(prefs['unlock-default']) === false) {
+      periods.push(prefs['unlock-default']);
+    }
+    [...new Set(periods)].sort((a, b) => a - b).forEach(min => add('for:' + (min * 60), humanDuration(min)));
+    add('tab', chrome.i18n.getMessage('blocked_unlock_tab'));
+    add('session', chrome.i18n.getMessage('blocked_unlock_session'));
+    add('permanent', chrome.i18n.getMessage('blocked_unlock_permanent'));
+
+    const def = prefs['unlock-default'];
+    sel.value = (def === 'tab' || def === 'session') ? def : 'for:' + (Number(def) * 60);
+    if (sel.selectedIndex < 0) {
+      sel.value = 'for:' + prefs.timeout;
+    }
+    if (sel.selectedIndex < 0 && sel.options.length) {
+      sel.selectedIndex = 0;
+    }
+  });
+}
+
+// the site (registrable domain, subdomains included) an unlock applies to
+let unlockHost = '';
+try {
+  const u = new URL(href);
+  unlockHost = tld.getDomain(u.hostname) || u.hostname;
+}
+catch (e) {}
+
 document.addEventListener('submit', e => {
   e.preventDefault();
+  const choice = document.getElementById('duration').value;
+  // "permanent" reuses the existing remove-blocking / add-to-whitelist logic
+  if (choice === 'permanent') {
+    document.getElementById('exception').click();
+    return;
+  }
+  let mode;
+  if (choice === 'tab' || choice === 'session') {
+    mode = {type: choice};
+  }
+  else {
+    mode = {type: 'for', seconds: parseInt(choice.split(':')[1], 10)};
+  }
   post({
     method: 'open-once',
-    url: href.split('?')[0] + '*',
-    password: e.target.querySelector('[type=password]').value
+    host: unlockHost,
+    mode,
+    password: e.target.querySelector('[type=password]')?.value || ''
   }, b => {
     if (b) {
       document.getElementById('url').click();

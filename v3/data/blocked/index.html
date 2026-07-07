@@ -33,8 +33,10 @@
   <p id="message"></p>
   <div flex="1"></div>
   <footer>
-    <form flex="1" hbox>
+    <form flex="1" hbox align=center>
+      <select id="duration" data-i18n="blocked_unlock_duration" data-i18n-value="title"></select>
       <input type="password" required="true" data-i18n="blocked_master_password" data-i18n-value="placeholder">
+      <input type="submit" id="unlock" data-i18n="blocked_unlock" data-i18n-value="value">
     </form>
     <div>
       <a href="#" id="rate" data-i18n="blocked_rate" data-hide=true>-</a>

@@ -29,3 +29,19 @@ function getRelativeTime(date) {
   }
 }
 
+// human-readable "X hour(s) Y minute(s)" for a whole number of minutes,
+// localized with the same plural strings the pause menu uses
+// eslint-disable-next-line no-unused-vars
+function humanDuration(minutes) {
+  const plural = new Intl.PluralRules(navigator.language);
+  const m = minutes % 60;
+  const h = Math.floor(minutes / 60);
+  const parts = [];
+  if (h) {
+    parts.push(h + ' ' + chrome.i18n.getMessage(plural.select(h) === 'one' ? 'bg_msg_25' : 'bg_msg_26'));
+  }
+  if (m) {
+    parts.push(m + ' ' + chrome.i18n.getMessage(plural.select(m) === 'one' ? 'bg_msg_23' : 'bg_msg_24'));
+  }
+  return parts.join(' ') || String(minutes);
+}
