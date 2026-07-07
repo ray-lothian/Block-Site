@@ -1,23 +1,13 @@
 :root {
-  --bg: #fff;
-  --fg: #333;
-  --muted: #888;
-  --border: #ddd;
-  --hover: #f2f6f9;
-  --link: #07c;
-  --input-bg: #fff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #202124;
-    --fg: #d0d0d0;
-    --muted: #8a8a8a;
-    --border: #3a3d42;
-    --hover: #2a2f3a;
-    --link: #6bb3e0;
-    --input-bg: #17181a;
-  }
+  color-scheme: light dark;
+  
+  --bg: light-dark(#fff, #202124);
+  --fg: light-dark(#333, #d0d0d0);
+  --muted: light-dark(#888, #8a8a8a);
+  --border: light-dark(#ddd, #3a3d42);
+  --hover: light-dark(#f2f6f9, #2a2f3a);
+  --link: light-dark(#07c, #6bb3e0);
+  --input-bg: light-dark(#fff, #17181a);
 }
 
 * {
