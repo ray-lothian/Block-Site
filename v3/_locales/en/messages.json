@@ -341,6 +341,18 @@
   "bg_msg_30": {
     "message": "Remove All Temporary Unblocking Rules"
   },
+  "bg_msg_31": {
+    "message": "This site is already in the block list, but a temporary unblocking rule is currently active. Press OK to remove the temporary rule and block the site again."
+  },
+  "bg_msg_32": {
+    "message": "This site is temporarily unblocked by a session rule"
+  },
+  "bg_msg_33": {
+    "message": "This page is blocked"
+  },
+  "bg_msg_34": {
+    "message": "This page is not blocked"
+  },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
   },

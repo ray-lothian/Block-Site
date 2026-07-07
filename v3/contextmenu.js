@@ -1,4 +1,4 @@
-/* global translate, notify, sha256, userAction */
+/* global translate, notify, sha256, userAction, refreshUnlockIcons */
 
 const isFF = /Firefox/.test(navigator.userAgent);
 
@@ -146,7 +146,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     const removeRuleIds = (await chrome.declarativeNetRequest.getSessionRules())
       .filter(r => r.action?.type === 'allow').map(r => r.id);
     if (removeRuleIds.length) {
-      chrome.declarativeNetRequest.updateSessionRules({removeRuleIds});
+      await chrome.declarativeNetRequest.updateSessionRules({removeRuleIds});
+      refreshUnlockIcons();
     }
   }
   else if (info.menuItemId.startsWith('pause-')) {

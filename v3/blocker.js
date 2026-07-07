@@ -1,4 +1,4 @@
-/* global convert, notify, translate, resume */
+/* global convert, notify, translate, resume, refreshUnlockIcons */
 
 // a plausible URL that a block pattern would match, used to tell whether a
 // temporary "open once" allow rule still shadows a currently-blocked site
@@ -228,6 +228,7 @@ const update = async () => {
         }).map(r => r.id);
         if (stale.length) {
           await chrome.declarativeNetRequest.updateSessionRules({removeRuleIds: stale});
+          refreshUnlockIcons();
         }
       }
     }

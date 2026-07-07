@@ -162,6 +162,31 @@ const userAction = async (tabId, href, frameId) => {
     }
   };
 
+  // the page is already covered by a blocking rule and only reachable because
+  // a temporary (session-rule) unlock allows it: adding another rule would
+  // change nothing, so warn and offer to remove the unlock instead
+  if (prefs.reverse === false && prefs.blocked.some(s => {
+    try {
+      return new RegExp(convert(s), 'i').test(href);
+    }
+    catch (e) {
+      return false;
+    }
+  })) {
+    const unlocks = unlockMatches(await sessionUnlocks(), href);
+    if (unlocks.length) {
+      const ok = await prompt(translate('bg_msg_31'), 'ok', false, 'confirm');
+      if (ok) {
+        await chrome.declarativeNetRequest.updateSessionRules({
+          removeRuleIds: unlocks.map(r => r.id)
+        });
+        refreshUnlockIcons();
+        chrome.tabs.reload(tabId);
+      }
+      return;
+    }
+  }
+
   if ((prefs.password || prefs.sha256) && prefs['no-password-on-add'] === false) {
     const password = await prompt(translate('bg_msg_17'));
     if (password) {
@@ -243,6 +268,7 @@ const openOnceImpl = async ({host, mode}) => {
     });
   }
   // 'tab' and 'session' modes need no per-id bookkeeping
+  refreshUnlockIcons();
 };
 // serialize unlock installs: id allocation reads getSessionRules() then writes,
 // so two concurrent unlocks could otherwise pick the same id and clobber each other
@@ -286,12 +312,84 @@ chrome.tabs.onRemoved.addListener(async closedId => {
       continue;
     }
     if (urls.some(u => re.test(u)) === false) {
-      console.log(urls, rule.condition.regexFilter);
       remove.push(rule.id);
     }
   }
   if (remove.length) {
     await chrome.declarativeNetRequest.updateSessionRules({removeRuleIds: remove});
+    refreshUnlockIcons();
+  }
+});
+
+/* action icon as a traffic light, per tab, so the state of the current page is
+   visible at a glance (echoes the blocked-page octagon graphic):
+     red   + "!"  the page is blocked (our blocked page is showing)
+     yellow + clock  the site is temporarily allowed by a session-rule unlock
+     green + check  the page is not blocked
+   Global blocking-paused keeps its own (blue) icon. */
+const sessionUnlocks = async () => (await chrome.declarativeNetRequest.getSessionRules())
+  .filter(r => r.action?.type === 'allow');
+const unlockMatches = (unlocks, url) => unlocks.filter(rule => {
+  try {
+    return new RegExp(rule.condition.regexFilter, 'i').test(url);
+  }
+  catch (e) {
+    return false;
+  }
+});
+const ICON_STATE = {
+  blocked: {dir: 'blocked/', msg: 'bg_msg_33'},
+  unlocked: {dir: 'unlocked/', msg: 'bg_msg_32'},
+  paused: {dir: 'paused/', msg: 'bg_msg_27'},
+  allowed: {dir: 'allowed/', msg: 'bg_msg_34'}
+};
+const tabIconState = async (tab, unlocks) => {
+  // our own blocked page is showing -> the page is blocked
+  if ((tab.url || '').startsWith(chrome.runtime.getURL('/data/blocked/'))) {
+    return 'blocked';
+  }
+  // the site is reachable only because a temporary unlock allows it
+  const url = tabUrl(tab.url);
+  if (url.startsWith('http') && unlockMatches(unlocks, url).length) {
+    return 'unlocked';
+  }
+  // blocking is globally paused -> keep the dedicated paused state
+  if ((await chrome.declarativeNetRequest.getDynamicRules()).some(r => r.id === 999)) {
+    return 'paused';
+  }
+  return 'allowed';
+};
+const syncActionIcon = async (tab, unlocks) => {
+  const {dir, msg} = ICON_STATE[await tabIconState(tab, unlocks)];
+  chrome.action.setIcon({
+    tabId: tab.id,
+    path: {'16': `/data/icons/${dir}16.png`, '32': `/data/icons/${dir}32.png`}
+  }, () => chrome.runtime.lastError);
+  chrome.action.setTitle({
+    tabId: tab.id,
+    title: chrome.runtime.getManifest().name + (msg ? ' — ' + translate(msg) : '')
+  }, () => chrome.runtime.lastError);
+};
+// re-evaluate the visible tabs (after an unlock is installed or removed);
+// background tabs are re-checked on activation
+const refreshUnlockIcons = async () => {
+  try {
+    const unlocks = await sessionUnlocks();
+    for (const tab of await chrome.tabs.query({active: true})) {
+      await syncActionIcon(tab, unlocks);
+    }
+  }
+  catch (e) {
+    console.warn('cannot refresh the action icons', e);
+  }
+};
+chrome.tabs.onActivated.addListener(({tabId}) => chrome.tabs.get(tabId)
+  .then(async tab => syncActionIcon(tab, await sessionUnlocks()))
+  .catch(() => {}));
+chrome.tabs.onUpdated.addListener((tabId, info, tab) => {
+  // a navigation resets the tab-scoped icon, so re-evaluate it
+  if (info.url || info.status === 'loading' || info.status === 'complete') {
+    sessionUnlocks().then(unlocks => syncActionIcon(tab, unlocks)).catch(() => {});
   }
 });
 
@@ -488,6 +586,7 @@ chrome.alarms.onAlarm.addListener(async alarm => {
     await chrome.declarativeNetRequest.updateSessionRules({
       removeRuleIds: [id]
     });
+    refreshUnlockIcons();
   }
   else if (alarm.name === 'release.open.once') { // legacy dynamic rule
     chrome.declarativeNetRequest.updateDynamicRules({

@@ -60,6 +60,11 @@ if (args.get('command') === 'convert-to-domain') {
   };
   document.body.append(s);
 }
+if (args.get('command') === 'confirm') {
+  // a yes/no question: there is nothing to type, OK simply confirms (the
+  // caller passes a non-empty value so the resolved answer is truthy)
+  document.getElementById('password').parentElement.hidden = true;
+}
 
 document.getElementById('cancel').addEventListener('click', () => {
   try {
