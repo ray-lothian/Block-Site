@@ -57,6 +57,12 @@ const buildContext = () => chrome.storage.local.get({
     contexts: ['action'],
     visible: prefs['contextmenu-resume']
   }, () => chrome.runtime.lastError);
+  chrome.contextMenus.create({
+    title: translate('bg_msg_30'),
+    id: 'remove-session-rules',
+    contexts: ['action'],
+    visible: prefs['contextmenu-resume']
+  }, () => chrome.runtime.lastError);
   if (isFF) {
     chrome.contextMenus.create({
       title: translate('bg_msg_22'),
@@ -135,6 +141,13 @@ const resume = () => {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === 'options') {
     chrome.runtime.openOptionsPage();
+  }
+  else if (info.menuItemId === 'remove-session-rules') {
+    const removeRuleIds = (await chrome.declarativeNetRequest.getSessionRules())
+      .filter(r => r.action?.type === 'allow').map(r => r.id);
+    if (removeRuleIds.length) {
+      chrome.declarativeNetRequest.updateSessionRules({removeRuleIds});
+    }
   }
   else if (info.menuItemId.startsWith('pause-')) {
     const resolve = async () => {

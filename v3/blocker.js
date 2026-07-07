@@ -320,7 +320,7 @@ const update = async () => {
       chrome.action.setTitle({
         title: chrome.runtime.getManifest().name + `
 
-    Number of active filters: ` + regExps.length
+Number of active filters: ` + regExps.length
       });
     }
 

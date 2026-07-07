@@ -299,6 +299,9 @@
   "bg_msg_6": {
     "message": "Resume Blocking"
   },
+  "bg_msg_30": {
+    "message": "Remove All Temporary Unblocking Rules"
+  },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
   },

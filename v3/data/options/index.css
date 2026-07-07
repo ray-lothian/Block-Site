@@ -1,31 +1,18 @@
 :root {
-  --bg-color: rgba(0, 0, 0, 0.05);
-  --code-color: #fcffda;
-  --bg: #fff;
-  --clc: #4d5156;
-  --border: #ccc;
-  --bg-active: #e7f9ff;
-  --bg-error: red;
-  --link: #07c;
-  --bg-input: #fff;
-  --clc-input: #000;
-  --admin-bg: #ffffed;
-  --admin-border: #e8ec3a;
-}
+  color-scheme: light dark;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: rgba(0, 0, 0, 0.05);
-    --code-color: #fcffda;
-    --bg: #202124;
-    --clc: #c0c0c0;
-    --link: #5eb0d7;
-    --bg-input: #000;
-    --border: #565656;
-    --clc-input: #000;
-    --admin-bg: #3e3e34;
-    --admin-border: #6f6f6c;
-  }
+  --bg-color: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05));
+  --code-color: light-dark(#fcffda, #fcffda);
+  --bg: light-dark(#fff, #202124);
+  --clc: light-dark(#4d5156, #c0c0c0);
+  --border: light-dark(#ccc, #565656);
+  --bg-active: light-dark(#e7f9ff, );
+  --bg-error: red;
+  --link: light-dark(#07c, #5eb0d7);
+  --bg-input: light-dark(#fff, #000);
+  --clc-input: light-dark(#000, #fff);
+  --admin-bg: light-dark(#ffffed, #3e3e34);
+  --admin-border: light-dark(#e8ec3a, #6f6f6c);
 }
 
 body {
@@ -64,6 +51,9 @@ input[type=button] {
   box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
   text-shadow: rgb(240, 240, 240) 0 1px 0;
   border: solid 1px rgba(0, 0, 0, 0.25);
+}
+select {
+  padding: 5px;
 }
 input[type=text]:disabled,
 input[type=button]:disabled {

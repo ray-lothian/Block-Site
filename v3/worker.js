@@ -201,10 +201,9 @@ const openOnceImpl = async ({host, mode}) => {
   if (!host || /^[.\s]*$/.test(host)) {
     throw new Error('cannot unlock: unknown site');
   }
-  const dnr = chrome.declarativeNetRequest;
   const regexFilter = convert(host);
   const isTab = mode?.type === 'tab';
-  const existing = await dnr.getSessionRules();
+  const existing = await chrome.declarativeNetRequest.getSessionRules();
   // reuse the id already allowing this exact site if it is in the right range;
   // otherwise drop it and take a fresh id from the range matching the new mode
   const same = existing.find(r => r.action?.type === 'allow' && r.condition?.regexFilter === regexFilter);
@@ -214,7 +213,7 @@ const openOnceImpl = async ({host, mode}) => {
       id = same.id;
     }
     else {
-      await dnr.updateSessionRules({removeRuleIds: [same.id]});
+      await chrome.declarativeNetRequest.updateSessionRules({removeRuleIds: [same.id]});
     }
   }
   if (id === null) {
@@ -223,7 +222,7 @@ const openOnceImpl = async ({host, mode}) => {
     id = inRange.reduce((m, r) => Math.max(m, r.id), base - 1) + 1;
   }
 
-  await dnr.updateSessionRules({
+  await chrome.declarativeNetRequest.updateSessionRules({
     removeRuleIds: [id],
     addRules: [{
       id,
@@ -276,6 +275,7 @@ chrome.tabs.onRemoved.addListener(async closedId => {
   // otherwise the just-closed site tab would keep its own unlock alive
   const tabs = (await chrome.tabs.query({})).filter(t => t.id !== closedId);
   const urls = tabs.map(t => tabUrl(t.url)).filter(Boolean);
+
   const remove = [];
   for (const rule of unlocks) {
     let re;
@@ -286,6 +286,7 @@ chrome.tabs.onRemoved.addListener(async closedId => {
       continue;
     }
     if (urls.some(u => re.test(u)) === false) {
+      console.log(urls, rule.condition.regexFilter);
       remove.push(rule.id);
     }
   }
