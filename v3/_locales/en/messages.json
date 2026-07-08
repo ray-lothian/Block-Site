@@ -258,7 +258,7 @@
     "message": "Remove this rule"
   },
   "popup_no_site": {
-    "message": "No blockable site"
+    "message": "Not a blockable site"
   },
   "popup_block": {
     "message": "Block this URL"
@@ -360,7 +360,7 @@
     "message": "Remove All Temporary Unblocking Rules"
   },
   "bg_msg_31": {
-    "message": "Despite being on the blocked list, a temporary unblocking rule currently allows this site."
+    "message": "This page is blocked, but a temporary rule allows visiting it."
   },
   "bg_msg_32": {
     "message": "This site is temporarily unblocked by a session rule"
@@ -370,6 +370,9 @@
   },
   "bg_msg_34": {
     "message": "This page is not blocked"
+  },
+  "bg_msg_35": {
+    "message": "This page is blocked but accessible via a temporary rule. To proceed, right-click the action button, remove the temporary rule from the context menu, and retry."
   },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"

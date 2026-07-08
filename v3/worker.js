@@ -136,6 +136,20 @@ const userAction = async (tabId, href, frameId) => {
     'password': '' // deprecated
   });
 
+  // is this site unblocked by a session rule
+  const rules = await chrome.declarativeNetRequest.getSessionRules();
+  for (const rule of rules) {
+    try {
+      if (new RegExp(rule.condition.regexFilter, 'i').test(href)) {
+        await prompt(chrome.i18n.getMessage('bg_msg_35'), 'true', undefined, undefined, {
+          mode: 'confirm'
+        });
+        return;
+      }
+    }
+    catch (e) {}
+  }
+
   const next = () => {
     const reload = () => frameId !== 0 && chrome.tabs.reload(tabId);
 
@@ -403,6 +417,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         response(false);
         return;
       }
+
       const doAdd = () => {
         if (prefs.blocked.includes(host) === false) {
           prefs.blocked.push(host);

@@ -110,13 +110,21 @@ document.querySelector('form').addEventListener('submit', e => {
   }
 });
 
-document.getElementById('password').addEventListener('input', e => {
-  document.getElementById('ok').disabled = e.target.value === '';
-});
+if (extra.mode === 'confirm') {
+  document.getElementById('ok').disabled = false;
+  document.getElementById('password').style.display = 'none';
+  document.getElementById('cancel').style.display = 'none';
+}
+else {
+  document.getElementById('password').addEventListener('input', e => {
+    document.getElementById('ok').disabled = e.target.value === '';
+  });
+}
 
-window.addEventListener('blur', () => setTimeout(() => port.postMessage({
-  method: 'bring-to-front'
-})), 1000);
+
+// window.addEventListener('blur', () => setTimeout(() => port.postMessage({
+//   method: 'bring-to-front'
+// })), 1000);
 window.onbeforeunload = () => port.postMessage({
   method: 'prompt-resolved'
 });
