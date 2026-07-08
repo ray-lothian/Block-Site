@@ -142,6 +142,16 @@ a:visited {
 }
 #rules-container > div {
   display: contents;
+
+  .note {
+    field-sizing: content;
+    max-height: 10lh;
+  }
+  &:not(.note) {
+    .note {
+      display: none;
+    }
+  }
 }
 #rules-container [data-id="note"] {
   grid-column: 1 / -1;

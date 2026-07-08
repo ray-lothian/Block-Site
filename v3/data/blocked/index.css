@@ -34,23 +34,6 @@ html.dark body {
   background-blend-mode: luminosity;
 }
 
-#note,
-#rule {
-  color: var(--input-fg);
-  background-color: var(--input-bg);
-  border: none;
-  outline: none;
-  padding: 8px;
-  font-family: inherit;
-  font-size: inherit;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 420px;
-}
-#note {
-  resize: vertical;
-}
-
 @media screen and (max-height: 400px) {
   html.complete body {
     background-image: none !important;
@@ -189,6 +172,8 @@ html.dark #switch {
 #message {
   white-space: pre;
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--input-bg) var(--bg);
 }
 
 [hbox] {

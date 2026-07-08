@@ -77,6 +77,9 @@
   "options_remove": {
     "message": "Remove"
   },
+  "options_toggle_note": {
+    "message": "Toggle Note"
+  },
   "options_note": {
     "message": "Note shown on the blocked page (optional)"
   },
@@ -285,7 +288,7 @@
     "message": "Blocked Count"
   },
   "blocked_rule": {
-    "message": "Rule"
+    "message": "Blocking Rule"
   },
   "blocked_rule_ph": {
     "message": "Blocking rule (edit to change the scope)"

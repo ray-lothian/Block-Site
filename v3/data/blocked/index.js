@@ -144,9 +144,6 @@ const title = () => fetch(href, {
   credentials: 'omit'
 }).then(r => r.text()).then(content => {
   const dom = new DOMParser().parseFromString(content, 'text/html');
-
-  console.log(dom, dom.title);
-
   document.getElementById('title').textContent = dom.title || 'Unknown';
 }).catch(() => document.getElementById('title').textContent = 'Unknown');
 
@@ -154,16 +151,16 @@ const title = () => fetch(href, {
 Promise.all([
   new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve)),
   chrome.storage.local.get({
-    title: true,
-    close: 0,
-    message: '',
-    css: '',
-    password: '',
-    sha256: '',
+    'title': true,
+    'close': 0,
+    'message': '',
+    'css': '',
+    'password': '',
+    'sha256': '',
     'no-password-on-unlock': false,
-    reverse: false,
-    blocked: [],
-    notes: {}
+    'reverse': false,
+    'blocked': [],
+    'notes': {}
   }).then(prefs => {
     document.getElementById('css').textContent = prefs.css;
     document.getElementById('message').textContent = prefs.message;
@@ -191,58 +188,14 @@ Promise.all([
     const h = args.get('host');
     const o = prefs.notes[h] || {};
 
-    // the rule that caught this page is editable here, so the block can be
-    // narrowed to this URL or widened to the whole site. Its metadata
-    // (date, blocked count) follows the renamed rule.
-    let ruleKey = h;
     const ruleEl = document.getElementById('rule');
     ruleEl.hidden = false;
     document.getElementById('rule-label').hidden = false;
-    ruleEl.value = h;
-    ruleEl.addEventListener('change', () => {
-      const next = ruleEl.value.trim();
-      if (!next || next === ruleKey) {
-        return;
-      }
-      chrome.storage.local.get({blocked: [], notes: {}}, p => {
-        const blocked = p.blocked.filter(x => x !== ruleKey);
-        if (blocked.includes(next) === false) {
-          blocked.push(next);
-        }
-        const notes = {...p.notes};
-        if (notes[ruleKey]) {
-          notes[next] = notes[ruleKey];
-          delete notes[ruleKey];
-        }
-        ruleKey = next;
-        chrome.storage.local.set({blocked, notes, changed: Math.random()});
-      });
-    });
+    ruleEl.textContent = h;
 
-    // editable per-site note (https://github.com/ray-lothian/Block-Site/issues/64):
-    // shown here and writable straight from the blocked page. It is keyed by
-    // the rule, so it follows a rename through "ruleKey"
-    const note = document.getElementById('note');
-    note.hidden = false;
-    document.getElementById('note-label').hidden = false;
-    note.value = o.note || '';
-    const saveNote = () => chrome.storage.local.get({notes: {}}, p => {
-      const entry = {...(p.notes[ruleKey] || o)};
-      const text = note.value.trim();
-      if (text) {
-        entry.note = text;
-      }
-      else {
-        delete entry.note;
-      }
-      chrome.storage.local.set({notes: {...p.notes, [ruleKey]: entry}});
-    });
-    let timer;
-    note.addEventListener('input', () => {
-      clearTimeout(timer);
-      timer = setTimeout(saveNote, 500);
-    });
-    note.addEventListener('change', saveNote);
+    if (o.note) {
+      document.getElementById('message').textContent = o.note;
+    }
 
     const count = (o.count || 0) + 1;
     document.getElementById('counter').textContent = count;

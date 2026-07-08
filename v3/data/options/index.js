@@ -106,8 +106,13 @@ function add(hostname) {
   const rd = node.querySelector('[data-id=redirect]');
   rd.value = prefs.map[hostname] || '';
   // rd.disabled = hostname.indexOf('*') !== -1;
-  node.querySelector('[data-id=note]').value = prefs.notes[hostname]?.note || '';
+  if (prefs.notes[hostname]?.note) {
+    node.querySelector('[data-id=note]').value = prefs.notes[hostname].note;
+    div.classList.add('note');
+  }
+  node.querySelector('[data-id=note]').placeholder = chrome.i18n.getMessage('options_note');
   node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
+  node.querySelector('[data-cmd="toggle-note"]').value = chrome.i18n.getMessage('options_toggle_note');
   document.getElementById('rules-container').appendChild(node);
   list.dataset.visible = true;
 
@@ -334,6 +339,9 @@ document.addEventListener('click', e => {
   const cmd = target.dataset.cmd;
   if (cmd === 'remove') {
     target.closest('div').remove();
+  }
+  else if (cmd === 'toggle-note') {
+    target.closest('div').classList.toggle('note');
   }
   else if (cmd === 'save') {
     const sp = document.getElementById('pause-periods').value.split(/\s*,\s*/);
