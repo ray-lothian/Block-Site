@@ -8,6 +8,8 @@
   --hover: light-dark(#f2f6f9, #2a2f3a);
   --link: light-dark(#07c, #6bb3e0);
   --input-bg: light-dark(#fff, #17181a);
+  --note-bg: light-dark(#ffffed, #3e3e34);
+  --note-border: light-dark(#e8ec3a, #6f6f6c);
 }
 
 * {
@@ -99,6 +101,16 @@ body {
 .row:hover {
   background: var(--hover);
 }
+.warning {
+  text-align: center;
+  padding: 10px;
+  background-color: var(--note-bg);
+  border-bottom: solid 2px var(--note-border);
+
+  &:empty {
+    display: none;
+  }
+}
 .info {
   min-width: 0;
   display: flex;
@@ -141,3 +153,4 @@ body {
   text-align: center;
   color: var(--muted);
 }
+

@@ -395,6 +395,18 @@
   "bg_msg_29": {
     "message": "Dies ist im Inkognitomodus nicht möglich."
   },
+  "bg_msg_30": {
+    "message": "Alle vorübergehenden Freigabe-Regeln entfernen"
+  },
+  "bg_msg_32": {
+    "message": "Diese Seite ist durch eine vorübergehende Regel freigegeben"
+  },
+  "bg_msg_33": {
+    "message": "Diese Seite ist blockiert"
+  },
+  "bg_msg_34": {
+    "message": "Diese Seite ist nicht blockiert"
+  },
   "pp_msg_1": {
     "message": "opened from '##'"
   }

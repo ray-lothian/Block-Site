@@ -362,3 +362,8 @@ chrome.storage.local.get({
   }
 });
 
+// icon
+post({
+  method: 'change-icon',
+  value: 'blocked'
+});

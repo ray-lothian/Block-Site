@@ -481,6 +481,21 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
       chrome.tabs.remove(sender.tab.id);
     }
   }
+  else if (request.method === 'change-icon') {
+    chrome.action.setIcon({
+      tabId: sender.tab.id,
+      path: {
+        '16': '/data/icons/' + request.value + '/16.png',
+        '32': '/data/icons/' + request.value + '/32.png'
+      }
+    });
+    if (request.value === 'blocked') {
+      chrome.action.setTitle({
+        tabId: sender.tab.id,
+        title: chrome.i18n.getMessage('bg_msg_33')
+      });
+    }
+  }
 });
 
 /* release open once */

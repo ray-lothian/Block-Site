@@ -192,7 +192,27 @@ chrome.storage.onChanged.addListener(ps => {
   }
 });
 
+// is this site unblocked by a session rule
+const warning = async () => {
+  if (!currentTab || !currentTab.url) {
+    return;
+  }
+
+  const rules = await chrome.declarativeNetRequest.getSessionRules();
+  for (const rule of rules) {
+    try {
+      if (new RegExp(rule.condition.regexFilter, 'i').test(currentTab.url)) {
+        document.getElementById('warning').textContent = chrome.i18n.getMessage('bg_msg_31');
+        return;
+      }
+    }
+    catch (e) {}
+  }
+};
+
 chrome.tabs.query({active: true, currentWindow: true}, tabs => {
   currentTab = tabs && tabs[0];
   render();
+  warning();
 });
+
