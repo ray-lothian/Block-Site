@@ -42,6 +42,7 @@ const DEFAULTS = {
   'title': true,
   'reverse': false,
   'no-password-on-add': false,
+  'no-password-on-unlock': false,
   'map': {},
   'schedule': {
     time: { // deprecated
@@ -258,6 +259,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('schedule-offset').dispatchEvent(new Event('input'));
   document.getElementById('reverse').checked = prefs.reverse;
   document.getElementById('no-password-on-add').checked = prefs['no-password-on-add'];
+  document.getElementById('no-password-on-unlock').checked = prefs['no-password-on-unlock'];
   document.getElementById('timeout').value = prefs.timeout;
   document.getElementById('unlock-periods').value = prefs['unlock-periods'].join(', ');
   rebuildUnlockDefault(String(prefs['unlock-default']));
@@ -422,6 +424,7 @@ document.addEventListener('click', e => {
         'schedule-offset': Number(document.getElementById('schedule-offset').value),
         'reverse': document.getElementById('reverse').checked,
         'no-password-on-add': document.getElementById('no-password-on-add').checked,
+        'no-password-on-unlock': document.getElementById('no-password-on-unlock').checked,
         'redirect': document.getElementById('redirect').value,
         'message': document.getElementById('message').value,
         'css': document.getElementById('css').value,

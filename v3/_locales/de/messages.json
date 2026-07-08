@@ -170,6 +170,9 @@
   "options_no_pass_on_add": {
     "message": "Nicht nach dem Hauptasswort fragen, um einen neuen Hostnamen zu blockieren"
   },
+  "options_no_pass_on_unlock": {
+    "message": "Nicht nach dem Hauptpasswort fragen, um eine gesperrte Seite vorübergehend freizugeben"
+  },
   "options_disable_actions_options": {
     "message": "Kontextmenü auf dieser Seite blockieren"
   },

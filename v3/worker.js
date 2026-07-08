@@ -321,6 +321,7 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
   else if (request.method === 'open-once') {
     chrome.storage.local.get({
       'timeout': 60, // seconds; default unlock duration
+      'no-password-on-unlock': false,
       'sha256': '', // sha256 hash code of the user password
       'password': '' // deprecated
     }).then(prefs => {
@@ -340,9 +341,10 @@ chrome.runtime.onMessage.addListener((request, sender, response) => {
         }
       };
 
-      if (prefs.password === '' && prefs.sha256 === '') {
-        response(false);
-        notify(translate('bg_msg_3'));
+      // the master password is optional: unlock straight away when none is
+      // set, or when the user opted out of the unlock prompt
+      if ((prefs.password === '' && prefs.sha256 === '') || prefs['no-password-on-unlock']) {
+        next();
       }
       else {
         sha256.validate(request, next, msg => {
