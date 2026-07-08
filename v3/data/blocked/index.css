@@ -34,6 +34,7 @@ html.dark body {
   background-blend-mode: luminosity;
 }
 
+#note,
 #rule {
   color: var(--input-fg);
   background-color: var(--input-bg);
@@ -45,6 +46,9 @@ html.dark body {
   box-sizing: border-box;
   width: 100%;
   max-width: 420px;
+}
+#note {
+  resize: vertical;
 }
 
 @media screen and (max-height: 400px) {

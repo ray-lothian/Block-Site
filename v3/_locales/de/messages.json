@@ -12,7 +12,7 @@
     "message": "Weiterleiten nach:"
   },
   "options_user_message": {
-    "message": "Benutzernachricht:"
+    "message": "Benutzernachricht (wird auf jeder Sperrseite angezeigt – für einen Hinweis pro Seite die Notiz verwenden):"
   },
   "options_custom_css": {
     "message": "Angepasstes CSS:"
@@ -76,6 +76,9 @@
   },
   "options_remove": {
     "message": "Entfernen"
+  },
+  "options_note": {
+    "message": "Notiz für die Sperrseite (optional)"
   },
   "options_rate": {
     "message": "Bewerten Sie uns"
@@ -283,6 +286,12 @@
   },
   "blocked_counter": {
     "message": "Anzahl Blockierungen"
+  },
+  "blocked_note": {
+    "message": "Notiz"
+  },
+  "blocked_note_ph": {
+    "message": "Notiz für diese Seite hinzufügen …"
   },
   "blocked_master_password": {
     "message": "Bitte Hauptpasswort eingeben und dann die Eingabetaste drücken, um die Blockade zu unterbrechen."

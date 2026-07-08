@@ -103,9 +103,10 @@ function add(hostname) {
     node.querySelector('[data-id=date]').textContent = getRelativeTime(d);
   }
 
-  const rd = node.querySelector('input');
+  const rd = node.querySelector('[data-id=redirect]');
   rd.value = prefs.map[hostname] || '';
   // rd.disabled = hostname.indexOf('*') !== -1;
+  node.querySelector('[data-id=note]').value = prefs.notes[hostname]?.note || '';
   node.querySelector('[data-cmd="remove"]').value = chrome.i18n.getMessage('options_remove');
   document.getElementById('rules-container').appendChild(node);
   list.dataset.visible = true;
@@ -439,12 +440,20 @@ document.addEventListener('click', e => {
           .map(tr => tr.dataset.hostname)
           .filter((s, i, l) => s && l.indexOf(s) === i),
         'notes': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
-          p[c.dataset.hostname] = JSON.parse(c.dataset.note);
+          const o = JSON.parse(c.dataset.note);
+          const note = c.querySelector('[data-id=note]').value.trim();
+          if (note) {
+            o.note = note;
+          }
+          else {
+            delete o.note;
+          }
+          p[c.dataset.hostname] = o;
           return p;
         }, {}),
         'map': [...document.querySelectorAll('#rules-container > div')].reduce((p, c) => {
           const {hostname} = c.dataset;
-          const mapped = c.querySelector('input[type=text]').value;
+          const mapped = c.querySelector('[data-id=redirect]').value;
           if (mapped) {
             p[hostname] = mapped;
           }
