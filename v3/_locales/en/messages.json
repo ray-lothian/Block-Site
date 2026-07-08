@@ -98,6 +98,9 @@
   "options_blocing_options_header": {
     "message": "Blocking Options"
   },
+  "options_password_options_header": {
+    "message": "Password Options"
+  },
   "options_list_header": {
     "message": "Existing Rules"
   },
