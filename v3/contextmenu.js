@@ -7,7 +7,8 @@ const buildContext = () => chrome.storage.local.get({
   'contextmenu-resume': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
-  'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1]
+  'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
+  'blocked': []
 }, prefs => {
   chrome.contextMenus.create({
     title: translate('bg_msg_5'),
@@ -49,6 +50,59 @@ const buildContext = () => chrome.storage.local.get({
       contexts: ['action'],
       parentId: 'pause'
     }, () => chrome.runtime.lastError);
+  }
+
+  chrome.contextMenus.create({
+    title: translate('bg_msg_36'),
+    id: 'pause-site',
+    contexts: ['action'],
+    visible: prefs['contextmenu-pause']
+  }, () => chrome.runtime.lastError);
+
+  const hs = prefs.blocked.filter((s, i, l) => s && l.indexOf(s) === i);
+  chrome.contextMenus.update('pause-site', {
+    enabled: hs.length !== 0
+  });
+
+  const limit = 5;
+  const showSeeMore = hs.length > limit;
+  const mainList = showSeeMore ? hs.slice(0, limit) : hs;
+  const moreList = showSeeMore ? hs.slice(limit) : [];
+
+  const addHostMenu = (host, parentId) => {
+    const hostMenuId = 'pause-site-host-' + host;
+    chrome.contextMenus.create({
+      title: host,
+      id: hostMenuId,
+      contexts: ['action'],
+      parentId: parentId
+    }, () => chrome.runtime.lastError);
+
+    for (const period of prefs['pause-periods']) {
+      chrome.contextMenus.create({
+        title: period === -1 ? translate('options_manual_pause') : read(period),
+        id: `pause-site-period-${period === -1 ? 'NaN' : period}-${host}`,
+        contexts: ['action'],
+        parentId: hostMenuId
+      }, () => chrome.runtime.lastError);
+    }
+  };
+
+  for (const host of mainList) {
+    addHostMenu(host, 'pause-site');
+  }
+
+  if (showSeeMore) {
+    chrome.contextMenus.create({
+      title: translate('bg_msg_37'),
+      id: 'pause-site-see-more',
+      contexts: ['action'],
+      parentId: 'pause-site'
+    }, () => chrome.runtime.lastError);
+
+    for (const host of moreList) {
+      addHostMenu(host, 'pause-site-see-more');
+    }
   }
 
   chrome.contextMenus.create({
@@ -101,6 +155,9 @@ chrome.storage.onChanged.addListener(ps => {
     chrome.contextMenus.update('pause', {
       visible: ps['contextmenu-pause'].newValue
     });
+    chrome.contextMenus.update('pause-site', {
+      visible: ps['contextmenu-pause'].newValue
+    });
   }
   if (ps['contextmenu-resume']) {
     chrome.contextMenus.update('resume', {
@@ -117,7 +174,7 @@ chrome.storage.onChanged.addListener(ps => {
       visible: ps['contextmenu-top'].newValue
     });
   }
-  if (ps['pause-periods']) {
+  if (ps['pause-periods'] || ps['blocked']) {
     chrome.contextMenus.removeAll(buildContext);
   }
 });
@@ -147,6 +204,38 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       .filter(r => r.action?.type === 'allow').map(r => r.id);
     if (removeRuleIds.length) {
       chrome.declarativeNetRequest.updateSessionRules({removeRuleIds});
+    }
+  }
+  else if (info.menuItemId.startsWith('pause-site-period-')) {
+    const rest = info.menuItemId.slice('pause-site-period-'.length);
+    const parts = rest.split('-');
+    const period = parts[0] === 'NaN' ? -1 : Number(parts[0]);
+    const host = parts.slice(1).join('-');
+
+    const resolve = () => {
+      const mode = period === -1 ? {type: 'session'} : {type: 'for', seconds: period * 60};
+      openOnce({host, mode}).catch(e => {
+        console.warn(e);
+        notify(`Cannot apply the pausing rule:
+
+Error: ${e.message}`);
+      });
+    };
+
+    const prefs = await chrome.storage.local.get({
+      'sha256': '',
+      'password': ''
+    });
+
+    if (prefs.password || prefs.sha256) {
+      prompt(translate('bg_msg_12')).then(password => {
+        if (password) {
+          sha256.validate({password}, resolve, msg => notify(msg || translate('bg_msg_2')));
+        }
+      });
+    }
+    else {
+      resolve();
     }
   }
   else if (info.menuItemId.startsWith('pause-')) {

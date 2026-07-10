@@ -374,6 +374,12 @@
   "bg_msg_35": {
     "message": "This page is blocked but accessible via a temporary rule. To proceed, right-click the action button, remove the temporary rule from the context menu, and retry."
   },
+  "bg_msg_36": {
+    "message": "Pause blocking for site"
+  },
+  "bg_msg_37": {
+    "message": "See more..."
+  },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
   },
