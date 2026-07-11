@@ -300,7 +300,6 @@ chrome.tabs.onRemoved.addListener(async closedId => {
       continue;
     }
     if (urls.some(u => re.test(u)) === false) {
-      console.log(urls, rule.condition.regexFilter);
       remove.push(rule.id);
     }
   }

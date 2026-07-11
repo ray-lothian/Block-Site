@@ -1,4 +1,4 @@
-/* global translate, notify, sha256, userAction */
+/* global translate, notify, sha256, userAction, openOnce */
 
 const isFF = /Firefox/.test(navigator.userAgent);
 
@@ -189,6 +189,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       .filter(r => r.action?.type === 'allow').map(r => r.id);
     if (removeRuleIds.length) {
       chrome.declarativeNetRequest.updateSessionRules({removeRuleIds});
+    }
+    for (const alarm of await chrome.alarms.getAll()) {
+      if (alarm.name.startsWith('release.once')) {
+        chrome.alarms.clear(alarm.name);
+      }
     }
   }
   else if (info.menuItemId.startsWith('pause-site-period-')) {
