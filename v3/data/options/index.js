@@ -58,9 +58,11 @@ const DEFAULTS = {
   'initialBlockCurrent': true,
   'contextmenu-resume': true,
   'contextmenu-pause': true,
+  'contextmenu-remove-temporary': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
+  'per-site-pause-max-size': 30,
   'disable-actions-options': true,
   'disable-actions-page': true,
   'notification': true,
@@ -281,6 +283,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
 
   document.getElementById('contextmenu-resume').checked = prefs['contextmenu-resume'];
   document.getElementById('contextmenu-pause').checked = prefs['contextmenu-pause'];
+  document.getElementById('contextmenu-remove-temporary').checked = prefs['contextmenu-remove-temporary'];
   document.getElementById('contextmenu-frame').checked = prefs['contextmenu-frame'];
   document.getElementById('contextmenu-top').checked = prefs['contextmenu-top'];
 
@@ -299,6 +302,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('mode-frame').value = localStorage.getItem('mode-frame') || 'simple'; // 'simple'
 
   document.getElementById('pause-periods').value = prefs['pause-periods'].join(', ');
+  document.getElementById('per-site-pause-max-size').value = prefs['per-site-pause-max-size'];
 
   // disable contextmenu
   document.oncontextmenu = prefs['disable-actions-options'] ? e => {
@@ -469,6 +473,8 @@ document.addEventListener('click', e => {
         }, {}),
         'contextmenu-resume': document.getElementById('contextmenu-resume').checked,
         'contextmenu-pause': document.getElementById('contextmenu-pause').checked,
+        'contextmenu-remove-temporary': document.getElementById('contextmenu-remove-temporary').checked,
+        'per-site-pause-max-size': Math.max(0, document.getElementById('per-site-pause-max-size').valueAsNumber),
         'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
         'contextmenu-top': document.getElementById('contextmenu-top').checked,
 

@@ -5,10 +5,12 @@ const isFF = /Firefox/.test(navigator.userAgent);
 const buildContext = () => chrome.storage.local.get({
   'contextmenu-pause': true,
   'contextmenu-resume': true,
+  'contextmenu-remove-temporary': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
-  'blocked': []
+  'blocked': [],
+  'per-site-pause-max-size': 30
 }, prefs => {
   chrome.contextMenus.create({
     title: translate('bg_msg_5'),
@@ -52,56 +54,34 @@ const buildContext = () => chrome.storage.local.get({
     }, () => chrome.runtime.lastError);
   }
 
-  chrome.contextMenus.create({
-    title: translate('bg_msg_36'),
-    id: 'pause-site',
-    contexts: ['action'],
-    visible: prefs['contextmenu-pause']
-  }, () => chrome.runtime.lastError);
-
-  const hs = prefs.blocked.filter((s, i, l) => s && l.indexOf(s) === i);
-  chrome.contextMenus.update('pause-site', {
-    enabled: hs.length !== 0
-  });
-
-  const limit = 5;
-  const showSeeMore = hs.length > limit;
-  const mainList = showSeeMore ? hs.slice(0, limit) : hs;
-  const moreList = showSeeMore ? hs.slice(limit) : [];
-
-  const addHostMenu = (host, parentId) => {
-    const hostMenuId = 'pause-site-host-' + host;
+  // Pause Per site
+  const rules = prefs.blocked.filter((s, i, l) => s && l.indexOf(s) === i).slice(0, prefs['per-site-pause-max-size']);
+  if (rules.length > 0) {
     chrome.contextMenus.create({
-      title: host,
-      id: hostMenuId,
+      title: translate('bg_msg_36'),
+      id: 'pause-site',
       contexts: ['action'],
-      parentId: parentId
+      visible: prefs['contextmenu-pause'],
+      enabled: rules.length !== 0
     }, () => chrome.runtime.lastError);
 
-    for (const period of prefs['pause-periods']) {
+    for (const host of rules) {
+      const hostMenuId = 'pause-site-host-' + host;
       chrome.contextMenus.create({
-        title: period === -1 ? translate('options_manual_pause') : read(period),
-        id: `pause-site-period-${period === -1 ? 'NaN' : period}-${host}`,
+        title: host,
+        id: hostMenuId,
         contexts: ['action'],
-        parentId: hostMenuId
+        parentId: 'pause-site'
       }, () => chrome.runtime.lastError);
-    }
-  };
 
-  for (const host of mainList) {
-    addHostMenu(host, 'pause-site');
-  }
-
-  if (showSeeMore) {
-    chrome.contextMenus.create({
-      title: translate('bg_msg_37'),
-      id: 'pause-site-see-more',
-      contexts: ['action'],
-      parentId: 'pause-site'
-    }, () => chrome.runtime.lastError);
-
-    for (const host of moreList) {
-      addHostMenu(host, 'pause-site-see-more');
+      for (const period of prefs['pause-periods']) {
+        chrome.contextMenus.create({
+          title: period === -1 ? translate('options_manual_pause') : read(period),
+          id: `pause-site-period-${period === -1 ? 'NaN' : period}-${host}`,
+          contexts: ['action'],
+          parentId: hostMenuId
+        }, () => chrome.runtime.lastError);
+      }
     }
   }
 
@@ -115,7 +95,7 @@ const buildContext = () => chrome.storage.local.get({
     title: translate('bg_msg_30'),
     id: 'remove-session-rules',
     contexts: ['action'],
-    visible: prefs['contextmenu-resume']
+    visible: prefs['contextmenu-remove-temporary']
   }, () => chrome.runtime.lastError);
   if (isFF) {
     chrome.contextMenus.create({
@@ -164,6 +144,11 @@ chrome.storage.onChanged.addListener(ps => {
       visible: ps['contextmenu-resume'].newValue
     });
   }
+  if (ps['contextmenu-remove-temporary']) {
+    chrome.contextMenus.update('remove-session-rules', {
+      visible: ps['contextmenu-remove-temporary'].newValue
+    });
+  }
   if (ps['contextmenu-frame']) {
     chrome.contextMenus.update('frame', {
       visible: ps['contextmenu-frame'].newValue
@@ -174,7 +159,7 @@ chrome.storage.onChanged.addListener(ps => {
       visible: ps['contextmenu-top'].newValue
     });
   }
-  if (ps['pause-periods'] || ps['blocked']) {
+  if (ps['pause-periods'] || ps['blocked'] || ps['per-site-pause-max-size']) {
     chrome.contextMenus.removeAll(buildContext);
   }
 });

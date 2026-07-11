@@ -144,10 +144,19 @@
       <input type="checkbox" id="contextmenu-resume">&nbsp;
       <label for="contextmenu-resume"><span data-i18n="options_contextmenu_resume"></span></label>
     </div>
+    <div hbox class="space" align="center">
+      <input type="checkbox" id="contextmenu-remove-temporary">&nbsp;
+      <label for="contextmenu-remove-temporary"><span data-i18n="options_contextmenu_remove_temporary"></span></label>
+    </div>
     <div hbox align="center" class="space gap">
       <span data-i18n="options_contextmenu_periods"></span>
       <input type="text" value="1, 2, 4" id="pause-periods" flex="1">
     </div>
+    <div hbox align="center" class="space gap">
+      <span data-i18n="options_per_site_pause_max_size"></span>
+      <input type="number" id="per-site-pause-max-size" min=0>
+    </div>
+
     <div hbox class="space" align="center">
       <input type="checkbox" id="contextmenu-top">&nbsp;
       <label for="contextmenu-top"><span data-i18n="options_contextmenu_top"></span></label>
@@ -243,8 +252,8 @@
     <input type="checkbox" id="title">&nbsp;
     <label flex="1" for="title"><span data-i18n="options_resolve"></span></label>
   </div>
-  <div vbox>
-    <span data-i18n="options_close_blocked" class="space"></span>
+  <div hbox align="center" class="space gap">
+    <span data-i18n="options_close_blocked"></span>
     <div>
       <input type="number" min="0" id="close" required>
       <span data-i18n="options_close_msg_blocked"></span>

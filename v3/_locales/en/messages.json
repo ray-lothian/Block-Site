@@ -39,7 +39,7 @@
     "message": "Block password check when wrong password is entered multiple times (in minutes)"
   },
   "options_close_blocked": {
-    "message": "Close after (seconds):"
+    "message": "Close after (seconds)"
   },
   "options_close_msg_blocked": {
     "message": "(use zero for no automatic closing)"
@@ -165,10 +165,13 @@
     "message": "Instruction"
   },
   "options_contextmenu_pause": {
-    "message": "Show pause context menu option on browser action's context"
+    "message": "Show \"Pause Blocking\" context menu on browser action's context"
   },
   "options_contextmenu_resume": {
-    "message": "Show resume context menu option on browser action's context"
+    "message": "Show \"Resume Blocking\" context menu option on browser action's context"
+  },
+  "options_contextmenu_remove_temporary": {
+    "message": "Show \"Remove All Temporary Unblocking Rules\" context menu option on browser action's context"
   },
   "options_contextmenu_top": {
     "message": "Show \"(Un)Block this Page\" context menu option on page context"
@@ -232,6 +235,9 @@
   },
   "options_contextmenu_periods": {
     "message": "Pause Periods (in minutes)"
+  },
+  "options_per_site_pause_max_size": {
+    "message": "Max number of \"Pause Blocking Per Rule\" context menu items"
   },
   "options_incognito": {
     "message": "Options page is not available on the incognito context"
@@ -375,10 +381,7 @@
     "message": "This page is blocked but accessible via a temporary rule. To proceed, right-click the action button, remove the temporary rule from the context menu, and retry."
   },
   "bg_msg_36": {
-    "message": "Pause blocking for site"
-  },
-  "bg_msg_37": {
-    "message": "See more..."
+    "message": "Pause Blocking Per Rule"
   },
   "bg_msg_12": {
     "message": "Please enter the master password to pause blocking"
