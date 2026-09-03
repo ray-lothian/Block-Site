@@ -227,8 +227,8 @@
   "options_popup": {
     "message": "Beim Klick auf das Symbol in der Symbolleiste eine Übersicht der gesperrten Seiten anzeigen (sonst sperrt ein Klick die aktuelle Seite)"
   },
-  "popup_options": {
-    "message": "Einstellungen"
+  "popup_options_page": {
+    "message": "Einstellungsseite"
   },
   "popup_filter": {
     "message": "Gesperrte Seiten filtern…"
@@ -245,8 +245,20 @@
   "popup_block": {
     "message": "Diese URL sperren"
   },
+  "popup_block_domain": {
+    "message": "Diese Domain sperren"
+  },
   "popup_unblock": {
     "message": "Diese URL freigeben"
+  },
+  "popup_unblock_domain": {
+    "message": "Diese Domain freigeben"
+  },
+  "popup_switch_domain": {
+    "message": "Zur Domain wechseln"
+  },
+  "popup_switch_url": {
+    "message": "Zur URL wechseln"
   },
   "popup_toggle": {
     "message": "Diese Seite (nicht mehr) sperren"

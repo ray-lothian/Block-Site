@@ -62,7 +62,7 @@ const DEFAULTS = {
   'contextmenu-frame': true,
   'contextmenu-top': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
-  'per-site-pause-max-size': 30,
+  'per-site-pause-max-size': 10,
   'disable-actions-options': true,
   'disable-actions-page': true,
   'notification': true,

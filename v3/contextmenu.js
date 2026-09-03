@@ -10,7 +10,7 @@ const buildContext = () => chrome.storage.local.get({
   'contextmenu-top': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
   'blocked': [],
-  'per-site-pause-max-size': 30
+  'per-site-pause-max-size': 10
 }, prefs => {
   chrome.contextMenus.create({
     title: translate('bg_msg_5'),

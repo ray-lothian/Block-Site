@@ -251,8 +251,8 @@
   "options_manual_pause": {
     "message": "Forever"
   },
-  "popup_options": {
-    "message": "Options"
+  "popup_options_page": {
+    "message": "Options Page"
   },
   "popup_filter": {
     "message": "Filter blocked sites…"
@@ -269,8 +269,20 @@
   "popup_block": {
     "message": "Block this URL"
   },
+  "popup_block_domain": {
+    "message": "Block this Domain"
+  },
   "popup_unblock": {
     "message": "Unblock this URL"
+  },
+  "popup_unblock_domain": {
+    "message": "Unblock this Domain"
+  },
+  "popup_switch_domain": {
+    "message": "Switch to Domain"
+  },
+  "popup_switch_url": {
+    "message": "Switch to URL"
   },
   "popup_toggle": {
     "message": "(Un)block this site"

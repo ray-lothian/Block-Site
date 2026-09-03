@@ -29,51 +29,47 @@ body {
 
 #current {
   display: grid;
-  grid-template-columns: 1fr min-content min-content;
+  grid-template-columns: 1fr;
   gap: 8px;
-  align-items: center;
   padding: 10px;
-  border-bottom: solid 1px var(--border);
 }
 #host {
   font-weight: bold;
+  font-size: 14px;
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-#toggle {
+#toggle, #mode, #options {
   cursor: pointer;
   white-space: nowrap;
-  padding: 5px 10px;
   border: solid 1px var(--border);
   background: var(--input-bg);
   color: var(--fg);
   border-radius: 3px;
 }
+#toggle {
+  width: 100%;
+  padding-block: 15px;
+}
 #toggle.block {
   font-weight: bold;
 }
-#toggle:disabled {
+#toggle:disabled, #mode:disabled {
   opacity: 0.4;
   cursor: default;
 }
-#options {
-  text-decoration: none;
-  color: var(--link);
-  width: 24px;
-  aspect-ratio: 1 / 1;
-  background-image: url("images/settings.svg");
-  opacity: 0.6;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    & {
-      filter: invert(1);
-    }
-  }
+#actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 10px 10px;
+  border-bottom: solid 5px var(--border);
+}
+#mode, #options {
+  font-size: 12px;
+  padding: 8px 10px;
 }
 
 #filter {

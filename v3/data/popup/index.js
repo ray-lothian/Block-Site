@@ -8,6 +8,9 @@
 
 const send = o => new Promise(resolve => chrome.runtime.sendMessage(o, resolve));
 
+const modeBtn = document.getElementById('mode');
+let domainMode = true; // kept in sync with the persisted 'popup-domain' pref
+
 let currentTab = null;
 let currentMatches = []; // blocked rules whose pattern matches the current URL
 
@@ -40,6 +43,42 @@ const computeMatches = async (blocked, url) => {
   });
 };
 
+// the hostname a blocked pattern is pinned to; null when it cannot be
+// attributed (regex rules, loose wildcards like "*google*")
+const ruleHost = h => {
+  if (h.startsWith('R:')) {
+    return null;
+  }
+  let body = h.split('://').pop().split('/')[0]; // drop scheme and path
+  if (body.startsWith('*.')) {
+    body = body.slice(2); // "*.domain" wildcards behave like the domain itself
+  }
+  return body.includes('*') ? null : body;
+};
+
+// blocked rules that belong to the given domain: their pinned host is the
+// domain itself or one of its subdomains; unattributable rules (regex or
+// loose wildcards) count in when their pattern matches the domain's homepage
+const rulesForDomain = async (blocked, domain) => {
+  if (!domain || blocked.length === 0) {
+    return [];
+  }
+  const rules = await send({method: 'convert', hosts: blocked});
+  const probes = [`https://${domain}/`, `http://${domain}/`];
+  return blocked.filter((h, i) => {
+    const host = ruleHost(h);
+    if (host) {
+      return host === domain || host.endsWith('.' + domain);
+    }
+    try {
+      return probes.some(p => new RegExp(rules[i].expression, 'i').test(p));
+    }
+    catch (e) {
+      return false;
+    }
+  });
+};
+
 // a blocking rule for a url's path (on the homepage the path is "/" -> whole site)
 const ruleForUrl = url => {
   try {
@@ -51,22 +90,42 @@ const ruleForUrl = url => {
   }
 };
 
-// block the current URL straight away; the tab is reloaded onto the blocked page
+// the registrable domain (eTLD+1) of a url; falls back to the hostname
+// (e.g. localhost or IP addresses where the public-suffix list has no answer)
+const domainFor = url => {
+  try {
+    return tld.getDomain(url) || new URL(url).hostname;
+  }
+  catch (e) {
+    return '';
+  }
+};
+
+// block the current URL or, in domain mode, the whole registrable domain
+// (convert() compiles a bare domain into a regex that matches the domain,
+// all its subdomains and every path)
 const blockCurrent = () => {
-  const host = ruleForUrl(effective().url);
+  const {url} = effective();
+  const host = domainMode ? domainFor(url) : ruleForUrl(url);
   if (!host) {
     return;
   }
   chrome.runtime.sendMessage({method: 'block-host', host, tabId: currentTab.id}, () => window.close());
 };
 
-// permanently unblock the current URL (remove its rule[s])
+// permanently unblock the current URL or, in domain mode, every rule of its
+// domain (remove-hosts drops the rules and their notes)
 const unblockCurrent = async () => {
   if (currentMatches.length === 0) {
     return;
   }
-  const {onBlockedPage} = effective();
-  const ok = await send({method: 'remove-hosts', hosts: currentMatches});
+  const {url, onBlockedPage} = effective();
+  let hosts = currentMatches;
+  if (domainMode) {
+    const {blocked} = await chrome.storage.local.get({blocked: []});
+    hosts = [...new Set([...currentMatches, ...await rulesForDomain(blocked, domainFor(url))])];
+  }
+  const ok = await send({method: 'remove-hosts', hosts});
   if (!ok) {
     return;
   }
@@ -75,7 +134,7 @@ const unblockCurrent = async () => {
     window.close();
   }
   else {
-    render(); // flip the button back to "Block this URL"
+    render(); // flip the button back to its block label
   }
 };
 
@@ -92,22 +151,25 @@ const updateToggle = prefs => {
   const usable = /^https?:/.test(url || '');
   let host = null;
   try {
-    host = usable ? new URL(url).hostname : null;
+    // in domain mode display the registrable domain (www.google.com -> google.com)
+    host = usable ? (domainMode ? domainFor(url) : new URL(url).hostname) : null;
   }
   catch (e) {}
 
   document.getElementById('host').textContent = host || chrome.i18n.getMessage('popup_no_site');
   btn.disabled = !usable;
+  modeBtn.disabled = !usable;
+  modeBtn.value = chrome.i18n.getMessage(domainMode ? 'popup_switch_url' : 'popup_switch_domain');
   btn.title = '';
   btn.classList.remove('block');
   if (!usable) {
-    btn.value = chrome.i18n.getMessage('popup_block');
+    btn.value = chrome.i18n.getMessage(domainMode ? 'popup_block_domain' : 'popup_block');
     return;
   }
   if (prefs.reverse) {
     if (currentMatches.length) {
       // explicitly allowed in reverse mode; the action removes that allow entry
-      btn.value = chrome.i18n.getMessage('popup_block');
+      btn.value = chrome.i18n.getMessage(domainMode ? 'popup_block_domain' : 'popup_block');
       btn.onclick = blockCurrent;
       btn.classList.add('block');
     }
@@ -121,18 +183,25 @@ const updateToggle = prefs => {
     }
   }
   else if (currentMatches.length) {
-    btn.value = chrome.i18n.getMessage('popup_unblock');
+    btn.value = chrome.i18n.getMessage(domainMode ? 'popup_unblock_domain' : 'popup_unblock');
     btn.onclick = unblockCurrent;
   }
   else {
-    btn.value = chrome.i18n.getMessage('popup_block');
+    btn.value = chrome.i18n.getMessage(domainMode ? 'popup_block_domain' : 'popup_block');
     btn.onclick = blockCurrent;
     btn.classList.add('block');
   }
 };
 
 const render = async () => {
-  const prefs = await chrome.storage.local.get({blocked: [], notes: {}, reverse: false});
+  const prefs = await chrome.storage.local.get({
+    blocked: [],
+    notes: {},
+    reverse: false,
+    'popup-domain': true // domain mode is on by default
+  });
+  // restore the persisted mode on every render (e.g. popup reopen)
+  domainMode = prefs['popup-domain'];
   // recompute on every render so the toggle flips right after a block/unblock
   currentMatches = await computeMatches(prefs.blocked, effective().url);
   updateToggle(prefs);
@@ -179,6 +248,11 @@ const render = async () => {
 };
 
 document.getElementById('filter').addEventListener('input', render);
+
+// toggle URL/domain mode; persist first, then re-render so all labels follow
+modeBtn.addEventListener('click', () => {
+  chrome.storage.local.set({'popup-domain': !domainMode}, () => render());
+});
 document.getElementById('options').addEventListener('click', e => {
   e.preventDefault();
   chrome.runtime.openOptionsPage();
