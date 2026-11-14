@@ -30,7 +30,6 @@ const schedule = {
       for (const [day, arr] of Object.entries(value.times)) {
         for (const o of arr) {
           const base = new Date();
-          const ofsb = base.getTimezoneOffset();
           // apply offset to the base date so the weekday and time are in the
           // offset-adjusted frame
           base.setTime(
@@ -64,12 +63,6 @@ const schedule = {
           end.setTime(
             end.getTime() - prefs['schedule-offset'] * 60 * 1000
           );
-
-          // consider timezone changes
-          const ofsa = start.getTimezoneOffset();
-          start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
-          const ofsbEnd = end.getTimezoneOffset();
-          end.setTime(end.getTime() + (ofsb - ofsbEnd) * 60 * 1000);
 
           if (start.getTime() < now && end.getTime() < now) {
             start.setDate(start.getDate() + 7);
