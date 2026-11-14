@@ -108,6 +108,70 @@ chrome.storage.onChanged.addListener(prefs => {
   chrome.runtime.onInstalled.addListener(once);
 }
 
+/* recompute weekly alarms when the timezone offset changes */
+{
+  const ALARM = 'timezone-offset-check';
+  const KEY = 'schedule-last-timezone-offset';
+
+  const nextMidnight = () => {
+    const date = new Date();
+    date.setHours(24, 0, 0, 0);
+    return date.getTime();
+  };
+  const arm = () => chrome.alarms.create(ALARM, {
+    when: nextMidnight()
+  });
+
+  const check = async () => {
+    try {
+      const offset = new Date().getTimezoneOffset();
+      const prefs = await chrome.storage.local.get({
+        [KEY]: null
+      });
+      if (prefs[KEY] !== null && prefs[KEY] !== offset) {
+        await schedule.update();
+      }
+      await chrome.storage.local.set({
+        [KEY]: offset
+      });
+    }
+    catch (e) {
+      console.warn('Cannot check the timezone offset', e);
+    }
+    finally {
+      arm();
+    }
+  };
+
+  chrome.alarms.onAlarm.addListener(o => {
+    if (o.name === ALARM) {
+      check();
+    }
+  });
+
+  {
+    const once = async () => {
+      if (once.done) {
+        return;
+      }
+      once.done = true;
+      try {
+        await chrome.storage.local.set({
+          [KEY]: new Date().getTimezoneOffset()
+        });
+      }
+      catch (e) {
+        console.warn('Cannot store the timezone offset', e);
+      }
+      finally {
+        arm();
+      }
+    };
+    chrome.runtime.onStartup.addListener(once);
+    chrome.runtime.onInstalled.addListener(once);
+  }
+}
+
 const schTMPIds = {}; // in case more than one schedule fired
 chrome.alarms.onAlarm.addListener(async o => {
   if (o.name.startsWith('schedule.') === false) {
