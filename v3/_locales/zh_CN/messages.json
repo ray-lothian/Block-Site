@@ -187,5 +187,44 @@
   },
   "bg_msg_12": {
     "message": "请输入管理员密码以暂停封锁"
+  },
+  "options_tab_blocking_rules": {
+    "message": "拦截规则"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "管理要拦截的主机名和规则。"
+  },
+  "options_tab_schedule": {
+    "message": "时间表"
+  },
+  "options_tab_schedule_desc": {
+    "message": "设置暂时解除拦截的日期和时间。"
+  },
+  "options_tab_behavior": {
+    "message": "行为"
+  },
+  "options_tab_behavior_desc": {
+    "message": "控制启动拦截、右键菜单操作、暂停和通知。"
+  },
+  "options_tab_unlocking": {
+    "message": "解锁"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "选择被拦截网站的访问时长和便捷程度。"
+  },
+  "options_tab_blocked_page": {
+    "message": "拦截页面"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "自定义网站被拦截时显示的页面。"
+  },
+  "options_tab_tools": {
+    "message": "工具"
+  },
+  "options_tab_tools_desc": {
+    "message": "备份或恢复偏好设置、预览拦截效果并获取支持。"
+  },
+  "options_intro": {
+    "message": "更改通过页面底部的“保存”按钮保存。如果您是新用户，请访问页面并点击操作按钮来拦截新网站（安装后它位于扩展程序菜单中）。无需手动创建规则。"
   }
 }

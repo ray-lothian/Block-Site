@@ -189,7 +189,7 @@
     "message": "Basit"
   },
   "options_intro": {
-    "message": "Seçenekleri kaydetmek veya bir ana parola belirlemek için aşağı kaydırın. Yeniyseniz, sayfayı ziyaret edip eylem düğmesine tıklayarak yeni web sitelerini engelleyin (kurulumdan sonra uzantılar menüsündedir). Manuel olarak yeni kurallar oluşturmanıza gerek yok."
+    "message": "Değişiklikler sayfanın altındaki Kaydet düğmesiyle kaydedilir. Yeniyseniz, sayfayı ziyaret edip eylem düğmesine tıklayarak yeni web sitelerini engelleyin (kurulumdan sonra uzantılar menüsündedir). Manuel olarak yeni kurallar oluşturmanıza gerek yok."
   },
   "options_sch_helper_1": {
     "message": "Aşağıdaki engellenen saatler için engellemeyi kaldırma dönemleri oluşturun"
@@ -316,5 +316,41 @@
   },
   "pp_msg_1": {
     "message": "'##' adresinden açıldı"
+  },
+  "options_tab_blocking_rules": {
+    "message": "Engelleme Kuralları"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "Engellenen ana bilgisayar adlarını ve kalıpları yönetin."
+  },
+  "options_tab_schedule": {
+    "message": "Zamanlama"
+  },
+  "options_tab_schedule_desc": {
+    "message": "Engellemenin geçici olarak kaldırıldığı günleri ve saatleri ayarlayın."
+  },
+  "options_tab_behavior": {
+    "message": "Davranış"
+  },
+  "options_tab_behavior_desc": {
+    "message": "Başlangıç engellemesini, bağlam menüsü işlemlerini, duraklatmaları ve bildirimleri kontrol edin."
+  },
+  "options_tab_unlocking": {
+    "message": "Kilidi Açma"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "Engellenen sitelere ne kadar süreyle ve ne kolaylıkla erişilebileceğini seçin."
+  },
+  "options_tab_blocked_page": {
+    "message": "Engellenen Sayfa"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "Bir site engellendiğinde gösterilen sayfayı özelleştirin."
+  },
+  "options_tab_tools": {
+    "message": "Araçlar"
+  },
+  "options_tab_tools_desc": {
+    "message": "Tercihleri yedekleyin veya geri yükleyin, engellemeyi önizleyin ve destek alın."
   }
 }

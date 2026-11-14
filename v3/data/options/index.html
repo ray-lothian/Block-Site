@@ -7,327 +7,373 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <div class="admin" data-i18n="options_intro"></div>
-  <!-- block -->
-  <div class="header">
-    <h1 style="margin-top: 0;">
-      <a data-href="faq3" target="_blank" data-i18n="options_block_header"></a>
-    </h1>
-    <details>
-      <summary data-i18n="options_instruction"></summary>
-      <span data-i18n="options_sup_6"></span>
-    </details>
-  </div>
-  <span data-i18n="options_new_hostname" class="space"></span>
-  <form hbox align=center id="add">
-    <input type="text" name="hostname" flex="1" placeholder="e.g.: www.google.com">
-    &nbsp;
-    <input type="submit" data-i18n-value="value" data-i18n="options_add">
-  </form>
-  <!-- list -->
-  <div id="list" data-visible=false>
-    <h1>
-      <span data-i18n="options_list_header"></span>
-      <a href="#" class="btn" id="remove-all" data-i18n="options_remove_all"></a>
-    </h1>
-    <template>
-      <div>
-        <span title="Click to insert the rule" data-id="href">HTTP://</span>
-        <input type="text" data-id="redirect" flex="1" placeholder="Optional redirect URL or 'close' keyword." title="Backslash-escaped digits (\1 to \9) can be used to insert the corresponding capture groups. Adding capture groups to the generated URL might cause it to match the blocking rule again, potentially leading to multiple redirects. Use caution.">
-        <span data-id="date">-</span>
-        <section>
-          <input type="button" data-cmd="toggle-note">
-          <input type="button" data-cmd="remove">
-        </section>
-        <textarea data-id="note" class="note" data-i18n="options_note" data-i18n-value="placeholder"></textarea>
-      </div>
-    </template>
-    <div id="rules-container"></div>
-  </div>
-  <!-- schedule -->
-  <div class="header">
-    <h1>
-      <a data-href="faq12" target="_blank" data-i18n="options_schedule_header"></a>
-    </h1>
-    <details>
-      <summary data-i18n="options_instruction"></summary>
-      <span data-i18n="options_sup_11"></span>
-    </details>
-  </div>
-  <form id="schedule-helper">
-    <p data-i18n="options_sch_helper_1"></p>
-    <div>
-      From
-      <input type="time" name="start" required>
-      To
-      <input data-id="Mon" type="time" name="end" required>
-    </div>
-    <div>
-      <label><input type="checkbox" checked data-id="Mon">Monday</label>
-      <label><input type="checkbox" checked data-id="Tue">Tuesday</label>
-      <label><input type="checkbox" checked data-id="Wed">Wednesday</label>
-      <label><input type="checkbox" checked data-id="Thu">Thursday</label>
-      <label><input type="checkbox" checked data-id="Fri">Friday</label>
-      <label><input type="checkbox" checked data-id="Sat">Saturday</label>
-      <label><input type="checkbox" checked data-id="Sun">Sunday</label>
-    </div>
-    <div>
-      <input type="submit" data-i18n-value="value" data-i18n="options_sch_helper_2">
-      <input type="button" id="clean-schedules" data-i18n-value="value" data-i18n="options_sch_helper_3">
-    </div>
-  </form>
-  <form id=schedule>
-    <div>
-      <h3>Date</h3>
-      <h3>From</h3>
-      <h3>To</h3>
-      <span>-</span>
-      <span>Monday</span>
-      <input data-id="Mon" type="time" name="start">
-      <input data-id="Mon" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span>Tuesday</span>
-      <input data-id="Tue" type="time" name="start">
-      <input data-id="Tue" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span>Wednesday</span>
-      <input data-id="Wed" type="time" name="start">
-      <input data-id="Wed" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span>Thursday</span>
-      <input data-id="Thu" type="time" name="start">
-      <input data-id="Thu" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span>Friday</span>
-      <input data-id="Fri" type="time" name="start">
-      <input data-id="Fri" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span>Saturday</span>
-      <input data-id="Sat" type="time" name="start">
-      <input data-id="Sat" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span>Sunday</span>
-      <input data-id="Sun" type="time" name="start">
-      <input data-id="Sun" type="time" name="end">
-      <input type="button" value="Add" data-cmd="add">
-      <span data-i18n="options_hostname"></span>
-      <input type="text" list="rules" name="hostname" flex="1" data-i18n="options_sup_12" data-i18n-value="placeholder" style="grid-column: 2/5;">
-    </div>
-    <datalist id="rules"></datalist>
-    <p class="twidth">
-      <label for="schedule-offset">
-      <a data-href="faq19" target="_blank" data-i18n="options_schedule_offset"></a></label>
-      <span id="local-time"></span>
-      <input type="number" id="schedule-offset">
-    </p>
-  </form>
-  <!-- blocking options -->
-  <div>
-    <h1 data-i18n="options_blocing_options_header"></h1>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="initialBlock">&nbsp;
-      <label for="initialBlock"><span data-i18n="options_startup"></span></label>
-    </div>
-    <div hbox class="space indent" align="center">
-      <input type="checkbox" id="initialBlockCurrent">&nbsp;
-      <label for="initialBlockCurrent"><span data-i18n="options_startup_current"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="reverse">&nbsp;
-      <label for="reverse"><span data-i18n="options_reverse"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-pause">&nbsp;
-      <label for="contextmenu-pause"><span data-i18n="options_contextmenu_pause"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-resume">&nbsp;
-      <label for="contextmenu-resume"><span data-i18n="options_contextmenu_resume"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-remove-temporary">&nbsp;
-      <label for="contextmenu-remove-temporary"><span data-i18n="options_contextmenu_remove_temporary"></span></label>
-    </div>
-    <div hbox align="center" class="space gap">
-      <span data-i18n="options_contextmenu_periods"></span>
-      <input type="text" value="1, 2, 4" id="pause-periods" flex="1">
-    </div>
-    <div hbox align="center" class="space gap">
-      <span data-i18n="options_per_site_pause_max_size"></span>
-      <input type="number" id="per-site-pause-max-size" min=0>
-    </div>
+  <div class="shell">
+    <div class="notice" data-i18n="options_intro"></div>
 
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-top">&nbsp;
-      <label for="contextmenu-top"><span data-i18n="options_contextmenu_top"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-frame">&nbsp;
-      <label for="contextmenu-frame"><span data-i18n="options_contextmenu_frame"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-redirect-inspector">&nbsp;
-      <label for="contextmenu-redirect-inspector"><span data-i18n="options_contextmenu_redirect_inspector"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="contextmenu-redirect-inspector-action">&nbsp;
-      <label for="contextmenu-redirect-inspector-action"><span data-i18n="options_contextmenu_redirect_inspector_action"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="disable-actions-options">&nbsp;
-      <label for="disable-actions-options"><span data-i18n="options_disable_actions_options"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="disable-actions-page">&nbsp;
-      <label for="disable-actions-page"><span data-i18n="options_disable_actions_page"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="notification">&nbsp;
-      <label for="notification"><span data-i18n="options_notification"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="popup">&nbsp;
-      <label for="popup"><span data-i18n="options_popup"></span></label>
-    </div>
-  </div>
-  <div class="space view">
-    <span data-i18n="options_contexts"></span>
-    <select id="contexts">
-      <option value="both" data-i18n="options_contexts_both"></option>
-      <option value="page" data-i18n="options_contexts_page"></option>
-    </select>
-  </div>
-  <div class="space">
-    <span data-i18n="options_theme" class="space"></span>
-    <div class="view" style="margin-inline-start: 10px;">
-      <span data-i18n="options_theme_top"></span>
-      <select id="mode-top">
-        <option value="complete" data-i18n="options_complete"></option>
-        <option value="simple" data-i18n="options_simple"></option>
-      </select>
-      <span data-i18n="options_theme_frame"></span>
-      <select id="mode-frame">
-        <option value="complete" data-i18n="options_complete"></option>
-        <option value="simple" data-i18n="options_simple"></option>
-      </select>
-    </div>
-  </div>
-  <div hbox align="center" class="space gap">
-    <span data-i18n="options_allow_access"></span>
-    <input type="number" min="1" id="timeout" required>
-  </div>
-  <div hbox align="center" class="space gap">
-    <span data-i18n="options_unlock_periods"></span>
-    <input type="text" id="unlock-periods" flex="1" placeholder="1, 5, 15, 60">
-  </div>
-  <div class="view space">
-    <span data-i18n="options_unlock_default"></span>
-    <select id="unlock-default"></select>
-  </div>
+    <nav class="tabs" role="tablist" aria-orientation="vertical">
+      <button type="button" role="tab" id="tab-blocking-rules" aria-controls="panel-blocking-rules" aria-selected="true" data-panel="blocking-rules" data-i18n="options_tab_blocking_rules"></button>
+      <button type="button" role="tab" id="tab-schedule" aria-controls="panel-schedule" aria-selected="false" tabindex="-1" data-panel="schedule" data-i18n="options_tab_schedule"></button>
+      <button type="button" role="tab" id="tab-behavior" aria-controls="panel-behavior" aria-selected="false" tabindex="-1" data-panel="behavior" data-i18n="options_tab_behavior"></button>
+      <button type="button" role="tab" id="tab-unlocking" aria-controls="panel-unlocking" aria-selected="false" tabindex="-1" data-panel="unlocking" data-i18n="options_tab_unlocking"></button>
+      <button type="button" role="tab" id="tab-blocked-page" aria-controls="panel-blocked-page" aria-selected="false" tabindex="-1" data-panel="blocked-page" data-i18n="options_tab_blocked_page"></button>
+      <button type="button" role="tab" id="tab-tools" aria-controls="panel-tools" aria-selected="false" tabindex="-1" data-panel="tools" data-i18n="options_tab_tools"></button>
+    </nav>
 
+    <header class="page-header">
+      <h1 id="tab-title" data-i18n="options_tab_blocking_rules"></h1>
+      <p id="tab-description" aria-live="polite" data-i18n="options_tab_blocking_rules_desc"></p>
+    </header>
 
-  <div>
-    <h1 data-i18n="options_password_options_header"></h1>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="no-password-on-add">&nbsp;
-      <label for="no-password-on-add"><span data-i18n="options_no_pass_on_add"></span></label>
-    </div>
-    <div hbox class="space" align="center">
-      <input type="checkbox" id="no-password-on-unlock">&nbsp;
-      <label for="no-password-on-unlock"><span data-i18n="options_no_pass_on_unlock"></span></label>
-    </div>
-    <div hbox align="center" class="space gap">
-      <span data-i18n="options_block_period" class="space"></span>
-      <input type="number" min="1" id="wrong" required>
-    </div>
-  </div>
+    <main class="panels" id="panels">
+      <section class="panel" id="panel-blocking-rules" role="tabpanel" aria-labelledby="tab-blocking-rules">
+        <div class="panel-notice">
+          <span class="warning-symbol" aria-hidden="true">⚠️</span>
+          <span data-i18n="options_intro_rules">If you're new, block new websites by visiting the page and clicking the action button (it's in the extensions menu after installation). No need to manually make new rules.</span>
+        </div>
+        <!-- block -->
+        <div class="header">
+          <h1 style="margin-top: 0;">
+            <a data-href="faq3" target="_blank" data-i18n="options_block_header"></a>
+          </h1>
+          <details>
+            <summary data-i18n="options_instruction"></summary>
+            <span data-i18n="options_sup_6"></span>
+          </details>
+        </div>
+        <span data-i18n="options_new_hostname" class="space"></span>
+        <form hbox align=center id="add">
+          <input type="text" name="hostname" flex="1" placeholder="e.g.: www.google.com">
+          &nbsp;
+          <input type="submit" data-i18n-value="value" data-i18n="options_add">
+        </form>
+        <!-- list -->
+        <div id="list" data-visible=false>
+          <h1>
+            <span data-i18n="options_list_header"></span>
+            <a href="#" class="btn" id="remove-all" data-i18n="options_remove_all"></a>
+          </h1>
+          <template>
+            <div>
+              <span title="Click to insert the rule" data-id="href">HTTP://</span>
+              <input type="text" data-id="redirect" flex="1" placeholder="Optional redirect URL or 'close' keyword." title="Backslash-escaped digits (\1 to \9) can be used to insert the corresponding capture groups. Adding capture groups to the generated URL might cause it to match the blocking rule again, potentially leading to multiple redirects. Use caution.">
+              <span data-id="date">-</span>
+              <section>
+                <input type="button" data-cmd="toggle-note">
+                <input type="button" data-cmd="remove">
+              </section>
+              <textarea data-id="note" class="note" data-i18n="options_note" data-i18n-value="placeholder"></textarea>
+            </div>
+          </template>
+          <div id="rules-container"></div>
+        </div>
+        <!-- rules -->
+        <div class="header">
+          <h1>
+            <a data-href="faq10" target="_blank" data-i18n="options_rules_header"></a>
+          </h1>
+          <details>
+            <summary data-i18n="options_instruction"></summary>
+            <span data-i18n="options_sup_8"></span>
+            <pre><code><table>
+            <tr>
+              <td colspan="2"># Line-separated list of hostnames to be blocked. Lines start with "#" are ignored</td>
+            </tr>
+            <tr>
+              <td># hostname to be blocked</td>
+              <td>redirects to (optional)</td>
+            </tr>
+            <tr>
+              <td>www.google.com</td>
+              <td>https://www.bing.com</td>
+            </tr>
+            </table></code></pre>
+          </details>
+        </div>
+        <input type="button" data-i18n-value="value" data-i18n="options_import_txt" data-cmd="import-txt">
+      </section>
 
-  <!-- page -->
-  <h1 data-i18n="options_page_header"></h1>
-  <div vbox class="space">
-    <span data-i18n="options_redirect" class="space"></span>
-    <input type="text" id="redirect" flex=1 data-i18n="options_sup_1" data-i18n-value="placeholder">
-  </div>
-  <div vbox class="space">
-    <span data-i18n="options_user_message" class="space"></span>
-    <textarea id="message" rows="6" flex="1" data-i18n="options_sup_2" data-i18n-value="placeholder"></textarea>
-  </div>
-  <div vbox class="space">
-    <span data-i18n="options_custom_css" class="space"></span>
-    <textarea id="css" rows="6" flex="1" data-i18n="options_sup_3" data-i18n-value="placeholder"></textarea>
-  </div>
-  <div hbox class="space" align="center">
-    <input type="checkbox" id="title">&nbsp;
-    <label flex="1" for="title"><span data-i18n="options_resolve"></span></label>
-  </div>
-  <div hbox align="center" class="space gap">
-    <span data-i18n="options_close_blocked"></span>
-    <div>
-      <input type="number" min="0" id="close" required>
-      <span data-i18n="options_close_msg_blocked"></span>
-    </div>
-  </div>
-  <!-- rules -->
-  <div class="header">
-    <h1>
-      <a data-href="faq10" target="_blank" data-i18n="options_rules_header"></a>
-    </h1>
-    <details>
-      <summary data-i18n="options_instruction"></summary>
-      <span data-i18n="options_sup_8"></span>
-      <pre><code><table>
-      <tr>
-        <td colspan="2"># Line-separated list of hostnames to be blocked. Lines start with "#" are ignored</td>
-      </tr>
-      <tr>
-        <td># hostname to be blocked</td>
-        <td>redirects to (optional)</td>
-      </tr>
-      <tr>
-        <td>www.google.com</td>
-        <td>https://www.bing.com</td>
-      </tr>
-      </table></code></pre>
-    </details>
-  </div>
-  <input type="button" data-i18n-value="value" data-i18n="options_import_txt" data-cmd="import-txt">
-  <!-- tools -->
-  <div class="admin">This extension supports managed storage. All the preferences can be pre-configured by <a href="https://add0n.com/block-site.html#faq15">the domain administrator</a></div>
+      <section class="panel" id="panel-schedule" role="tabpanel" aria-labelledby="tab-schedule" hidden>
+        <!-- schedule -->
+        <div class="header">
+          <h1 style="margin-top: 0;">
+            <a data-href="faq12" target="_blank" data-i18n="options_schedule_header"></a>
+          </h1>
+          <details>
+            <summary data-i18n="options_instruction"></summary>
+            <span data-i18n="options_schedule_help">Leave the rule empty to apply an entry to all sites. A rule is a regular expression that limits the entry to matching URLs. An 'Allow all day' entry covers the entire day.</span>
+          </details>
+        </div>
+        <p class="schedule-intro" id="schedule-intro" data-i18n="options_schedule_intro">A Block entry blocks the selected hours. An Allow entry pauses blocking. Days without an entry stay blocked all day.</p>
+        <form id="schedule-form">
+          <fieldset class="schedule-when">
+            <legend data-i18n="options_schedule_when">On the selected days</legend>
+            <div class="schedule-mode-row">
+              <label>
+                <input type="radio" name="mode" value="block" checked>
+                <span id="schedule-mode-block-label" data-i18n="options_schedule_mode_block">Block between</span>
+              </label>
+              <label class="schedule-time">
+                <span data-i18n="options_schedule_from">From</span>
+                <input type="time" name="start" required>
+              </label>
+              <label class="schedule-time">
+                <span data-i18n="options_schedule_to">To</span>
+                <input type="time" name="end" required>
+              </label>
+            </div>
+            <div class="schedule-mode-row">
+              <label>
+                <input type="radio" name="mode" value="all-day">
+                <span id="schedule-mode-all-day-label" data-i18n="options_schedule_mode_all_day">Allow all day (blocking is paused)</span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="schedule-days">
+            <label><input type="checkbox" checked data-id="Mon">Monday</label>
+            <label><input type="checkbox" checked data-id="Tue">Tuesday</label>
+            <label><input type="checkbox" checked data-id="Wed">Wednesday</label>
+            <label><input type="checkbox" checked data-id="Thu">Thursday</label>
+            <label><input type="checkbox" checked data-id="Fri">Friday</label>
+            <label><input type="checkbox" checked data-id="Sat">Saturday</label>
+            <label><input type="checkbox" checked data-id="Sun">Sunday</label>
+          </div>
+          <div class="schedule-rule">
+            <label for="schedule-rule" data-i18n="options_schedule_rule">Rule (optional)</label>
+            <input type="text" id="schedule-rule" name="rule" list="rules" data-i18n="options_sup_12" data-i18n-value="placeholder">
+            <p class="hint" data-i18n="options_schedule_rule_hint">Leave empty to apply to all sites. A rule is a regular expression that limits this entry to matching URLs.</p>
+          </div>
+          <p id="schedule-days-note" class="schedule-days-note" aria-live="polite"></p>
+          <div class="schedule-form-actions">
+            <input type="submit" id="schedule-submit" value="Add" data-i18n-value="value" data-i18n="options_schedule_add">
+            <input type="button" id="schedule-cancel" value="Cancel" data-i18n-value="value" data-i18n="options_schedule_cancel" hidden>
+          </div>
+        </form>
+        <datalist id="rules"></datalist>
 
-  <div>
-    <h1 data-i18n="options_tools_header"></h1>
-    <p>
-      <input type="button" data-i18n-value="value" data-i18n="options_rate" id="rate">
-      <input type="button" data-i18n-value="value" data-i18n="options_support" id="support">
-      <input type="button" data-i18n-value="value" data-i18n="options_preview" id="preview">
-    </p>
-    <div id="tools">
-      <input type="button" data-i18n-value="value" data-i18n="options_save" data-cmd="save" disabled="true">
+        <h2 data-i18n="options_schedule_list_header">Schedule entries</h2>
+        <ul id="schedule-list"></ul>
+        <p id="schedule-empty" data-i18n="options_schedule_empty" hidden>No schedule entries yet. Blocking stays active all the time.</p>
+        <template id="schedule-entry-template">
+          <li class="schedule-entry">
+            <span class="schedule-entry-type" data-id="type"></span>
+            <span class="schedule-entry-rule" data-id="rule"></span>
+            <span class="schedule-entry-days" data-id="days"></span>
+            <span class="schedule-entry-time" data-id="time"></span>
+            <span class="schedule-entry-actions">
+              <input type="button" data-cmd="edit">
+              <input type="button" data-cmd="remove">
+            </span>
+          </li>
+        </template>
+
+        <p class="twidth">
+          <label for="schedule-offset">
+            <a data-href="faq19" target="_blank" data-i18n="options_schedule_offset"></a>
+          </label>
+          <span id="local-time"></span>
+          <input type="number" id="schedule-offset">
+        </p>
+      </section>
+
+      <section class="panel" id="panel-behavior" role="tabpanel" aria-labelledby="tab-behavior" hidden>
+        <!-- blocking -->
+        <h2 data-i18n="options_behavior_blocking_header"></h2>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="initialBlock">&nbsp;
+          <label for="initialBlock"><span data-i18n="options_startup"></span></label>
+        </div>
+        <div hbox class="space indent" align="center">
+          <input type="checkbox" id="initialBlockCurrent">&nbsp;
+          <label for="initialBlockCurrent"><span data-i18n="options_startup_current"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="reverse">&nbsp;
+          <label for="reverse"><span data-i18n="options_reverse"></span></label>
+        </div>
+        <div class="space view">
+          <span data-i18n="options_contexts"></span>
+          <select id="contexts">
+            <option value="both" data-i18n="options_contexts_both"></option>
+            <option value="page" data-i18n="options_contexts_page"></option>
+          </select>
+        </div>
+
+        <!-- context menu -->
+        <h2 data-i18n="options_behavior_context_menu_header"></h2>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-pause">&nbsp;
+          <label for="contextmenu-pause"><span data-i18n="options_contextmenu_pause"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-resume">&nbsp;
+          <label for="contextmenu-resume"><span data-i18n="options_contextmenu_resume"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-remove-temporary">&nbsp;
+          <label for="contextmenu-remove-temporary"><span data-i18n="options_contextmenu_remove_temporary"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-top">&nbsp;
+          <label for="contextmenu-top"><span data-i18n="options_contextmenu_top"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-frame">&nbsp;
+          <label for="contextmenu-frame"><span data-i18n="options_contextmenu_frame"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-redirect-inspector">&nbsp;
+          <label for="contextmenu-redirect-inspector"><span data-i18n="options_contextmenu_redirect_inspector"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="contextmenu-redirect-inspector-action">&nbsp;
+          <label for="contextmenu-redirect-inspector-action"><span data-i18n="options_contextmenu_redirect_inspector_action"></span></label>
+        </div>
+
+        <!-- pausing -->
+        <h2 data-i18n="options_behavior_pause_header"></h2>
+        <div hbox align="center" class="space gap">
+          <span data-i18n="options_contextmenu_periods"></span>
+          <input type="text" value="1, 2, 4" id="pause-periods" flex="1">
+        </div>
+        <div hbox align="center" class="space gap">
+          <span data-i18n="options_per_site_pause_max_size"></span>
+          <input type="number" id="per-site-pause-max-size" min=0>
+        </div>
+
+        <!-- protection -->
+        <h2 data-i18n="options_behavior_protection_header"></h2>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="disable-actions-options">&nbsp;
+          <label for="disable-actions-options"><span data-i18n="options_disable_actions_options"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="disable-actions-page">&nbsp;
+          <label for="disable-actions-page"><span data-i18n="options_disable_actions_page"></span></label>
+        </div>
+
+        <!-- interface -->
+        <h2 data-i18n="options_behavior_interface_header"></h2>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="notification">&nbsp;
+          <label for="notification"><span data-i18n="options_notification"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="popup">&nbsp;
+          <label for="popup"><span data-i18n="options_popup"></span></label>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-unlocking" role="tabpanel" aria-labelledby="tab-unlocking" hidden>
+        <div hbox align="center" class="space gap">
+          <span data-i18n="options_allow_access"></span>
+          <input type="number" min="1" id="timeout" required>
+        </div>
+        <div hbox align="center" class="space gap">
+          <span data-i18n="options_unlock_periods"></span>
+          <input type="text" id="unlock-periods" flex="1" placeholder="1, 5, 15, 60">
+        </div>
+        <div class="view space">
+          <span data-i18n="options_unlock_default"></span>
+          <select id="unlock-default"></select>
+        </div>
+
+        <h2 data-i18n="options_password_options_header"></h2>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="no-password-on-add">&nbsp;
+          <label for="no-password-on-add"><span data-i18n="options_no_pass_on_add"></span></label>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="no-password-on-unlock">&nbsp;
+          <label for="no-password-on-unlock"><span data-i18n="options_no_pass_on_unlock"></span></label>
+        </div>
+        <div hbox align="center" class="space gap">
+          <span data-i18n="options_block_period" class="space"></span>
+          <input type="number" min="1" id="wrong" required>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-blocked-page" role="tabpanel" aria-labelledby="tab-blocked-page" hidden>
+        <!-- page -->
+        <div vbox class="space">
+          <span data-i18n="options_redirect" class="space"></span>
+          <input type="text" id="redirect" flex=1 data-i18n="options_sup_1" data-i18n-value="placeholder">
+        </div>
+        <div vbox class="space">
+          <span data-i18n="options_user_message" class="space"></span>
+          <textarea id="message" rows="6" flex="1" data-i18n="options_sup_2" data-i18n-value="placeholder"></textarea>
+        </div>
+        <div vbox class="space">
+          <span data-i18n="options_custom_css" class="space"></span>
+          <textarea id="css" rows="6" flex="1" data-i18n="options_sup_3" data-i18n-value="placeholder"></textarea>
+        </div>
+        <div hbox class="space" align="center">
+          <input type="checkbox" id="title">&nbsp;
+          <label flex="1" for="title"><span data-i18n="options_resolve"></span></label>
+        </div>
+        <div hbox align="center" class="space gap">
+          <span data-i18n="options_close_blocked"></span>
+          <div>
+            <input type="number" min="0" id="close" required>
+            <span data-i18n="options_close_msg_blocked"></span>
+          </div>
+        </div>
+        <div class="space">
+          <span data-i18n="options_theme" class="space"></span>
+          <div class="view" style="margin-inline-start: 10px;">
+            <span data-i18n="options_theme_top"></span>
+            <select id="mode-top">
+              <option value="complete" data-i18n="options_complete"></option>
+              <option value="simple" data-i18n="options_simple"></option>
+            </select>
+            <span data-i18n="options_theme_frame"></span>
+            <select id="mode-frame">
+              <option value="complete" data-i18n="options_complete"></option>
+              <option value="simple" data-i18n="options_simple"></option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-tools" role="tabpanel" aria-labelledby="tab-tools" hidden>
+        <!-- import -->
+        <div class="header">
+          <h1 style="margin-top: 0;" data-i18n="options_import_header"></h1>
+          <details>
+            <summary data-i18n="options_instruction"></summary>
+            <div>
+              <span data-i18n="options_sup_10"></span>
+            </div>
+          </details>
+        </div>
+        <div id="import-container">
+          <input type="button" data-i18n-value="value" data-i18n="options_export_json" data-cmd="export">
+          <input type="button" data-i18n-value="value" data-i18n="options_import_json" data-cmd="import-json">
+        </div>
+        <!-- tools -->
+        <h2 data-i18n="options_tools_header"></h2>
+        <p>
+          <input type="button" data-i18n-value="value" data-i18n="options_rate" id="rate">
+          <input type="button" data-i18n-value="value" data-i18n="options_support" id="support">
+          <input type="button" data-i18n-value="value" data-i18n="options_preview" id="preview">
+        </p>
+        <div class="admin">This extension supports managed storage. All the preferences can be pre-configured by <a href="https://add0n.com/block-site.html#faq15">the domain administrator</a></div>
+      </section>
+    </main>
+
+    <footer class="actions">
+      <div class="password-hint" id="password-hint" data-i18n="options_master_password_hint">Set a master password to protect these settings. After it is saved, enter it and click Unlock Options to make changes. If no master password is set, options are unprotected and Unlock Options is disabled.</div>
       <form id="save-container" data-i18n="options_master_password_comment" data-i18n-value="title">
-        <input type="password" id="password" data-i18n="options_master_password" data-i18n-value="placeholder">&nbsp;
-        <input type="submit" data-i18n-value="value" data-i18n="options_unlock" data-cmd="unlock">
+        <input type="password" id="password" data-i18n="options_master_password" data-i18n-value="placeholder" aria-describedby="password-hint">&nbsp;
+        <input type="submit" data-i18n-value="value" data-i18n="options_unlock" data-cmd="unlock" disabled>
       </form>
-    </div>
-  </div>
-  <!-- import -->
-  <div class="header">
-    <h1 data-i18n="options_import_header"></h1>
-    <details>
-      <summary data-i18n="options_instruction"></summary>
-      <div>
-        <span data-i18n="options_sup_10"></span>
-      </div>
-    </details>
-  </div>
-  <div id="import-container">
-    <input type="button" data-i18n-value="value" data-i18n="options_export_json" data-cmd="export">
-    <input type="button" data-i18n-value="value" data-i18n="options_import_json" data-cmd="import-json">
+      <input type="button" data-i18n-value="value" data-i18n="options_save" data-cmd="save" disabled="true">
+    </footer>
   </div>
   <notification-view id="toast"></notification-view>
 
   <script src="/data/components/notification-view/notification-view.js"></script>
   <script src="/utils.js"></script>
-  <script src="index.js"></script>
   <script src="helper.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>

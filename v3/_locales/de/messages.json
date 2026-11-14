@@ -210,7 +210,7 @@
     "message": "Einfach"
   },
   "options_intro": {
-    "message": "Zum Speichern von Optionen oder Festlegen des Hauptpassworts nach unten fahren."
+    "message": "Änderungen werden mit der Schaltfläche „Speichern“ unten auf der Seite gespeichert. Wenn Sie neu sind, blockieren Sie neue Websites, indem Sie die Seite aufrufen und auf die Aktionsschaltfläche klicken (sie befindet sich nach der Installation im Erweiterungsmenü). Es sind keine manuell erstellten Regeln erforderlich."
   },
   "options_sch_helper_1": {
     "message": "Unblockierte Zeiten für die nachfolgenden Zeitdauern erstellen"
@@ -421,5 +421,41 @@
   },
   "pp_msg_1": {
     "message": "opened from '##'"
+  },
+  "options_tab_blocking_rules": {
+    "message": "Blockierregeln"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "Verwalten Sie die Hostnamen und Muster, die blockiert werden."
+  },
+  "options_tab_schedule": {
+    "message": "Zeitplan"
+  },
+  "options_tab_schedule_desc": {
+    "message": "Legen Sie die Tage und Uhrzeiten fest, an denen die Blockierung vorübergehend aufgehoben wird."
+  },
+  "options_tab_behavior": {
+    "message": "Verhalten"
+  },
+  "options_tab_behavior_desc": {
+    "message": "Steuern Sie Startblockierung, Kontextmenüaktionen, Pausen und Benachrichtigungen."
+  },
+  "options_tab_unlocking": {
+    "message": "Entsperren"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "Wählen Sie, wie lange und wie einfach blockierte Websites aufgerufen werden können."
+  },
+  "options_tab_blocked_page": {
+    "message": "Blockierte Seite"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "Passen Sie die Seite an, die angezeigt wird, wenn eine Website blockiert wird."
+  },
+  "options_tab_tools": {
+    "message": "Werkzeuge"
+  },
+  "options_tab_tools_desc": {
+    "message": "Sichern oder stellen Sie Einstellungen wieder her, zeigen Sie eine Vorschau der Blockierung an und erhalten Sie Support."
   }
 }

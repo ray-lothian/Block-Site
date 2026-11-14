@@ -5,6 +5,9 @@
   "options_master_password": {
     "message": "Master Password"
   },
+  "options_master_password_hint": {
+    "message": "Set a master password to protect these settings. After it is saved, enter it and click Unlock Options to make changes. If no master password is set, options are unprotected and Unlock Options is disabled."
+  },
   "options_master_password_comment": {
     "message": "Enter a master password to protect your preferences"
   },
@@ -104,6 +107,21 @@
   "options_blocing_options_header": {
     "message": "Blocking Options"
   },
+  "options_behavior_blocking_header": {
+    "message": "Blocking"
+  },
+  "options_behavior_context_menu_header": {
+    "message": "Context menu"
+  },
+  "options_behavior_pause_header": {
+    "message": "Pausing"
+  },
+  "options_behavior_protection_header": {
+    "message": "Protection"
+  },
+  "options_behavior_interface_header": {
+    "message": "Interface"
+  },
   "options_password_options_header": {
     "message": "Password Options"
   },
@@ -123,10 +141,70 @@
     "message": "Import Rules (TXT File)"
   },
   "options_schedule_header": {
-    "message": "Schedule Unblocking"
+    "message": "Blocking Schedules"
   },
   "options_schedule_offset": {
     "message": "Schedule offset in minutes"
+  },
+  "options_schedule_when": {
+    "message": "On the selected days"
+  },
+  "options_schedule_mode_block": {
+    "message": "Block between"
+  },
+  "options_schedule_mode_all_day": {
+    "message": "Allow all day (blocking is paused)"
+  },
+  "options_schedule_from": {
+    "message": "From"
+  },
+  "options_schedule_to": {
+    "message": "To"
+  },
+  "options_schedule_rule": {
+    "message": "Rule (optional)"
+  },
+  "options_schedule_rule_hint": {
+    "message": "Leave empty to apply to all sites. A rule is a regular expression that limits this entry to matching URLs."
+  },
+  "options_schedule_list_header": {
+    "message": "Schedule entries"
+  },
+  "options_schedule_empty": {
+    "message": "No schedule entries yet. Blocking stays active all the time."
+  },
+  "options_schedule_add": {
+    "message": "Add"
+  },
+  "options_schedule_update": {
+    "message": "Update"
+  },
+  "options_schedule_cancel": {
+    "message": "Cancel"
+  },
+  "options_schedule_edit": {
+    "message": "Edit"
+  },
+  "options_schedule_remove": {
+    "message": "Remove"
+  },
+  "options_schedule_all_sites": {
+    "message": "All sites"
+  },
+  "options_schedule_all_day_short": {
+    "message": "All day"
+  },
+  "options_schedule_days_required": {
+    "message": "Select at least one day."
+  },
+  "options_schedule_times_required": {
+    "message": "Enter both a start and an end time."
+  },
+  "options_schedule_invalid_range": {
+    "message": "The start time must be before the end time."
+  },
+  "options_schedule_help": {
+    "message": "Leave the rule empty to apply an entry to all sites. A rule is a regular expression that limits the entry to matching URLs. An 'Allow all day' entry covers the entire day."
   },
   "options_import_header": {
     "message": "Backup and Restore"
@@ -228,7 +306,10 @@
     "message": "Simple"
   },
   "options_intro": {
-    "message": "To save options or set a master password, scroll down. If you're new, block new websites by visiting the page and clicking the action button (it's in the extensions menu after installation). No need to manually make new rules."
+    "message": "Changes are saved with the Save button at the bottom of the page."
+  },
+  "options_intro_rules": {
+    "message": "If you're new, block new websites by visiting the page and clicking the action button (it's in the extensions menu after installation). No need to manually make new rules."
   },
   "options_sch_helper_1": {
     "message": "Generate unblocking periods for the following blocked hours"
@@ -448,5 +529,110 @@
   },
   "pp_msg_1": {
     "message": "opened from '##'"
+  },
+  "options_tab_blocking_rules": {
+    "message": "Blocking Rules"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "Manage the hostnames and patterns that are blocked."
+  },
+  "options_tab_schedule": {
+    "message": "Schedule"
+  },
+  "options_tab_schedule_desc": {
+    "message": "Choose when blocking runs and when it pauses."
+  },
+  "options_tab_behavior": {
+    "message": "Behavior"
+  },
+  "options_tab_behavior_desc": {
+    "message": "Control startup blocking, context-menu actions, pauses, and notifications."
+  },
+  "options_tab_unlocking": {
+    "message": "Unlocking"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "Choose how long and how easily blocked sites can be accessed."
+  },
+  "options_tab_blocked_page": {
+    "message": "Blocked Page"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "Customize the page shown when a site is blocked."
+  },
+  "options_tab_tools": {
+    "message": "Tools"
+  },
+  "options_tab_tools_desc": {
+    "message": "Back up or restore preferences, preview blocking, and get support."
+  },
+  "options_schedule_intro": {
+    "message": "A Block entry blocks the selected hours. An Allow entry pauses blocking. Days without an entry stay blocked all day."
+  },
+  "options_schedule_note_block": {
+    "message": "On $1: blocking is active $2–$3; sites are unblocked outside this window."
+  },
+  "options_schedule_note_allow": {
+    "message": "On $1: blocking is paused all day."
+  },
+  "options_schedule_note_all_block": {
+    "message": "Every day is covered. Blocking is active $1–$2; sites are unblocked outside this window."
+  },
+  "options_schedule_note_all_allow": {
+    "message": "Every day is covered. Blocking is paused all day."
+  },
+  "options_schedule_note_unselected": {
+    "message": "Not covered by this entry: $1. Those days stay blocked all day unless another entry covers them."
+  },
+  "options_schedule_note_no_days": {
+    "message": "Select at least one day."
+  },
+  "options_schedule_note_no_times": {
+    "message": "Select a start and end time to see the effect on those days."
+  },
+  "options_schedule_note_rule": {
+    "message": "This entry applies only to sites matching the rule."
+  },
+  "options_schedule_type_block": {
+    "message": "Block"
+  },
+  "options_schedule_type_allow": {
+    "message": "Allow"
+  },
+  "options_schedule_all_day_row": {
+    "message": "Blocking paused all day"
+  },
+  "options_schedule_intro_reverse": {
+    "message": "Reverse mode blocks everything except allowed sites. A schedule entry allows matching sites during the selected periods. Days without an entry stay blocked by default."
+  },
+  "options_schedule_mode_allow": {
+    "message": "Allow between"
+  },
+  "options_schedule_mode_all_day_reverse": {
+    "message": "Allow all day"
+  },
+  "options_schedule_empty_reverse": {
+    "message": "No schedule entries. Reverse mode blocks everything except allowed sites."
+  },
+  "options_schedule_note_allow_window": {
+    "message": "On $1: sites are allowed $2–$3."
+  },
+  "options_schedule_note_allow_window_all": {
+    "message": "Every day is covered. Sites are allowed $1–$2."
+  },
+  "options_schedule_note_allow_day": {
+    "message": "On $1: sites are allowed all day."
+  },
+  "options_schedule_note_allow_day_all": {
+    "message": "Every day is covered. Sites are allowed all day."
+  },
+  "options_schedule_note_unselected_reverse": {
+    "message": "Not covered by this entry: $1. Those days stay blocked by default in reverse mode."
+  },
+  "options_schedule_note_rule_reverse": {
+    "message": "Only sites matching the rule are allowed during this entry."
+  },
+  "options_schedule_all_day_allow_row": {
+    "message": "All day"
   }
 }

@@ -3,7 +3,10 @@
 
 // localization
 [...document.querySelectorAll('[data-i18n]')].forEach(e => {
-  e[e.dataset.i18nValue || 'textContent'] = chrome.i18n.getMessage(e.dataset.i18n);
+  const message = chrome.i18n.getMessage(e.dataset.i18n);
+  if (message) {
+    e[e.dataset.i18nValue || 'textContent'] = message;
+  }
 });
 
 // do not work in incognito
@@ -25,6 +28,94 @@ const warning = e => {
   e.returnValue = 'Changes you made are not saved';
   return true;
 };
+
+// tabs
+const TABS = ['blocking-rules', 'schedule', 'behavior', 'unlocking', 'blocked-page', 'tools'];
+
+const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
+const panels = new Map(tabs.map(tab => [tab.dataset.panel, document.getElementById(tab.getAttribute('aria-controls'))]));
+const panelsContainer = document.getElementById('panels');
+const tabTitle = document.getElementById('tab-title');
+const tabDescription = document.getElementById('tab-description');
+
+const activateTab = (id, {focus = false, updateHash = true, scroll = true} = {}) => {
+  if (panels.has(id) === false) {
+    id = TABS[0];
+  }
+  for (const tab of tabs) {
+    const selected = tab.dataset.panel === id;
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    if (selected) {
+      if (focus) {
+        tab.focus();
+      }
+      if (scroll) {
+        tab.scrollIntoView({
+          block: 'nearest',
+          inline: 'nearest'
+        });
+      }
+    }
+  }
+  for (const [name, panel] of panels) {
+    panel.hidden = name !== id;
+  }
+  const key = 'options_tab_' + id.replace(/-/g, '_');
+  tabTitle.textContent = chrome.i18n.getMessage(key);
+  tabDescription.textContent = chrome.i18n.getMessage(key + '_desc');
+  if (scroll) {
+    panelsContainer.scrollTop = 0;
+  }
+  if (updateHash) {
+    const hash = '#' + id;
+    if (location.hash !== hash) {
+      history.replaceState(null, '', hash);
+    }
+  }
+};
+
+document.querySelector('.tabs').addEventListener('click', e => {
+  const tab = e.target.closest('[role="tab"]');
+  if (tab) {
+    activateTab(tab.dataset.panel);
+  }
+});
+
+document.querySelector('.tabs').addEventListener('keydown', e => {
+  const index = tabs.indexOf(document.activeElement);
+  if (index === -1) {
+    return;
+  }
+  let next;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+    next = (index + 1) % tabs.length;
+  }
+  else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    next = (index - 1 + tabs.length) % tabs.length;
+  }
+  else if (e.key === 'Home') {
+    next = 0;
+  }
+  else if (e.key === 'End') {
+    next = tabs.length - 1;
+  }
+  else {
+    return;
+  }
+  e.preventDefault();
+  activateTab(tabs[next].dataset.panel, {
+    focus: true
+  });
+});
+
+window.addEventListener('hashchange', () => {
+  activateTab(location.hash.slice(1), {
+    updateHash: false
+  });
+});
+
+activateTab(location.hash.slice(1));
 
 const DEFAULTS = {
   'timeout': 60, // seconds; default unlock duration
@@ -137,64 +228,6 @@ document.getElementById('add').addEventListener('submit', e => {
   }
 });
 
-const fs = schedule => {
-  fs.clean();
-
-  const root = document.getElementById('schedule');
-
-  if (schedule.times) {
-    for (const day of days) {
-      root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
-      root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
-    }
-    for (const [day, times] of Object.entries(schedule.times)) {
-      times.forEach((time, i) => {
-        if (i === 0) {
-          root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = time.start;
-          root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = time.end;
-        }
-        else {
-          const [start, end] = addSchedlue(
-            root.querySelector(`input[type=time][name=start][data-id=${day}]`)
-          );
-          start.value = time.start;
-          end.value = time.end;
-        }
-      });
-    }
-  }
-  else { // old method
-    for (const day of days) {
-      if (schedule.days.indexOf(day) !== -1) {
-        root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = schedule.time.start;
-        root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = schedule.time.end;
-      }
-      else {
-        root.querySelector(`input[type=time][name=start][data-id=${day}]`).value = '';
-        root.querySelector(`input[type=time][name=end][data-id=${day}]`).value = '';
-      }
-    }
-  }
-};
-fs.clean = (wipe = false) => {
-  // cleanup
-  const es = [];
-  for (const e of document.querySelectorAll('#schedule [data-extra=true]')) {
-    es.push(e);
-    es.push(e.nextElementSibling);
-    es.push(e.nextElementSibling.nextElementSibling);
-    es.push(e.nextElementSibling.nextElementSibling.nextElementSibling);
-  }
-  for (const e of es) {
-    e.remove();
-  }
-  if (wipe) {
-    for (const e of document.querySelectorAll('#schedule input[type=time]')) {
-      e.value = '';
-    }
-  }
-};
-
 // double-check password; based on https://github.com/ray-lothian/Block-Site/issues/51
 const grant = callback => chrome.storage.local.get({
   'sha256': ''
@@ -280,8 +313,7 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('redirect').value = prefs.redirect;
   document.getElementById('contexts').value = prefs.contexts.includes('sub_frame') ? 'both' : 'page';
 
-  fs(prefs.schedule);
-  document.querySelector('#schedule [name=hostname]').value = '';
+  window.scheduleList.load(prefs.schedule, prefs.schedules, prefs.reverse);
 
   document.getElementById('contextmenu-resume').checked = prefs['contextmenu-resume'];
   document.getElementById('contextmenu-pause').checked = prefs['contextmenu-pause'];
@@ -316,11 +348,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
 });
 init();
 
-document.querySelector('#schedule [name="hostname"]').addEventListener('input', e => {
-  const schedule = prefs.schedules[e.target.value];
-  if (schedule) {
-    fs(schedule);
-  }
+document.getElementById('reverse').addEventListener('change', e => {
+  window.scheduleList.setReverse(e.target.checked);
 });
 
 document.getElementById('save-container').onsubmit = e => {
@@ -370,52 +399,7 @@ document.addEventListener('click', e => {
     const unlockDefault = (udv === 'tab' || udv === 'session') ? udv : Math.max(Number(udv) || 1, 1);
 
     grant(async () => {
-      let schedule = {
-        times: days.reduce((p, c) => {
-          const starts = [...document.querySelectorAll(`#schedule input[type=time][name=start][data-id=${c}]`)]
-            .map(e => e.value);
-          const ends = [...document.querySelectorAll(`#schedule input[type=time][name=end][data-id=${c}]`)]
-            .map(e => e.value);
-
-          const listed = [];
-
-          for (let n = 0; n < starts.length; n += 1) {
-            const start = starts[n];
-            const end = ends[n];
-
-            const key = start + '-' + end;
-            if (listed.includes(key)) {
-              continue;
-            }
-            listed.push(key);
-
-            if (start && end) {
-              p[c] = p[c] || [];
-              p[c].push({start, end});
-            }
-          }
-
-          return p;
-        }, {})
-      };
-
-      const rule = document.querySelector('#schedule [name="hostname"]');
-      if (rule.value) {
-        const e = validateRegex(rule.value);
-        if (e) {
-          return toast('Schedule Blocking; ' + e.message, 3000, 'error');
-        }
-        else {
-          if (Object.values(schedule.times).some(times => times.some(({start, end}) => start && end))) {
-            prefs.schedules[rule.value] = schedule;
-          }
-          else {
-            delete prefs.schedules[rule.value];
-            console.warn('Deleting rules for', rule.value);
-          }
-          schedule = prefs.schedule;
-        }
-      }
+      const {schedule, schedules} = window.scheduleList.toStorage();
       localStorage.setItem('mode-top', document.getElementById('mode-top').value);
       localStorage.setItem('mode-frame', document.getElementById('mode-frame').value);
 
@@ -451,7 +435,7 @@ document.addEventListener('click', e => {
         'close': Math.max(Number(document.getElementById('close').value), 0),
         'wrong': Math.max(Number(document.getElementById('wrong').value), 1),
         schedule,
-        'schedules': prefs.schedules,
+        'schedules': schedules,
         'blocked': [...document.querySelectorAll('#rules-container > div')]
           .map(tr => tr.dataset.hostname)
           .filter((s, i, l) => s && l.indexOf(s) === i),
@@ -650,39 +634,6 @@ document.getElementById('schedule-offset').oninput = e => {
   document.getElementById('local-time').textContent = t.toLocaleString();
 };
 
-const addSchedlue = target => {
-  // find first element
-  let span = target;
-  while (span.tagName !== 'SPAN') {
-    span = span.previousElementSibling;
-  }
-  const start = span.nextElementSibling;
-  const ns = start.cloneNode(true);
-  ns.value = '';
-  const end = start.nextElementSibling;
-  const ne = end.cloneNode(true);
-  ne.value = '';
-
-  const add = [...document.querySelectorAll(`#schedule [data-id=${start.dataset.id}][name=end]`)].pop()
-    .nextElementSibling;
-
-  add.after(document.createElement('span'));
-  add.after(ne);
-  add.after(ns);
-  const title = span.cloneNode(true);
-  title.dataset.extra = true;
-  add.after(title);
-
-  return [ns, ne];
-};
-
-document.getElementById('schedule').addEventListener('click', e => {
-  const cmd = e.target.dataset.cmd;
-
-  if (cmd === 'add') {
-    addSchedlue(e.target);
-  }
-});
 document.getElementById('rate').onclick = () => {
   let url = 'https://chrome.google.com/webstore/detail/block-site/lebiggkccaodkkmjeimmbogdedcpnmfb/reviews/';
   if (/Edg/.test(navigator.userAgent)) {
@@ -702,7 +653,8 @@ document.getElementById('rate').onclick = () => {
   }));
 };
 
-document.getElementById('remove-all').onclick = () => {
+document.getElementById('remove-all').onclick = e => {
+  e.preventDefault();
   if (confirm(chrome.i18n.getMessage('options_remove_all_confirm'))) {
     for (const input of document.querySelectorAll('#rules-container [data-cmd=remove]')) {
       input.click();

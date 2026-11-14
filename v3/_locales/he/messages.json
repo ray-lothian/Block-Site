@@ -180,7 +180,7 @@
     "message": "Simple"
   },
   "options_intro": {
-    "message": "To save options or set master password scroll down"
+    "message": "השינויים נשמרים באמצעות לחצן השמירה בתחתית הדף. אם אתם חדשים, חסמו אתרים חדשים על ידי ביקור בדף ולחיצה על לחצן הפעולה (הוא נמצא בתפריט התוספים לאחר ההתקנה). אין צורך ליצור כללים ידנית."
   },
   "options_sch_helper_1": {
     "message": "Generate unblocking periods for the following blocked hours"
@@ -295,5 +295,41 @@
   },
   "pp_msg_1": {
     "message": "opened from '##'"
+  },
+  "options_tab_blocking_rules": {
+    "message": "כללי חסימה"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "נהלו את שמות המארחים והתבניות שנחסמים."
+  },
+  "options_tab_schedule": {
+    "message": "לוח זמנים"
+  },
+  "options_tab_schedule_desc": {
+    "message": "הגדירו את הימים והשעות שבהם החסימה מוסרת באופן זמני."
+  },
+  "options_tab_behavior": {
+    "message": "התנהגות"
+  },
+  "options_tab_behavior_desc": {
+    "message": "שלטו בחסימה בעת האתחול, בפעולות תפריט ההקשר, בהשהיות ובהתראות."
+  },
+  "options_tab_unlocking": {
+    "message": "שחרור"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "בחרו כמה זמן ובאיזו קלות ניתן לגשת לאתרים חסומים."
+  },
+  "options_tab_blocked_page": {
+    "message": "דף חסום"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "התאימו אישית את הדף שמוצג כאשר אתר חסום."
+  },
+  "options_tab_tools": {
+    "message": "כלים"
+  },
+  "options_tab_tools_desc": {
+    "message": "גבו או שחזרו העדפות, צפו בתצוגה מקדימה של החסימה וקבלו תמיכה."
   }
 }

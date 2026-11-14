@@ -199,5 +199,44 @@
   },
   "bg_msg_14": {
     "message": "Ajouter \"##\" à la liste noire?"
+  },
+  "options_tab_blocking_rules": {
+    "message": "Règles de blocage"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "Gérez les noms d’hôtes et les motifs bloqués."
+  },
+  "options_tab_schedule": {
+    "message": "Planification"
+  },
+  "options_tab_schedule_desc": {
+    "message": "Définissez les jours et les heures où le blocage est temporairement levé."
+  },
+  "options_tab_behavior": {
+    "message": "Comportement"
+  },
+  "options_tab_behavior_desc": {
+    "message": "Contrôlez le blocage au démarrage, les actions du menu contextuel, les pauses et les notifications."
+  },
+  "options_tab_unlocking": {
+    "message": "Déverrouillage"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "Choisissez pendant combien de temps et avec quelle facilité les sites bloqués peuvent être consultés."
+  },
+  "options_tab_blocked_page": {
+    "message": "Page bloquée"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "Personnalisez la page affichée lorsqu’un site est bloqué."
+  },
+  "options_tab_tools": {
+    "message": "Outils"
+  },
+  "options_tab_tools_desc": {
+    "message": "Sauvegardez ou restaurez les préférences, prévisualisez le blocage et obtenez de l’aide."
+  },
+  "options_intro": {
+    "message": "Les modifications sont enregistrées avec le bouton Enregistrer en bas de la page. Si vous débutez, bloquez de nouveaux sites en visitant la page et en cliquant sur le bouton d’action (il se trouve dans le menu des extensions après l’installation). Inutile de créer des règles manuellement."
   }
 }

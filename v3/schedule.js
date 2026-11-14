@@ -29,27 +29,24 @@ const schedule = {
     for (const [rule, value] of Object.entries(schedules)) {
       for (const [day, arr] of Object.entries(value.times)) {
         for (const o of arr) {
-          const start = new Date();
-          const ofsb = start.getTimezoneOffset();
-          // apply offset
-          start.setTime(
-            start.getTime() + prefs['schedule-offset'] * 60 * 1000
+          const base = new Date();
+          const ofsb = base.getTimezoneOffset();
+          // apply offset to the base date so the weekday and time are in the
+          // offset-adjusted frame
+          base.setTime(
+            base.getTime() + prefs['schedule-offset'] * 60 * 1000
           );
+          base.setDate(
+            base.getDate() + (days.indexOf(day) - base.getDay())
+          );
+
+          const start = new Date(base);
           const [sh, sm] = o.start.split(':');
           start.setSeconds(0);
           start.setMinutes(Number(sm));
           start.setHours(Number(sh));
-          start.setDate(
-            start.getDate() + (days.indexOf(day) - start.getDay())
-          );
-          start.setTime(
-            start.getTime() - prefs['schedule-offset'] * 60 * 1000
-          );
-          // consider timezone changes
-          const ofsa = start.getTimezoneOffset();
-          start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
 
-          const end = new Date(start);
+          const end = new Date(base);
           const [eh, em] = o.end.split(':');
           end.setSeconds(0);
           end.setMinutes(Number(em));
@@ -59,6 +56,20 @@ const schedule = {
           if (Number(eh) === 23 && Number(em) === 59) {
             end.setHours(24, 0, 0);
           }
+
+          // remove the offset from both boundaries
+          start.setTime(
+            start.getTime() - prefs['schedule-offset'] * 60 * 1000
+          );
+          end.setTime(
+            end.getTime() - prefs['schedule-offset'] * 60 * 1000
+          );
+
+          // consider timezone changes
+          const ofsa = start.getTimezoneOffset();
+          start.setTime(start.getTime() + (ofsb - ofsa) * 60 * 1000);
+          const ofsbEnd = end.getTimezoneOffset();
+          end.setTime(end.getTime() + (ofsb - ofsbEnd) * 60 * 1000);
 
           if (start.getTime() < now && end.getTime() < now) {
             start.setDate(start.getDate() + 7);

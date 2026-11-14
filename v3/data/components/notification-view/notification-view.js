@@ -40,7 +40,7 @@ class NotificationView extends HTMLElement {
         }
         #body {
           position: fixed;
-          inset: 10px 10px auto auto;
+          inset: 10px var(--toast-right, 10px) auto auto;
           width: min(300px, 80vw);
 
           display: flex;
