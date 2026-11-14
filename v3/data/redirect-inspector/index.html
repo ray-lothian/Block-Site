@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Redirect Inspector</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <h1>Redirect Inspector</h1>
+      <span id="state" class="state" role="status" aria-live="polite" data-state="starting">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="state-label">Starting…</span>
+      </span>
+    </div>
+    <div id="subtitle">Loading tab…</div>
+    <p id="howto">
+      Tracking starts now and is live while this window is open. It stops when
+      you close this window, and the window closes automatically when the
+      tracked (parent) tab closes. Navigate or click a link in that tab to see
+      each redirect below; use <strong>Block</strong> on a row to add that host
+      to the block list.
+    </p>
+  </header>
+  <main>
+    <div id="status" role="status" aria-live="polite" hidden></div>
+    <div id="enable" hidden>
+      <p>Redirect tracking needs permission to observe network requests for this tab.</p>
+      <button id="grant" type="button">Enable tracking</button>
+    </div>
+    <div id="empty">Waiting for the first navigation…</div>
+    <ol id="list" aria-label="Redirects in the tracked tab"></ol>
+  </main>
+  <footer>
+    <span id="count" aria-live="polite">0 hops</span>
+    <button id="clear" type="button">Clear</button>
+  </footer>
+  <template id="row">
+    <li class="row">
+      <span class="time"></span>
+      <span class="kind"></span>
+      <span class="domain"></span>
+      <button class="block" type="button">Block</button>
+      <span class="url"></span>
+    </li>
+  </template>
+  <script src="index.js"></script>
+</body>
+</html>

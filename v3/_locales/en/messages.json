@@ -179,6 +179,12 @@
   "options_contextmenu_frame": {
     "message": "Show \"(Un)Block this Frame\" context menu option on frame context"
   },
+  "options_contextmenu_redirect_inspector": {
+    "message": "Show \"Track redirects in this tab\" context menu option on page context"
+  },
+  "options_contextmenu_redirect_inspector_action": {
+    "message": "Show \"Track redirects in this tab\" context menu option on browser action's context"
+  },
   "options_no_pass_on_add": {
     "message": "Do not ask for the master password to block a new hostname"
   },

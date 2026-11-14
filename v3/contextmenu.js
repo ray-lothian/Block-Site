@@ -8,6 +8,8 @@ const buildContext = () => chrome.storage.local.get({
   'contextmenu-remove-temporary': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
+  'contextmenu-redirect-inspector': true,
+  'contextmenu-redirect-inspector-action': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
   'blocked': [],
   'per-site-pause-max-size': 10
@@ -116,6 +118,12 @@ const buildContext = () => chrome.storage.local.get({
     contexts: ['frame'],
     visible: prefs['contextmenu-frame']
   }, () => chrome.runtime.lastError);
+
+  // self-contained module in data/redirect-inspector
+  self.redirectInspector?.build({
+    page: prefs['contextmenu-redirect-inspector'],
+    action: prefs['contextmenu-redirect-inspector-action']
+  });
 });
 
 {
@@ -181,6 +189,12 @@ const resume = () => {
 };
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (info.menuItemId === 'redirect-inspector' ||
+      info.menuItemId === 'redirect-inspector-action') {
+    // keep this synchronous: permissions.request() needs the click gesture
+    self.redirectInspector?.open(tab);
+    return;
+  }
   if (info.menuItemId === 'options') {
     chrome.runtime.openOptionsPage();
   }

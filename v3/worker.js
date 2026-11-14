@@ -17,6 +17,7 @@ if (typeof importScripts !== 'undefined') {
   self.importScripts('contextmenu.js');
   self.importScripts('idle.js');
   self.importScripts('managed.js');
+  self.importScripts('data/redirect-inspector/background.js');
 }
 
 if (typeof browser === 'object' && browser.declarativeNetRequest) {

@@ -61,6 +61,8 @@ const DEFAULTS = {
   'contextmenu-remove-temporary': true,
   'contextmenu-frame': true,
   'contextmenu-top': true,
+  'contextmenu-redirect-inspector': true,
+  'contextmenu-redirect-inspector-action': true,
   'pause-periods': [5, 10, 15, 30, 60, 360, 1440, -1],
   'per-site-pause-max-size': 10,
   'disable-actions-options': true,
@@ -286,6 +288,8 @@ const init = (table = true) => chrome.storage.local.get(DEFAULTS, ps => {
   document.getElementById('contextmenu-remove-temporary').checked = prefs['contextmenu-remove-temporary'];
   document.getElementById('contextmenu-frame').checked = prefs['contextmenu-frame'];
   document.getElementById('contextmenu-top').checked = prefs['contextmenu-top'];
+  document.getElementById('contextmenu-redirect-inspector').checked = prefs['contextmenu-redirect-inspector'];
+  document.getElementById('contextmenu-redirect-inspector-action').checked = prefs['contextmenu-redirect-inspector-action'];
 
   const safe = prefs.password !== '' || prefs.sha256 !== '';
   document.querySelector('[data-cmd=unlock]').disabled = safe === false;
@@ -477,6 +481,8 @@ document.addEventListener('click', e => {
         'per-site-pause-max-size': Math.max(0, document.getElementById('per-site-pause-max-size').valueAsNumber),
         'contextmenu-frame': document.getElementById('contextmenu-frame').checked,
         'contextmenu-top': document.getElementById('contextmenu-top').checked,
+        'contextmenu-redirect-inspector': document.getElementById('contextmenu-redirect-inspector').checked,
+        'contextmenu-redirect-inspector-action': document.getElementById('contextmenu-redirect-inspector-action').checked,
 
         'pause-periods': periods,
 

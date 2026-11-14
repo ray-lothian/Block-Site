@@ -10,6 +10,7 @@
       "contextmenu.js",
       "idle.js",
       "managed.js",
+      "data/redirect-inspector/background.js",
       "worker.js"
     ]
   },
@@ -26,6 +27,9 @@
   ],
   "host_permissions": [
     "<all_urls>"
+  ],
+  "optional_permissions": [
+    "webRequest"
   ],
   "icons": {
     "16": "data/icons/16.png",
