@@ -1,0 +1,638 @@
+{
+  "app_description": {
+    "message": "Un bloqueador y redireccionador de sitios web personalizable y protegido con contraseña."
+  },
+  "options_master_password": {
+    "message": "Contraseña maestra"
+  },
+  "options_master_password_hint": {
+    "message": "Establece una contraseña maestra para proteger esta configuración. Una vez guardada, introdúcela y haz clic en Desbloquear opciones para hacer cambios. Si no hay ninguna contraseña maestra, las opciones no están protegidas y Desbloquear opciones está desactivado."
+  },
+  "options_master_password_comment": {
+    "message": "Introduce una contraseña maestra para proteger tus preferencias"
+  },
+  "options_redirect": {
+    "message": "Redirigir a:"
+  },
+  "options_user_message": {
+    "message": "Mensaje personalizado (se muestra en todas las páginas de bloqueo; para un recordatorio de un solo sitio, usa la nota):"
+  },
+  "options_custom_css": {
+    "message": "CSS personalizado:"
+  },
+  "options_resolve": {
+    "message": "Obtener el título de las páginas bloqueadas (desmarca esta opción para que los servidores bloqueados no reciban ninguna petición)"
+  },
+  "options_startup": {
+    "message": "Aplicar el bloqueo a las páginas ya abiertas al iniciar la extensión"
+  },
+  "options_startup_current": {
+    "message": "Bloquear la página actual si coincide con una regla nueva al añadirla"
+  },
+  "options_allow_access": {
+    "message": "Tiempo de acceso predeterminado para el nombre de host desbloqueado (en segundos)"
+  },
+  "options_unlock_periods": {
+    "message": "Duraciones de desbloqueo que se ofrecen en la página de bloqueo (en minutos)"
+  },
+  "options_unlock_default": {
+    "message": "Duración de desbloqueo preseleccionada en la página de bloqueo"
+  },
+  "options_block_period": {
+    "message": "Bloquear la comprobación de la contraseña si se introduce una contraseña incorrecta varias veces (en minutos)"
+  },
+  "options_close_blocked": {
+    "message": "Cerrar después de (segundos)"
+  },
+  "options_close_msg_blocked": {
+    "message": "(usa cero para que no se cierre automáticamente)"
+  },
+  "options_times": {
+    "message": "Hora:"
+  },
+  "options_times_from": {
+    "message": "desde"
+  },
+  "options_times_to": {
+    "message": "hasta"
+  },
+  "options_days": {
+    "message": "Días:"
+  },
+  "options_hostname": {
+    "message": "Regla:"
+  },
+  "options_reverse": {
+    "message": "Funcionar en modo inverso (solo se puede acceder a lo que coincida con los patrones)"
+  },
+  "options_new_hostname": {
+    "message": "Bloquear un nuevo nombre de host:"
+  },
+  "options_add": {
+    "message": "Añadir"
+  },
+  "options_matching": {
+    "message": "Patrón de coincidencia"
+  },
+  "options_redirect_2": {
+    "message": "Redirigir a"
+  },
+  "options_remove": {
+    "message": "Eliminar"
+  },
+  "options_toggle_note": {
+    "message": "Mostrar/ocultar nota"
+  },
+  "options_note": {
+    "message": "Nota que se muestra en la página de bloqueo (opcional)"
+  },
+  "options_rate": {
+    "message": "Valorar"
+  },
+  "options_support": {
+    "message": "Apoyar el desarrollo"
+  },
+  "options_preview": {
+    "message": "Vídeo de demostración"
+  },
+  "options_unlock": {
+    "message": "Desbloquear opciones"
+  },
+  "options_save": {
+    "message": "Guardar opciones"
+  },
+  "options_block_header": {
+    "message": "Añadir una regla"
+  },
+  "options_blocing_options_header": {
+    "message": "Opciones de bloqueo"
+  },
+  "options_behavior_blocking_header": {
+    "message": "Bloqueo"
+  },
+  "options_behavior_context_menu_header": {
+    "message": "Menú contextual"
+  },
+  "options_behavior_pause_header": {
+    "message": "Pausas"
+  },
+  "options_behavior_protection_header": {
+    "message": "Protección"
+  },
+  "options_behavior_interface_header": {
+    "message": "Interfaz"
+  },
+  "options_password_options_header": {
+    "message": "Opciones de contraseña"
+  },
+  "options_list_header": {
+    "message": "Reglas existentes"
+  },
+  "options_page_header": {
+    "message": "Página de bloqueo"
+  },
+  "options_tools_header": {
+    "message": "Herramientas"
+  },
+  "options_rules_header": {
+    "message": "Importar reglas"
+  },
+  "options_import_txt": {
+    "message": "Importar reglas (archivo TXT)"
+  },
+  "options_schedule_header": {
+    "message": "Horarios de bloqueo"
+  },
+  "options_schedule_offset": {
+    "message": "Desfase del horario en minutos"
+  },
+  "options_schedule_when": {
+    "message": "En los días seleccionados"
+  },
+  "options_schedule_mode_block": {
+    "message": "Bloquear entre"
+  },
+  "options_schedule_mode_all_day": {
+    "message": "Permitir todo el día (el bloqueo se pausa)"
+  },
+  "options_schedule_from": {
+    "message": "Desde"
+  },
+  "options_schedule_to": {
+    "message": "Hasta"
+  },
+  "options_schedule_rule": {
+    "message": "Regla (opcional)"
+  },
+  "options_schedule_rule_hint": {
+    "message": "Déjala en blanco para aplicar la entrada a todos los sitios. Una regla es una expresión regular que limita esta entrada a las URL que coincidan con ella."
+  },
+  "options_schedule_list_header": {
+    "message": "Entradas del horario"
+  },
+  "options_schedule_empty": {
+    "message": "Todavía no hay entradas en el horario. El bloqueo está activo en todo momento."
+  },
+  "options_schedule_add": {
+    "message": "Añadir"
+  },
+  "options_schedule_update": {
+    "message": "Actualizar"
+  },
+  "options_schedule_cancel": {
+    "message": "Cancelar"
+  },
+  "options_schedule_edit": {
+    "message": "Editar"
+  },
+  "options_schedule_remove": {
+    "message": "Eliminar"
+  },
+  "options_schedule_all_sites": {
+    "message": "Todos los sitios"
+  },
+  "options_schedule_all_day_short": {
+    "message": "Todo el día"
+  },
+  "options_schedule_days_required": {
+    "message": "Selecciona al menos un día."
+  },
+  "options_schedule_times_required": {
+    "message": "Introduce una hora de inicio y una de fin."
+  },
+  "options_schedule_invalid_range": {
+    "message": "La hora de inicio debe ser anterior a la de fin."
+  },
+  "options_schedule_help": {
+    "message": "Deja la regla en blanco para aplicar una entrada a todos los sitios. Una regla es una expresión regular que limita la entrada a las URL que coincidan con ella. Una entrada 'Permitir todo el día' cubre el día entero."
+  },
+  "options_import_header": {
+    "message": "Copia de seguridad y restauración"
+  },
+  "options_export_json": {
+    "message": "Exportar (archivo JSON)"
+  },
+  "options_import_json": {
+    "message": "Importar (archivo JSON)"
+  },
+  "options_sup_1": {
+    "message": "Opcional: redirigir las peticiones bloqueadas a esta URL HTTP(S)"
+  },
+  "options_sup_2": {
+    "message": "Es un mensaje personalizado que se muestra en la página de bloqueo. Puede ser una indicación para abrir esta página bloqueada o el contacto del administrador"
+  },
+  "options_sup_3": {
+    "message": "Inserta reglas CSS personalizadas en la interfaz de bloqueo. Puedes usar esta sección para ocultar distintos elementos o cambiar las propiedades de fuente de esos elementos"
+  },
+  "options_sup_6": {
+    "message": "Para bloquear nombres de host que contengan una palabra, usa la regla '*://*palabra*/*'. Para bloquear la misma palabra dentro de la ruta, usa la regla '*://*/*palabra*'. Si solo necesitas cerrar una página con una regla, usa la palabra clave 'close' en el cuadro 'Redirigir a'. Para crear una regla de expresión regular, añade la palabra clave 'R:' al principio de la regla. Por ejemplo, 'R:ht{2}ps*://.*\\.go{2}gle\\.com' bloquea www.google.com tanto en HTTP como en HTTPS."
+  },
+  "options_sup_8": {
+    "message": "Prepara un archivo de texto con todas las reglas de bloqueo en texto sin formato. Después de importarlo, pulsa el botón Guardar para que se apliquen los cambios. Para descartar las reglas importadas, recarga esta página sin guardar."
+  },
+  "options_sup_10": {
+    "message": "Al importar la configuración, se sobrescribirá toda tu configuración actual. Para exportar una versión minimizada, mantén pulsada la tecla Mayús al pulsar el botón Exportar"
+  },
+  "options_sup_11": {
+    "message": "Si indicas una regla de expresión regular, puedes limitar el horario actual a las URL que coincidan con ella. Para tener varios horarios con reglas distintas, rellena la sección para cada regla y pulsa el botón Guardar. Para eliminar una regla guardada, rellena la parte de la regla y espera a que la extensión cargue el horario; después, borra la sección de horas sin quitar la regla."
+  },
+  "options_sup_12": {
+    "message": "una expresión regular para limitar el alcance del horario actual"
+  },
+  "options_instruction": {
+    "message": "Instrucciones"
+  },
+  "options_contextmenu_pause": {
+    "message": "Mostrar \"Pausar bloqueo\" en el menú contextual del botón de la extensión"
+  },
+  "options_contextmenu_resume": {
+    "message": "Mostrar la opción \"Reanudar bloqueo\" en el menú contextual del botón de la extensión"
+  },
+  "options_contextmenu_remove_temporary": {
+    "message": "Mostrar la opción \"Eliminar todas las reglas de desbloqueo temporal\" en el menú contextual del botón de la extensión"
+  },
+  "options_contextmenu_top": {
+    "message": "Mostrar la opción \"Bloquear/desbloquear esta página\" en el menú contextual de la página"
+  },
+  "options_contextmenu_frame": {
+    "message": "Mostrar la opción \"Bloquear/desbloquear este marco\" en el menú contextual del marco"
+  },
+  "options_contextmenu_redirect_inspector": {
+    "message": "Mostrar la opción \"Track redirects in this tab\" en el menú contextual de la página"
+  },
+  "options_contextmenu_redirect_inspector_action": {
+    "message": "Mostrar la opción \"Track redirects in this tab\" en el menú contextual del botón de la extensión"
+  },
+  "options_no_pass_on_add": {
+    "message": "No pedir la contraseña maestra para bloquear un nuevo nombre de host"
+  },
+  "options_no_pass_on_unlock": {
+    "message": "No pedir la contraseña maestra para desbloquear temporalmente una página bloqueada"
+  },
+  "options_disable_actions_options": {
+    "message": "Bloquear el menú contextual en esta página"
+  },
+  "options_disable_actions_page": {
+    "message": "Bloquear el menú contextual y la opción de pegar en las páginas de bloqueo"
+  },
+  "options_notification": {
+    "message": "Mostrar notificaciones de escritorio (recomendado)"
+  },
+  "options_popup": {
+    "message": "Mostrar un resumen de los sitios bloqueados al hacer clic en el icono de la barra de herramientas (si no, un clic bloquea o desbloquea el sitio actual)"
+  },
+  "options_contexts": {
+    "message": "Elige dónde se aplica el bloqueo"
+  },
+  "options_contexts_both": {
+    "message": "El bloqueo se aplica tanto a páginas como a marcos"
+  },
+  "options_contexts_page": {
+    "message": "El bloqueo se aplica solo a páginas"
+  },
+  "options_theme": {
+    "message": "Selecciona el modo visual de la página de bloqueo"
+  },
+  "options_theme_top": {
+    "message": "Para páginas"
+  },
+  "options_theme_frame": {
+    "message": "Para marcos"
+  },
+  "options_complete": {
+    "message": "Completo"
+  },
+  "options_simple": {
+    "message": "Sencillo"
+  },
+  "options_intro": {
+    "message": "Los cambios se guardan con el botón Guardar opciones, al final de la página."
+  },
+  "options_intro_rules": {
+    "message": "Si acabas de empezar, bloquea sitios web nuevos visitando la página y haciendo clic en el botón de la extensión (después de instalarla, está en el menú de extensiones). No hace falta crear reglas nuevas a mano."
+  },
+  "options_sch_helper_1": {
+    "message": "Generar periodos de desbloqueo para las siguientes horas bloqueadas"
+  },
+  "options_sch_helper_2": {
+    "message": "Generar"
+  },
+  "options_sch_helper_3": {
+    "message": "Borrar todo"
+  },
+  "options_contextmenu_periods": {
+    "message": "Periodos de pausa (en minutos)"
+  },
+  "options_per_site_pause_max_size": {
+    "message": "Número máximo de elementos en el menú contextual \"Pausar bloqueo por regla\""
+  },
+  "options_incognito": {
+    "message": "La página de opciones no está disponible en modo incógnito"
+  },
+  "options_remove_all": {
+    "message": "Eliminar todas las reglas existentes"
+  },
+  "options_remove_all_confirm": {
+    "message": "¿Seguro que quieres eliminar todas las reglas de bloqueo existentes?\n\nPuedes recargar la página sin guardar para recuperar las reglas."
+  },
+  "options_manual_pause": {
+    "message": "Indefinidamente"
+  },
+  "popup_options_page": {
+    "message": "Página de opciones"
+  },
+  "popup_filter": {
+    "message": "Filtrar sitios bloqueados…"
+  },
+  "popup_empty": {
+    "message": "Todavía no hay sitios bloqueados."
+  },
+  "popup_remove": {
+    "message": "Eliminar esta regla"
+  },
+  "popup_no_site": {
+    "message": "No es un sitio que se pueda bloquear"
+  },
+  "popup_block": {
+    "message": "Bloquear esta URL"
+  },
+  "popup_block_domain": {
+    "message": "Bloquear este dominio"
+  },
+  "popup_unblock": {
+    "message": "Desbloquear esta URL"
+  },
+  "popup_unblock_domain": {
+    "message": "Desbloquear este dominio"
+  },
+  "popup_switch_domain": {
+    "message": "Cambiar a dominio"
+  },
+  "popup_switch_url": {
+    "message": "Cambiar a URL"
+  },
+  "popup_toggle": {
+    "message": "Bloquear/desbloquear este sitio"
+  },
+  "popup_reverse_hint": {
+    "message": "Bloqueado de forma predeterminada en modo inverso. Abre el sitio y usa \"Añadir a la lista blanca\" para permitirlo."
+  },
+  "popup_blocked_count": {
+    "message": "bloqueos: ##"
+  },
+  "blocked_restricted": {
+    "message": "Acceso restringido"
+  },
+  "blocked_title": {
+    "message": "Título"
+  },
+  "blocked_since": {
+    "message": "Bloqueado desde"
+  },
+  "blocked_counter": {
+    "message": "Número de bloqueos"
+  },
+  "blocked_rule": {
+    "message": "Regla de bloqueo"
+  },
+  "blocked_rule_ph": {
+    "message": "Regla de bloqueo (edítala para cambiar el alcance)"
+  },
+  "blocked_note": {
+    "message": "Nota"
+  },
+  "blocked_note_ph": {
+    "message": "Añade una nota para este sitio…"
+  },
+  "blocked_master_password": {
+    "message": "Introduce la contraseña maestra y pulsa Intro para desbloquear"
+  },
+  "blocked_unlock": {
+    "message": "Desbloquear"
+  },
+  "blocked_unlock_duration": {
+    "message": "Elige durante cuánto tiempo desbloquear este sitio"
+  },
+  "blocked_unlock_tab": {
+    "message": "Mientras haya pestañas de este sitio abiertas"
+  },
+  "blocked_unlock_session": {
+    "message": "Durante esta sesión del navegador"
+  },
+  "blocked_unlock_permanent": {
+    "message": "Permanentemente (eliminar la regla)"
+  },
+  "blocked_options": {
+    "message": "Página de opciones"
+  },
+  "blocked_rate": {
+    "message": "Valorar"
+  },
+  "blocked_remove_blocking": {
+    "message": "Quitar bloqueo"
+  },
+  "blocked_add_to_whitelist": {
+    "message": "Añadir a la lista blanca"
+  },
+  "blocked_paste": {
+    "message": "No se permite pegar. Escribe la contraseña."
+  },
+  "blocked_context": {
+    "message": "No se permite usar el menú contextual."
+  },
+  "blocked_drop": {
+    "message": "No se permite arrastrar y soltar. Escribe la contraseña."
+  },
+  "bg_msg_1": {
+    "message": "Esta pestaña no tiene una URL válida"
+  },
+  "bg_msg_2": {
+    "message": "Contraseña incorrecta. Inténtalo de nuevo."
+  },
+  "bg_msg_3": {
+    "message": "Ve a la página de opciones y establece una contraseña maestra"
+  },
+  "bg_msg_4": {
+    "message": "Demasiadas contraseñas incorrectas. Espera ## minuto(s) y vuelve a intentarlo."
+  },
+  "bg_msg_5": {
+    "message": "Pausar bloqueo"
+  },
+  "bg_msg_6": {
+    "message": "Reanudar bloqueo"
+  },
+  "bg_msg_30": {
+    "message": "Eliminar todas las reglas de desbloqueo temporal"
+  },
+  "bg_msg_31": {
+    "message": "Esta página está bloqueada, pero una regla temporal permite visitarla."
+  },
+  "bg_msg_32": {
+    "message": "Este sitio está desbloqueado temporalmente por una regla de sesión"
+  },
+  "bg_msg_33": {
+    "message": "Esta página está bloqueada"
+  },
+  "bg_msg_34": {
+    "message": "Esta página no está bloqueada"
+  },
+  "bg_msg_35": {
+    "message": "Esta página está bloqueada, pero se puede acceder a ella mediante una regla temporal. Para continuar, haz clic derecho en el botón de la extensión, elimina la regla temporal desde el menú contextual y vuelve a intentarlo."
+  },
+  "bg_msg_36": {
+    "message": "Pausar bloqueo por regla"
+  },
+  "bg_msg_12": {
+    "message": "Introduce la contraseña maestra para pausar el bloqueo"
+  },
+  "bg_msg_13": {
+    "message": "¿Seguro que quieres desbloquear el acceso a \"##\"?"
+  },
+  "bg_msg_14": {
+    "message": "El acceso a \"##\" se restringirá con las siguientes reglas. ¿Quieres continuar?"
+  },
+  "bg_msg_17": {
+    "message": "Introduce la contraseña maestra para continuar"
+  },
+  "bg_msg_18": {
+    "message": "Bloquear/desbloquear este marco"
+  },
+  "bg_msg_19": {
+    "message": "Bloquear/desbloquear esta página"
+  },
+  "bg_msg_21": {
+    "message": "Lo más probable es que no se pueda bloquear la galería de extensiones. ¡Puedes intentarlo de todos modos!"
+  },
+  "bg_msg_22": {
+    "message": "Opciones"
+  },
+  "bg_msg_23": {
+    "message": "minuto"
+  },
+  "bg_msg_24": {
+    "message": "minutos"
+  },
+  "bg_msg_25": {
+    "message": "hora"
+  },
+  "bg_msg_26": {
+    "message": "horas"
+  },
+  "bg_msg_27": {
+    "message": "El bloqueo está en pausa"
+  },
+  "bg_msg_28": {
+    "message": "Se ha reanudado el bloqueo"
+  },
+  "bg_msg_29": {
+    "message": "Esta operación no se puede realizar en modo incógnito. Abre la página en una ventana de navegación normal y vuelve a intentarlo."
+  },
+  "pp_msg_1": {
+    "message": "abierto desde '##'"
+  },
+  "options_tab_blocking_rules": {
+    "message": "Reglas de bloqueo"
+  },
+  "options_tab_blocking_rules_desc": {
+    "message": "Gestiona los nombres de host y los patrones que se bloquean."
+  },
+  "options_tab_schedule": {
+    "message": "Horario"
+  },
+  "options_tab_schedule_desc": {
+    "message": "Elige cuándo se activa el bloqueo y cuándo se pausa."
+  },
+  "options_tab_behavior": {
+    "message": "Comportamiento"
+  },
+  "options_tab_behavior_desc": {
+    "message": "Controla el bloqueo al iniciar, las acciones del menú contextual, las pausas y las notificaciones."
+  },
+  "options_tab_unlocking": {
+    "message": "Desbloqueo"
+  },
+  "options_tab_unlocking_desc": {
+    "message": "Elige durante cuánto tiempo y con qué facilidad se puede acceder a los sitios bloqueados."
+  },
+  "options_tab_blocked_page": {
+    "message": "Página de bloqueo"
+  },
+  "options_tab_blocked_page_desc": {
+    "message": "Personaliza la página que se muestra cuando se bloquea un sitio."
+  },
+  "options_tab_tools": {
+    "message": "Herramientas"
+  },
+  "options_tab_tools_desc": {
+    "message": "Crea o restaura copias de seguridad de las preferencias, mira una demostración del bloqueo y obtén ayuda."
+  },
+  "options_schedule_intro": {
+    "message": "Una entrada de tipo Bloquear bloquea las horas seleccionadas. Una entrada de tipo Permitir pausa el bloqueo. Los días sin ninguna entrada siguen bloqueados todo el día."
+  },
+  "options_schedule_note_block": {
+    "message": "Días $1: el bloqueo está activo de $2 a $3; fuera de esa franja, los sitios están desbloqueados."
+  },
+  "options_schedule_note_allow": {
+    "message": "Días $1: el bloqueo está en pausa todo el día."
+  },
+  "options_schedule_note_all_block": {
+    "message": "Todos los días están incluidos. El bloqueo está activo de $1 a $2; fuera de esa franja, los sitios están desbloqueados."
+  },
+  "options_schedule_note_all_allow": {
+    "message": "Todos los días están incluidos. El bloqueo está en pausa todo el día."
+  },
+  "options_schedule_note_unselected": {
+    "message": "Días no incluidos en esta entrada: $1. Esos días siguen bloqueados todo el día, salvo que los incluya otra entrada."
+  },
+  "options_schedule_note_no_days": {
+    "message": "Selecciona al menos un día."
+  },
+  "options_schedule_note_no_times": {
+    "message": "Selecciona una hora de inicio y una de fin para ver el efecto en esos días."
+  },
+  "options_schedule_note_rule": {
+    "message": "Esta entrada solo se aplica a los sitios que coincidan con la regla."
+  },
+  "options_schedule_type_block": {
+    "message": "Bloquear"
+  },
+  "options_schedule_type_allow": {
+    "message": "Permitir"
+  },
+  "options_schedule_all_day_row": {
+    "message": "Bloqueo en pausa todo el día"
+  },
+  "options_schedule_intro_reverse": {
+    "message": "El modo inverso bloquea todo excepto los sitios permitidos. Una entrada del horario permite los sitios que coincidan durante los periodos seleccionados. Los días sin ninguna entrada siguen bloqueados de forma predeterminada."
+  },
+  "options_schedule_mode_allow": {
+    "message": "Permitir entre"
+  },
+  "options_schedule_mode_all_day_reverse": {
+    "message": "Permitir todo el día"
+  },
+  "options_schedule_empty_reverse": {
+    "message": "No hay entradas en el horario. El modo inverso bloquea todo excepto los sitios permitidos."
+  },
+  "options_schedule_note_allow_window": {
+    "message": "Días $1: los sitios están permitidos de $2 a $3."
+  },
+  "options_schedule_note_allow_window_all": {
+    "message": "Todos los días están incluidos. Los sitios están permitidos de $1 a $2."
+  },
+  "options_schedule_note_allow_day": {
+    "message": "Días $1: los sitios están permitidos todo el día."
+  },
+  "options_schedule_note_allow_day_all": {
+    "message": "Todos los días están incluidos. Los sitios están permitidos todo el día."
+  },
+  "options_schedule_note_unselected_reverse": {
+    "message": "Días no incluidos en esta entrada: $1. En modo inverso, esos días siguen bloqueados de forma predeterminada."
+  },
+  "options_schedule_note_rule_reverse": {
+    "message": "Durante esta entrada, solo se permiten los sitios que coincidan con la regla."
+  },
+  "options_schedule_all_day_allow_row": {
+    "message": "Todo el día"
+  }
+}
